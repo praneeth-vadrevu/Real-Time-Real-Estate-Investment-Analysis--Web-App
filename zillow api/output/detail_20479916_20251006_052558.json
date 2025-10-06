@@ -1,0 +1,1362 @@
+{
+  "buildingPermits" : null,
+  "contact_recipients" : [ {
+    "agent_reason" : 1,
+    "zpro" : null,
+    "recent_sales" : 0,
+    "review_count" : 0,
+    "display_name" : "Premier Broker Flex Atlanta GA",
+    "badge_type" : "Premier Agent",
+    "business_name" : "Zillow Group",
+    "rating_average" : 0,
+    "phone" : {
+      "prefix" : "452",
+      "areacode" : "206",
+      "number" : "1030"
+    },
+    "zuid" : "X1-ZUv2ktj4jt3nyh_98wrm",
+    "image_url" : "https://www.zillowstatic.com/static/images/nophoto_h_g.png"
+  } ],
+  "longitude" : -118.48273,
+  "countyFIPS" : "06037",
+  "imgSrc" : "https://photos.zillowstatic.com/fp/cfc9a51e88f475eb8339bcdcb49dab43-p_d.jpg",
+  "livingAreaValue" : 1418,
+  "streetAddress" : "1754 11th St UNIT 101",
+  "county" : "Los Angeles County",
+  "monthlyHoaFee" : 650,
+  "timeZone" : "America/Los_Angeles",
+  "taxHistory" : [ {
+    "time" : 1728200194126,
+    "valueIncreaseRate" : 0.01999901,
+    "taxIncreaseRate" : 0.01712286,
+    "taxPaid" : 5164.94,
+    "value" : 391903
+  }, {
+    "time" : 1696577794126,
+    "valueIncreaseRate" : 0.01999538,
+    "taxIncreaseRate" : 0.015825616,
+    "taxPaid" : 5077.99,
+    "value" : 384219
+  }, {
+    "time" : 1665041794126,
+    "valueIncreaseRate" : 0.019997183,
+    "taxIncreaseRate" : 0.030915774,
+    "taxPaid" : 4998.88,
+    "value" : 376687
+  }, {
+    "time" : 1633505794126,
+    "valueIncreaseRate" : 0.01035796,
+    "taxIncreaseRate" : 0.007500742,
+    "taxPaid" : 4848.97,
+    "value" : 369302
+  }, {
+    "time" : 1601969794126,
+    "valueIncreaseRate" : 0.01999721,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : 4812.87,
+    "value" : 365516
+  }, {
+    "time" : 1570347394126,
+    "valueIncreaseRate" : 0.019998634,
+    "taxIncreaseRate" : 0.07496837,
+    "taxPaid" : 4812.87,
+    "value" : 358350
+  }, {
+    "time" : 1538811394126,
+    "valueIncreaseRate" : 0.01999791,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : 4477.22,
+    "value" : 351324
+  }, {
+    "time" : 1507275394126,
+    "valueIncreaseRate" : 0.019998046,
+    "taxIncreaseRate" : 0.0069812825,
+    "taxPaid" : 4477.22,
+    "value" : 344436
+  }, {
+    "time" : 1475739394126,
+    "valueIncreaseRate" : 0.015245993,
+    "taxIncreaseRate" : 0.035968535,
+    "taxPaid" : 4446.18,
+    "value" : 337683
+  }, {
+    "time" : 1444116994126,
+    "valueIncreaseRate" : 0.019978719,
+    "taxIncreaseRate" : 0.02591676,
+    "taxPaid" : 4291.81,
+    "value" : 332612
+  }, {
+    "time" : 1412580994126,
+    "valueIncreaseRate" : 0.02462452,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : 4183.39,
+    "value" : 326097
+  }, {
+    "time" : 1349508994126,
+    "valueIncreaseRate" : 0.01999545,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 318260
+  }, {
+    "time" : 1317886594126,
+    "valueIncreaseRate" : 0.0075268815,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 312021
+  }, {
+    "time" : 1286350594126,
+    "valueIncreaseRate" : -0.0023741492,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 309690
+  }, {
+    "time" : 1254814594126,
+    "valueIncreaseRate" : 0.019997306,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 310427
+  }, {
+    "time" : 1223278594126,
+    "valueIncreaseRate" : 0.019994972,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 304341
+  }, {
+    "time" : 1191656194126,
+    "valueIncreaseRate" : 0.019994805,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 298375
+  }, {
+    "time" : 1160120194126,
+    "valueIncreaseRate" : 0,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 292526
+  }, {
+    "time" : 1128584194126,
+    "valueIncreaseRate" : 0.04039208,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 292526
+  }, {
+    "time" : 1097048194126,
+    "valueIncreaseRate" : 0.018665517,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 281169
+  }, {
+    "time" : 1065425794126,
+    "valueIncreaseRate" : 0.01999586,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 276017
+  }, {
+    "time" : 1033889794126,
+    "valueIncreaseRate" : 0.040392157,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 270606
+  }, {
+    "time" : 970817794126,
+    "valueIncreaseRate" : 0,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 260100
+  } ],
+  "dateSold" : null,
+  "annualHomeownersInsurance" : 4158,
+  "state" : "CA",
+  "listed_by" : {
+    "agent_reason" : 3,
+    "zpro" : false,
+    "recent_sales" : 0,
+    "zuid" : "X1-ZUyubxz66bbf9l_963mo",
+    "review_count" : 18,
+    "display_name" : "Sebastian Stofenmacher",
+    "profile_url" : "https://www.zillow.com/profile/Stofenmacher/",
+    "business_name" : "Edgestone Real Estate, Inc.",
+    "rating_average" : 5,
+    "phone" : {
+      "prefix" : "464",
+      "areacode" : "818",
+      "number" : "5113"
+    },
+    "badge_type" : "Listing Agent",
+    "image_url" : "https://photos.zillowstatic.com/fp/318146de9bfb2f6a4bc231edfc2fcdc4-h_n.jpg"
+  },
+  "yearBuilt" : 1990,
+  "brokerageName" : "Edgestone Real Estate, Inc.",
+  "description" : "Nestled in a boutique 5-unit building, this light-filled 2-bedroom, 2.5-bath condo offers 1,418 sq ft of comfortable coastal living. The generous living room with fireplace opens to a private patio, while the galley kitchen includes in-unit laundry for added convenience. Upstairs, both bedrooms feature en-suite baths, creating an ideal layout for privacy and functionality. Additional highlights include a powder room on the main level, secure building access, and side-by-side parking in a gated garage. With its prime Santa Monica location and timeless floor plan, this home is the perfect canvas to add your personal touch and make it your own.",
+  "climate" : {
+    "windSources" : {
+      "primary" : {
+        "insuranceRecommendation" : "NOT_CRITICAL",
+        "riskScore" : {
+          "label" : "MINIMAL",
+          "max" : 10,
+          "value" : 1
+        },
+        "probability" : { },
+        "source" : {
+          "url" : "https://firststreet.org/property/1754-11th-st-unit-101-santa-monica-ca-90404/601703807_fsid"
+        },
+        "insuranceSeparatePolicy" : "LIKELY_OPTIONAL",
+        "historicCountAll" : 21
+      }
+    },
+    "floodSources" : {
+      "primary" : {
+        "insuranceRecommendation" : "NOT_CRITICAL",
+        "riskScore" : {
+          "label" : "MINIMAL",
+          "max" : 10,
+          "value" : 1
+        },
+        "femaZone" : "X_UNSHADED",
+        "source" : {
+          "url" : "https://firststreet.org/property/1754-11th-st-unit-101-santa-monica-ca-90404/601703807_fsid"
+        },
+        "probability" : [ {
+          "relativeYear" : 0,
+          "probability" : 0
+        }, {
+          "relativeYear" : 5,
+          "probability" : 0
+        }, {
+          "relativeYear" : 10,
+          "probability" : 0
+        }, {
+          "relativeYear" : 15,
+          "probability" : 0
+        }, {
+          "relativeYear" : 20,
+          "probability" : 0
+        }, {
+          "relativeYear" : 25,
+          "probability" : 0
+        }, {
+          "relativeYear" : 30,
+          "probability" : 0
+        } ],
+        "insuranceSeparatePolicy" : "NOT_REQUIRED",
+        "historicCountPropertyAll" : 0
+      }
+    },
+    "fireSources" : {
+      "primary" : {
+        "insuranceRecommendation" : "NOT_CRITICAL",
+        "riskScore" : {
+          "label" : "MINIMAL",
+          "max" : 10,
+          "value" : 1
+        },
+        "probability" : { },
+        "source" : {
+          "url" : "https://firststreet.org/property/1754-11th-st-unit-101-santa-monica-ca-90404/601703807_fsid"
+        },
+        "insuranceSeparatePolicy" : "LIKELY_OPTIONAL",
+        "historicCountAll" : 37
+      }
+    },
+    "heatSources" : {
+      "primary" : {
+        "percentile98Temp" : 80,
+        "hotDays" : [ {
+          "relativeYear" : 0,
+          "dayCount" : 6
+        }, {
+          "relativeYear" : 5,
+          "dayCount" : 8
+        }, {
+          "relativeYear" : 10,
+          "dayCount" : 10
+        }, {
+          "relativeYear" : 15,
+          "dayCount" : 12
+        }, {
+          "relativeYear" : 20,
+          "dayCount" : 13
+        }, {
+          "relativeYear" : 25,
+          "dayCount" : 15
+        }, {
+          "relativeYear" : 30,
+          "dayCount" : 17
+        } ],
+        "riskScore" : {
+          "label" : "SEVERE",
+          "max" : 10,
+          "value" : 7
+        },
+        "source" : {
+          "url" : "https://firststreet.org/property/1754-11th-st-unit-101-santa-monica-ca-90404/601703807_fsid"
+        }
+      }
+    },
+    "airSources" : {
+      "primary" : {
+        "source" : {
+          "url" : "https://firststreet.org/property/1754-11th-st-unit-101-santa-monica-ca-90404/601703807_fsid"
+        },
+        "riskScore" : {
+          "label" : "MODERATE",
+          "max" : 10,
+          "value" : 4
+        },
+        "badAirDays" : [ {
+          "relativeYear" : 0,
+          "dayCount" : 5
+        }, {
+          "relativeYear" : 5,
+          "dayCount" : 5
+        }, {
+          "relativeYear" : 10,
+          "dayCount" : 5
+        }, {
+          "relativeYear" : 15,
+          "dayCount" : 6
+        }, {
+          "relativeYear" : 20,
+          "dayCount" : 6
+        }, {
+          "relativeYear" : 25,
+          "dayCount" : 6
+        }, {
+          "relativeYear" : 30,
+          "dayCount" : 6
+        } ]
+      }
+    }
+  },
+  "latitude" : 34.017593,
+  "nearbyHomes" : [ {
+    "bathrooms" : 4,
+    "newConstructionType" : null,
+    "lotAreaUnits" : "Square Feet",
+    "formattedChip" : {
+      "location" : [ {
+        "fullValue" : "1713 11th St"
+      }, {
+        "fullValue" : null
+      } ]
+    },
+    "isPremierBuilder" : false,
+    "isShowcaseListing" : false,
+    "hdpUrl" : "/homedetails/1713-11th-St-Santa-Monica-CA-90404/20479906_zpid/",
+    "lotAreaValue" : 7481,
+    "parentRegion" : null,
+    "address" : {
+      "city" : "Santa Monica",
+      "state" : "CA",
+      "streetAddress" : "1713 11th St",
+      "zipcode" : "90404"
+    },
+    "state" : "CA",
+    "attributionInfo" : {
+      "agentPhoneNumber" : null,
+      "trueStatus" : null,
+      "providerLogo" : null,
+      "mlsId" : null,
+      "brokerName" : null,
+      "mlsName" : null,
+      "brokerPhoneNumber" : null,
+      "agentName" : null
+    },
+    "latitude" : 34.01735,
+    "homeStatus" : "OTHER",
+    "listing_sub_type" : {
+      "is_FSBA" : false,
+      "is_forAuction" : false,
+      "is_comingSoon" : false,
+      "is_foreclosure" : false,
+      "is_bankOwned" : false,
+      "is_newHome" : false,
+      "is_FSBO" : false
+    },
+    "price" : 1732600,
+    "listingMetadata" : {
+      "comminglingCategoryIsRulesApplicable" : false
+    },
+    "bedrooms" : 5,
+    "propertyTypeDimension" : "Multi Family",
+    "listingTypeDimension" : "Unknown Listed By",
+    "lotSize" : 7481,
+    "miniCardPhotos" : [ {
+      "url" : "https://maps.googleapis.com/maps/api/streetview?location=1713+11th+St%2C+Santa+Monica%2C+CA+90404&size=316x234&key=AIzaSyARFMLB1na-BBWf7_R3-5YOQQaHqEJf6RQ&source=outdoor&&signature=vJYecGe-X_Y7oiPDuG_-LxFO_JQ="
+    } ],
+    "zpid" : 20479906,
+    "hdpTypeDimension" : "Zestimate",
+    "livingArea" : 3651,
+    "longitude" : -118.482834,
+    "livingAreaUnitsShort" : "sqft",
+    "providerListingID" : null,
+    "homeType" : "MULTI_FAMILY",
+    "livingAreaUnits" : "Square Feet",
+    "currency" : "USD",
+    "livingAreaValue" : 3651
+  }, {
+    "bathrooms" : 1,
+    "newConstructionType" : null,
+    "lotAreaUnits" : "Square Feet",
+    "formattedChip" : {
+      "location" : [ {
+        "fullValue" : "1656 12th St"
+      }, {
+        "fullValue" : null
+      } ]
+    },
+    "isPremierBuilder" : false,
+    "isShowcaseListing" : false,
+    "hdpUrl" : "/homedetails/1656-12th-St-Santa-Monica-CA-90404/20479871_zpid/",
+    "lotAreaValue" : 7482,
+    "parentRegion" : null,
+    "address" : {
+      "city" : "Santa Monica",
+      "state" : "CA",
+      "streetAddress" : "1656 12th St",
+      "zipcode" : "90404"
+    },
+    "state" : "CA",
+    "attributionInfo" : {
+      "agentPhoneNumber" : null,
+      "trueStatus" : null,
+      "providerLogo" : null,
+      "mlsId" : null,
+      "brokerName" : null,
+      "mlsName" : null,
+      "brokerPhoneNumber" : null,
+      "agentName" : null
+    },
+    "latitude" : 34.018425,
+    "homeStatus" : "OTHER",
+    "listing_sub_type" : {
+      "is_FSBA" : false,
+      "is_forAuction" : false,
+      "is_comingSoon" : false,
+      "is_foreclosure" : false,
+      "is_bankOwned" : false,
+      "is_newHome" : false,
+      "is_FSBO" : false
+    },
+    "price" : 1871300,
+    "listingMetadata" : {
+      "comminglingCategoryIsRulesApplicable" : false
+    },
+    "bedrooms" : 2,
+    "propertyTypeDimension" : "Single Family",
+    "listingTypeDimension" : "Unknown Listed By",
+    "lotSize" : 7482,
+    "miniCardPhotos" : [ {
+      "url" : "https://maps.googleapis.com/maps/api/staticmap?mobile=false&sensor=true&maptype=satellite&size=316x234&zoom=17&center=34.01842498779297,-118.48330688476562&key=AIzaSyBWYJWCA8FNMQvSe_k3LKfDGJaEgdKwsco&&signature=dKAzHt3N_Sx_5gAnxu3zyoLdY9E="
+    } ],
+    "zpid" : 20479871,
+    "hdpTypeDimension" : "Zestimate",
+    "livingArea" : 816,
+    "longitude" : -118.48331,
+    "livingAreaUnitsShort" : "sqft",
+    "providerListingID" : null,
+    "homeType" : "SINGLE_FAMILY",
+    "livingAreaUnits" : "Square Feet",
+    "currency" : "USD",
+    "livingAreaValue" : 816
+  }, {
+    "bathrooms" : 0,
+    "newConstructionType" : null,
+    "lotAreaUnits" : "Square Feet",
+    "formattedChip" : {
+      "location" : [ {
+        "fullValue" : "1745 11th St"
+      }, {
+        "fullValue" : null
+      } ]
+    },
+    "isPremierBuilder" : false,
+    "isShowcaseListing" : false,
+    "hdpUrl" : "/homedetails/1745-11th-St-Santa-Monica-CA-90404/20479907_zpid/",
+    "lotAreaValue" : 8770,
+    "parentRegion" : null,
+    "address" : {
+      "city" : "Santa Monica",
+      "state" : "CA",
+      "streetAddress" : "1745 11th St",
+      "zipcode" : "90404"
+    },
+    "state" : "CA",
+    "attributionInfo" : {
+      "agentPhoneNumber" : null,
+      "trueStatus" : null,
+      "providerLogo" : null,
+      "mlsId" : null,
+      "brokerName" : null,
+      "mlsName" : null,
+      "brokerPhoneNumber" : null,
+      "agentName" : null
+    },
+    "latitude" : 34.01666,
+    "homeStatus" : "OTHER",
+    "listing_sub_type" : {
+      "is_FSBA" : false,
+      "is_forAuction" : false,
+      "is_comingSoon" : false,
+      "is_foreclosure" : false,
+      "is_bankOwned" : false,
+      "is_newHome" : false,
+      "is_FSBO" : false
+    },
+    "price" : 1574800,
+    "listingMetadata" : {
+      "comminglingCategoryIsRulesApplicable" : false
+    },
+    "bedrooms" : 8,
+    "propertyTypeDimension" : "Multi Family",
+    "listingTypeDimension" : "Unknown Listed By",
+    "lotSize" : 8770,
+    "miniCardPhotos" : [ {
+      "url" : "https://maps.googleapis.com/maps/api/streetview?location=1745+11th+St%2C+Santa+Monica%2C+CA+90404&size=316x234&key=AIzaSyARFMLB1na-BBWf7_R3-5YOQQaHqEJf6RQ&source=outdoor&&signature=_o8N2LYw4Hfd8QI9Gh9cB9y-Cds="
+    } ],
+    "zpid" : 20479907,
+    "hdpTypeDimension" : "Zestimate",
+    "livingArea" : 3820,
+    "longitude" : -118.48203,
+    "livingAreaUnitsShort" : "sqft",
+    "providerListingID" : null,
+    "homeType" : "MULTI_FAMILY",
+    "livingAreaUnits" : "Square Feet",
+    "currency" : "USD",
+    "livingAreaValue" : 3820
+  }, {
+    "hdpTypeDimension" : "NoZestimate",
+    "lotAreaUnits" : "Square Feet",
+    "isShowcaseListing" : false,
+    "longitude" : -118.48162,
+    "parentRegion" : null,
+    "address" : {
+      "city" : "Santa Monica",
+      "state" : "CA",
+      "streetAddress" : "1750 12th St",
+      "zipcode" : "90404"
+    },
+    "livingAreaValue" : 4170,
+    "lotSize" : 8773,
+    "zpid" : 250332917,
+    "livingAreaUnitsShort" : "sqft",
+    "homeType" : "APARTMENT",
+    "livingAreaUnits" : "Square Feet",
+    "bathrooms" : 5,
+    "state" : "CA",
+    "formattedChip" : {
+      "location" : [ {
+        "fullValue" : "1750 12th St"
+      }, {
+        "fullValue" : null
+      } ]
+    },
+    "isPremierBuilder" : false,
+    "hdpUrl" : "/homedetails/1750-12th-St-Santa-Monica-CA-90404/250332917_zpid/",
+    "lotAreaValue" : 8773,
+    "attributionInfo" : {
+      "agentPhoneNumber" : null,
+      "trueStatus" : null,
+      "providerLogo" : null,
+      "mlsId" : null,
+      "brokerName" : null,
+      "mlsName" : null,
+      "brokerPhoneNumber" : null,
+      "agentName" : null
+    },
+    "homeStatus" : "OTHER",
+    "latitude" : 34.01699,
+    "listingMetadata" : {
+      "comminglingCategoryIsRulesApplicable" : false
+    },
+    "bedrooms" : 10,
+    "propertyTypeDimension" : "Apartment",
+    "newConstructionType" : null,
+    "yearBuilt" : 1923,
+    "listingTypeDimension" : "Unknown Listed By",
+    "livingArea" : 4170,
+    "providerListingID" : null,
+    "miniCardPhotos" : [ {
+      "url" : "https://maps.googleapis.com/maps/api/streetview?location=1750+12th+St%2C+Santa+Monica%2C+CA+90404&size=316x234&key=AIzaSyARFMLB1na-BBWf7_R3-5YOQQaHqEJf6RQ&source=outdoor&&signature=oVR3bLDvqpfo5egUgQ_usamWtls="
+    } ],
+    "currency" : "USD",
+    "price" : 1146581,
+    "listing_sub_type" : {
+      "is_FSBA" : false,
+      "is_forAuction" : false,
+      "is_comingSoon" : false,
+      "is_foreclosure" : false,
+      "is_bankOwned" : false,
+      "is_newHome" : false,
+      "is_FSBO" : false
+    }
+  }, {
+    "bathrooms" : 1,
+    "newConstructionType" : null,
+    "lotAreaUnits" : "sqft",
+    "formattedChip" : {
+      "location" : [ {
+        "fullValue" : "1750 12th St APT C"
+      }, {
+        "fullValue" : null
+      } ]
+    },
+    "isPremierBuilder" : false,
+    "isShowcaseListing" : false,
+    "hdpUrl" : "/homedetails/1750-12th-St-APT-C-Santa-Monica-CA-90404/2056551261_zpid/",
+    "lotAreaValue" : null,
+    "parentRegion" : null,
+    "address" : {
+      "city" : "Santa Monica",
+      "state" : "CA",
+      "streetAddress" : "1750 12th St APT C",
+      "zipcode" : "90404"
+    },
+    "state" : "CA",
+    "attributionInfo" : {
+      "agentPhoneNumber" : null,
+      "trueStatus" : null,
+      "providerLogo" : null,
+      "mlsId" : null,
+      "brokerName" : null,
+      "mlsName" : null,
+      "brokerPhoneNumber" : null,
+      "agentName" : null
+    },
+    "latitude" : 34.01699,
+    "homeStatus" : "OTHER",
+    "listing_sub_type" : {
+      "is_FSBA" : false,
+      "is_forAuction" : false,
+      "is_comingSoon" : false,
+      "is_foreclosure" : false,
+      "is_bankOwned" : false,
+      "is_newHome" : false,
+      "is_FSBO" : false
+    },
+    "price" : 0,
+    "listingMetadata" : {
+      "comminglingCategoryIsRulesApplicable" : false
+    },
+    "bedrooms" : 2,
+    "propertyTypeDimension" : "Apartment",
+    "listingTypeDimension" : "Unknown Listed By",
+    "lotSize" : null,
+    "miniCardPhotos" : [ {
+      "url" : "https://photos.zillowstatic.com/fp/74264976de4f64a970502aea2ed8bc61-p_c.jpg"
+    } ],
+    "zpid" : 2056551261,
+    "hdpTypeDimension" : "NoZestimate",
+    "livingArea" : 1034,
+    "longitude" : -118.48162,
+    "livingAreaUnitsShort" : "sqft",
+    "providerListingID" : null,
+    "homeType" : "APARTMENT",
+    "livingAreaUnits" : "Square Feet",
+    "currency" : "USD",
+    "livingAreaValue" : 1034
+  }, {
+    "bathrooms" : 1,
+    "newConstructionType" : null,
+    "lotAreaUnits" : "sqft",
+    "formattedChip" : {
+      "location" : [ {
+        "fullValue" : "1750 12th St APT D"
+      }, {
+        "fullValue" : null
+      } ]
+    },
+    "isPremierBuilder" : false,
+    "isShowcaseListing" : false,
+    "hdpUrl" : "/homedetails/1750-12th-St-APT-D-Santa-Monica-CA-90404/2087638435_zpid/",
+    "lotAreaValue" : null,
+    "parentRegion" : null,
+    "address" : {
+      "city" : "Santa Monica",
+      "state" : "CA",
+      "streetAddress" : "1750 12th St APT D",
+      "zipcode" : "90404"
+    },
+    "state" : "CA",
+    "attributionInfo" : {
+      "agentPhoneNumber" : null,
+      "trueStatus" : null,
+      "providerLogo" : null,
+      "mlsId" : null,
+      "brokerName" : null,
+      "mlsName" : null,
+      "brokerPhoneNumber" : null,
+      "agentName" : null
+    },
+    "latitude" : 34.01699,
+    "homeStatus" : "OTHER",
+    "listing_sub_type" : {
+      "is_FSBA" : false,
+      "is_forAuction" : false,
+      "is_comingSoon" : false,
+      "is_foreclosure" : false,
+      "is_bankOwned" : false,
+      "is_newHome" : false,
+      "is_FSBO" : false
+    },
+    "price" : 688000,
+    "listingMetadata" : {
+      "comminglingCategoryIsRulesApplicable" : false
+    },
+    "bedrooms" : 2,
+    "propertyTypeDimension" : "Condo",
+    "listingTypeDimension" : "Unknown Listed By",
+    "lotSize" : null,
+    "miniCardPhotos" : [ {
+      "url" : "https://photos.zillowstatic.com/fp/f87137cd4caf43790c8545f4e32d2b01-p_c.jpg"
+    } ],
+    "zpid" : 2087638435,
+    "hdpTypeDimension" : "Zestimate",
+    "livingArea" : 800,
+    "longitude" : -118.48162,
+    "livingAreaUnitsShort" : "sqft",
+    "providerListingID" : null,
+    "homeType" : "CONDO",
+    "livingAreaUnits" : "Square Feet",
+    "currency" : "USD",
+    "livingAreaValue" : 800
+  }, {
+    "bathrooms" : 1.5,
+    "newConstructionType" : null,
+    "lotAreaUnits" : "sqft",
+    "formattedChip" : {
+      "location" : [ {
+        "fullValue" : "1753 11th St APT 3"
+      }, {
+        "fullValue" : null
+      } ]
+    },
+    "isPremierBuilder" : false,
+    "isShowcaseListing" : false,
+    "hdpUrl" : "/homedetails/1753-11th-St-APT-3-Santa-Monica-CA-90404/2088694126_zpid/",
+    "lotAreaValue" : null,
+    "parentRegion" : null,
+    "address" : {
+      "city" : "Santa Monica",
+      "state" : "CA",
+      "streetAddress" : "1753 11th St APT 3",
+      "zipcode" : "90404"
+    },
+    "state" : "CA",
+    "attributionInfo" : {
+      "agentPhoneNumber" : null,
+      "trueStatus" : null,
+      "providerLogo" : null,
+      "mlsId" : null,
+      "brokerName" : null,
+      "mlsName" : null,
+      "brokerPhoneNumber" : null,
+      "agentName" : null
+    },
+    "latitude" : 34.016556,
+    "homeStatus" : "OTHER",
+    "listing_sub_type" : {
+      "is_FSBA" : false,
+      "is_forAuction" : false,
+      "is_comingSoon" : false,
+      "is_foreclosure" : false,
+      "is_bankOwned" : false,
+      "is_newHome" : false,
+      "is_FSBO" : false
+    },
+    "price" : 928900,
+    "listingMetadata" : {
+      "comminglingCategoryIsRulesApplicable" : false
+    },
+    "bedrooms" : 2,
+    "propertyTypeDimension" : "Townhouse",
+    "listingTypeDimension" : "Unknown Listed By",
+    "lotSize" : null,
+    "miniCardPhotos" : [ {
+      "url" : "https://photos.zillowstatic.com/fp/b3ca4a1f72ca2341bcf433df61d0bbd5-p_c.jpg"
+    } ],
+    "zpid" : 2088694126,
+    "hdpTypeDimension" : "Zestimate",
+    "livingArea" : 900,
+    "longitude" : -118.4819,
+    "livingAreaUnitsShort" : "sqft",
+    "providerListingID" : null,
+    "homeType" : "TOWNHOUSE",
+    "livingAreaUnits" : "Square Feet",
+    "currency" : "USD",
+    "livingAreaValue" : 900
+  }, {
+    "bathrooms" : 1.5,
+    "newConstructionType" : null,
+    "lotAreaUnits" : "sqft",
+    "formattedChip" : {
+      "location" : [ {
+        "fullValue" : "1753 11th St APT 2"
+      }, {
+        "fullValue" : null
+      } ]
+    },
+    "isPremierBuilder" : false,
+    "isShowcaseListing" : false,
+    "hdpUrl" : "/homedetails/1753-11th-St-APT-2-Santa-Monica-CA-90404/2092623908_zpid/",
+    "lotAreaValue" : null,
+    "parentRegion" : null,
+    "address" : {
+      "city" : "Santa Monica",
+      "state" : "CA",
+      "streetAddress" : "1753 11th St APT 2",
+      "zipcode" : "90404"
+    },
+    "state" : "CA",
+    "attributionInfo" : {
+      "agentPhoneNumber" : null,
+      "trueStatus" : null,
+      "providerLogo" : null,
+      "mlsId" : null,
+      "brokerName" : null,
+      "mlsName" : null,
+      "brokerPhoneNumber" : null,
+      "agentName" : null
+    },
+    "latitude" : 34.016556,
+    "homeStatus" : "OTHER",
+    "listing_sub_type" : {
+      "is_FSBA" : false,
+      "is_forAuction" : false,
+      "is_comingSoon" : false,
+      "is_foreclosure" : false,
+      "is_bankOwned" : false,
+      "is_newHome" : false,
+      "is_FSBO" : false
+    },
+    "price" : 0,
+    "listingMetadata" : {
+      "comminglingCategoryIsRulesApplicable" : false
+    },
+    "bedrooms" : 2,
+    "propertyTypeDimension" : "Apartment",
+    "listingTypeDimension" : "Unknown Listed By",
+    "lotSize" : null,
+    "miniCardPhotos" : [ {
+      "url" : "https://photos.zillowstatic.com/fp/043ff733b6d01fb54428d0713aacd02a-p_c.jpg"
+    } ],
+    "zpid" : 2092623908,
+    "hdpTypeDimension" : "NoZestimate",
+    "livingArea" : 1000,
+    "longitude" : -118.4819,
+    "livingAreaUnitsShort" : "sqft",
+    "providerListingID" : null,
+    "homeType" : "APARTMENT",
+    "livingAreaUnits" : "Square Feet",
+    "currency" : "USD",
+    "livingAreaValue" : 1000
+  } ],
+  "priceHistory" : [ {
+    "priceChangeRate" : -0.03989293351501,
+    "date" : "2025-10-04",
+    "source" : "CRMLS",
+    "postingIsRental" : false,
+    "time" : 1759536000000,
+    "sellerAgent" : null,
+    "showCountyLink" : false,
+    "attributeSource" : {
+      "infoString2" : "CRMLS",
+      "infoString3" : "https://photos.zillowstatic.com/fp/cb8caaa629c0af2058e60add67b2f2ee-zillow_web_logo_inf_11.jpg",
+      "infoString1" : "PW25232544"
+    },
+    "pricePerSquareFoot" : 698,
+    "buyerAgent" : null,
+    "event" : "Listed for sale",
+    "price" : 990000
+  }, {
+    "priceChangeRate" : 3.0436666666667,
+    "date" : "2025-07-23",
+    "source" : "Public Record",
+    "postingIsRental" : false,
+    "time" : 1753228800000,
+    "sellerAgent" : null,
+    "showCountyLink" : false,
+    "attributeSource" : {
+      "infoString2" : "Public Record",
+      "infoString3" : null,
+      "infoString1" : null
+    },
+    "pricePerSquareFoot" : 727,
+    "buyerAgent" : null,
+    "event" : "Sold",
+    "price" : 1031135
+  }, {
+    "priceChangeRate" : 0,
+    "date" : "1999-06-09",
+    "source" : "Public Record",
+    "postingIsRental" : false,
+    "time" : 928886400000,
+    "sellerAgent" : null,
+    "showCountyLink" : false,
+    "attributeSource" : {
+      "infoString2" : "Public Record",
+      "infoString3" : null,
+      "infoString1" : null
+    },
+    "pricePerSquareFoot" : 180,
+    "buyerAgent" : null,
+    "event" : "Sold",
+    "price" : 255000
+  } ],
+  "neighborhoodMapThumb" : [ {
+    "url" : "https://photos.zillowstatic.com/fp/cfc9a51e88f475eb8339bcdcb49dab43-p_c.jpg"
+  } ],
+  "schools" : [ {
+    "link" : "https://www.greatschools.org/california/santa-monica/2927-John-Muir-Elementary-School/",
+    "rating" : null,
+    "totalCount" : null,
+    "distance" : 0.8,
+    "assigned" : null,
+    "name" : "John Muir Elementary School",
+    "studentsPerTeacher" : null,
+    "isAssigned" : null,
+    "size" : null,
+    "level" : "Elementary",
+    "grades" : "K-5",
+    "type" : "Public"
+  }, {
+    "link" : "https://www.greatschools.org/california/santa-monica/2919-John-Adams-Middle-School/",
+    "rating" : 7,
+    "totalCount" : null,
+    "distance" : 0.8,
+    "assigned" : null,
+    "name" : "John Adams Middle School",
+    "studentsPerTeacher" : null,
+    "isAssigned" : null,
+    "size" : null,
+    "level" : "Middle",
+    "grades" : "6-8",
+    "type" : "Public"
+  }, {
+    "link" : "https://www.greatschools.org/california/santa-monica/2932-Santa-Monica-High-School/",
+    "rating" : 9,
+    "totalCount" : null,
+    "distance" : 0.4,
+    "assigned" : null,
+    "name" : "Santa Monica High School",
+    "studentsPerTeacher" : null,
+    "isAssigned" : null,
+    "size" : null,
+    "level" : "High",
+    "grades" : "9-12",
+    "type" : "Public"
+  } ],
+  "rentZestimate" : 4918,
+  "city" : "Santa Monica",
+  "providerListingID" : null,
+  "currency" : "USD",
+  "listingProvider" : null,
+  "propertyTaxRate" : 1.16,
+  "isShowcaseListing" : false,
+  "openHouseSchedule" : { },
+  "mortgageRates" : null,
+  "address" : {
+    "community" : null,
+    "city" : "Santa Monica",
+    "state" : "CA",
+    "neighborhood" : null,
+    "subdivision" : null,
+    "streetAddress" : "1754 11th St UNIT 101",
+    "zipcode" : "90404"
+  },
+  "cityId" : 26964,
+  "timeOnZillow" : "2 days",
+  "priceChange" : null,
+  "zestimate" : 1005000,
+  "zpid" : 20479916,
+  "countyId" : 3101,
+  "homeType" : "CONDO",
+  "livingAreaUnits" : "sqft",
+  "pageViewCount" : 398,
+  "homeInsights" : [ {
+    "insights" : [ {
+      "treatmentId" : "model_0",
+      "modelId" : "z-nrt-pdc-llm-tags",
+      "phrases" : [ "Private patio", "En-suite baths", "In-unit laundry", "Galley kitchen" ]
+    }, {
+      "treatmentId" : "model_1",
+      "modelId" : "z-nrt-pdc-llm-tags",
+      "phrases" : [ "Private patio", "En-suite baths", "In-unit laundry", "Galley kitchen" ]
+    } ]
+  } ],
+  "bathrooms" : 3,
+  "neighborhoodRegion" : {
+    "name" : "Pico District"
+  },
+  "zipcode" : "90404",
+  "building" : null,
+  "zestimateLowPercent" : "5",
+  "brokerId" : null,
+  "stateId" : 9,
+  "url" : "/homedetails/1754-11th-St-UNIT-101-Santa-Monica-CA-90404/20479916_zpid/",
+  "solarPotential" : null,
+  "attributionInfo" : {
+    "buyerAgentName" : null,
+    "infoString3" : "https://photos.zillowstatic.com/fp/cb8caaa629c0af2058e60add67b2f2ee-zillow_web_95_35.jpg",
+    "mlsName" : "CRMLS",
+    "coAgentLicenseNumber" : null,
+    "listingAgreement" : null,
+    "listingOffices" : [ {
+      "associatedOfficeType" : "listOffice",
+      "officeName" : "Edgestone Real Estate, Inc."
+    } ],
+    "infoString10" : "The multiple listing data appearing on this website, or contained in reports produced therefrom, is owned and copyrighted by California Regional Multiple Listing Service, Inc. (\"CRMLS\") and is protected by all applicable copyright laws. Information provided is for viewer's personal, non-commercial use and may not be used for any purpose other than to identify prospective properties the viewer may be interested in purchasing. All listing data, including but not limited to square footage and lot size is believed to be accurate, but the listing Agent, listing Broker and CRMLS and its affiliates do not warrant or guarantee such accuracy. The viewer should independently verify the listed data prior to making any decisions based on such information by personal inspection and/or contacting a real estate professional.\n\nBased on information from California Regional Multiple Listing Service, Inc. as of 2025-10-06 00:30:33 PDT and /or other sources. All data, including all measurements and calculations of area, is obtained from various sources and has not been, and will not be, verified by broker or MLS. All information should be independently reviewed and verified for accuracy. Properties may or may not be listed by the office/agent presenting the information",
+    "buyerAgentMemberStateLicense" : null,
+    "brokerName" : "Edgestone Real Estate, Inc.",
+    "listingAttributionContact" : "818-464-5113",
+    "lastUpdated" : "2025-10-05 06:16:04",
+    "trueStatus" : null,
+    "listingAgentAttributionContact" : null,
+    "agentEmail" : null,
+    "agentName" : "Sebastian Stofenmacher",
+    "attributionTitle" : "Listing Provided by:",
+    "mlsId" : "PW25232544",
+    "coAgentName" : null,
+    "coAgentNumber" : null,
+    "infoString5" : "213-273-4845",
+    "listingAgents" : [ {
+      "memberStateLicense" : "DRE #01328684",
+      "memberFullName" : "Sebastian Stofenmacher",
+      "associatedAgentType" : "listAgent"
+    } ],
+    "agentPhoneNumber" : "213-273-4845",
+    "agentLicenseNumber" : "DRE #01328684",
+    "providerLogo" : "https://photos.zillowstatic.com/fp/cb8caaa629c0af2058e60add67b2f2ee-zillow_web_95_35.jpg",
+    "infoString16" : null,
+    "buyerBrokerageName" : null,
+    "mlsDisclaimer" : "The multiple listing data appearing on this website, or contained in reports produced therefrom, is owned and copyrighted by California Regional Multiple Listing Service, Inc. (\"CRMLS\") and is protected by all applicable copyright laws. Information provided is for viewer's personal, non-commercial use and may not be used for any purpose other than to identify prospective properties the viewer may be interested in purchasing. All listing data, including but not limited to square footage and lot size is believed to be accurate, but the listing Agent, listing Broker and CRMLS and its affiliates do not warrant or guarantee such accuracy. The viewer should independently verify the listed data prior to making any decisions based on such information by personal inspection and/or contacting a real estate professional.\n\nBased on information from California Regional Multiple Listing Service, Inc. as of 2025-10-06 00:30:33 PDT and /or other sources. All data, including all measurements and calculations of area, is obtained from various sources and has not been, and will not be, verified by broker or MLS. All information should be independently reviewed and verified for accuracy. Properties may or may not be listed by the office/agent presenting the information",
+    "brokerPhoneNumber" : "213-273-4845",
+    "lastChecked" : "2025-10-06 00:30:33"
+  },
+  "priceChangeDateString" : null,
+  "photoCount" : 33,
+  "homeStatus" : "FOR_SALE",
+  "homeFacts" : null,
+  "resoFacts" : {
+    "hasAttachedProperty" : true,
+    "frontageType" : null,
+    "poolFeatures" : [ "None" ],
+    "flooring" : null,
+    "foundationDetails" : { },
+    "accessibilityFeatures" : null,
+    "hasGarage" : true,
+    "hasPetsAllowed" : null,
+    "bodyType" : null,
+    "topography" : null,
+    "landLeaseExpirationDate" : null,
+    "hasAdditionalParcels" : false,
+    "parkName" : null,
+    "livingQuarters" : { },
+    "taxAssessedValue" : 391903,
+    "atAGlanceFacts" : [ {
+      "factValue" : "Condominium",
+      "factLabel" : "Type"
+    }, {
+      "factValue" : "1990",
+      "factLabel" : "Year Built"
+    }, {
+      "factValue" : "Central",
+      "factLabel" : "Heating"
+    }, {
+      "factValue" : "Central Air",
+      "factLabel" : "Cooling"
+    }, {
+      "factValue" : "2 Garage spaces",
+      "factLabel" : "Parking"
+    }, {
+      "factValue" : "$650 monthly",
+      "factLabel" : "HOA"
+    }, {
+      "factValue" : "2 Days",
+      "factLabel" : "Days on Zillow"
+    }, {
+      "factValue" : "$698",
+      "factLabel" : "Price/sqft"
+    }, {
+      "factValue" : null,
+      "factLabel" : "Offer Review Date"
+    } ],
+    "offerReviewDate" : null,
+    "horseYN" : null,
+    "view" : [ "None" ],
+    "rooms" : [ {
+      "level" : null,
+      "dimensions" : null,
+      "features" : null,
+      "roomAreaUnits" : null,
+      "roomArea" : null,
+      "roomAreaSource" : null,
+      "roomType" : "Bedroom",
+      "roomDescription" : null,
+      "roomWidth" : null,
+      "roomLevel" : null,
+      "description" : null,
+      "roomLengthWidthUnits" : null,
+      "roomLength" : null,
+      "roomFeatures" : [ "All Bedrooms Up" ],
+      "roomDimensions" : null,
+      "roomLengthWidthSource" : null,
+      "area" : null
+    }, {
+      "level" : null,
+      "dimensions" : null,
+      "features" : null,
+      "roomAreaUnits" : null,
+      "roomArea" : null,
+      "roomAreaSource" : null,
+      "roomType" : "Kitchen",
+      "roomDescription" : null,
+      "roomWidth" : null,
+      "roomLevel" : null,
+      "description" : null,
+      "roomLengthWidthUnits" : null,
+      "roomLength" : null,
+      "roomFeatures" : null,
+      "roomDimensions" : null,
+      "roomLengthWidthSource" : null,
+      "area" : null
+    }, {
+      "level" : null,
+      "dimensions" : null,
+      "features" : null,
+      "roomAreaUnits" : null,
+      "roomArea" : null,
+      "roomAreaSource" : null,
+      "roomType" : "LivingRoom",
+      "roomDescription" : null,
+      "roomWidth" : null,
+      "roomLevel" : null,
+      "description" : null,
+      "roomLengthWidthUnits" : null,
+      "roomLength" : null,
+      "roomFeatures" : null,
+      "roomDimensions" : null,
+      "roomLengthWidthSource" : null,
+      "area" : null
+    } ],
+    "belowGradeFinishedArea" : null,
+    "feesAndDues" : [ {
+      "phone" : "310-480-5309",
+      "name" : "1754 11th st HOA",
+      "fee" : "$650 monthly",
+      "type" : "HOA"
+    } ],
+    "cityRegion" : "Santa Monica",
+    "mainLevelBathrooms" : 1,
+    "hasPrivatePool" : null,
+    "landLeaseAmount" : null,
+    "waterSource" : [ "Public" ],
+    "exteriorFeatures" : { },
+    "inclusions" : null,
+    "hasFireplace" : true,
+    "gas" : null,
+    "propertyCondition" : null,
+    "elevationUnits" : "Feet",
+    "exclusions" : null,
+    "mainLevelBedrooms" : 0,
+    "numberOfUnitsVacant" : null,
+    "hasWaterfrontView" : null,
+    "bathroomsOneQuarter" : null,
+    "lotSize" : "7,514 sqft",
+    "entryLevel" : null,
+    "media" : { },
+    "greenWaterConservation" : null,
+    "stories" : 2,
+    "livingArea" : "1,418 sqft",
+    "commonWalls" : "1 Common Wall",
+    "listingTerms" : "Cash to New Loan,Conventional,FHA",
+    "otherParking" : null,
+    "associationFee" : "$650 monthly",
+    "marketingType" : null,
+    "greenIndoorAirQuality" : null,
+    "greenSustainability" : null,
+    "livingAreaRangeUnits" : "Square Feet",
+    "associationPhone" : "310-480-5309",
+    "greenBuildingVerificationType" : null,
+    "hasAttachedGarage" : false,
+    "bedrooms" : 2,
+    "architecturalStyle" : null,
+    "listingId" : null,
+    "structureType" : "Multi Family",
+    "interiorFeatures" : [ "All Bedrooms Up" ],
+    "horseAmenities" : null,
+    "garageParkingCapacity" : 2,
+    "developmentStatus" : null,
+    "lotFeatures" : [ "0-1 Unit/Acre" ],
+    "roofType" : null,
+    "compensationBasedOn" : null,
+    "greenEnergyGeneration" : null,
+    "daysOnZillow" : 2,
+    "listAOR" : "California Regional MLS",
+    "buildingAreaSource" : null,
+    "elementarySchool" : null,
+    "zoningDescription" : null,
+    "irrigationWaterRightsAcres" : null,
+    "yearBuiltEffective" : null,
+    "greenEnergyEfficient" : null,
+    "constructionMaterials" : { },
+    "fireplaceFeatures" : [ "Living Room" ],
+    "hoaFeeTotal" : "$650 monthly",
+    "appliances" : [ "Dishwasher", "Gas Range", "Microwave", "Refrigerator" ],
+    "sewer" : [ "Public Sewer" ],
+    "bathroomsPartial" : null,
+    "fencing" : null,
+    "spaFeatures" : [ "None" ],
+    "waterViewYN" : false,
+    "buildingName" : null,
+    "attic" : null,
+    "petsMaxWeight" : null,
+    "cumulativeDaysOnMarket" : "2 days",
+    "waterfrontFeatures" : null,
+    "additionalParcelsDescription" : null,
+    "canRaiseHorses" : false,
+    "hasLandLease" : false,
+    "communityFeatures" : [ "Curbs" ],
+    "waterBodyName" : null,
+    "middleOrJuniorSchool" : null,
+    "lotSizeDimensions" : null,
+    "virtualTour" : null,
+    "contingency" : null,
+    "yearBuilt" : 1990,
+    "utilities" : null,
+    "totalActualRent" : null,
+    "bathroomsFull" : 2,
+    "parcelNumber" : "4283017029",
+    "incomeIncludes" : null,
+    "highSchool" : null,
+    "taxAnnualAmount" : 5165,
+    "subdivisionName" : null,
+    "storiesTotal" : 2,
+    "storiesDecimal" : 2,
+    "specialListingConditions" : "HUD Owned",
+    "windowFeatures" : null,
+    "ownership" : null,
+    "woodedArea" : null,
+    "middleOrJuniorSchoolDistrict" : null,
+    "associationPhone2" : null,
+    "onMarketDate" : 1759536000000,
+    "roomTypes" : [ "Bedroom", "Kitchen", "Living Room" ],
+    "frontageLength" : null,
+    "roadSurfaceType" : null,
+    "associationAmenities" : [ "Hot Water", "Trash" ],
+    "propertySubType" : [ "Condominium" ],
+    "hasCooling" : true,
+    "levels" : "Two",
+    "coveredParkingCapacity" : 2,
+    "foundationArea" : null,
+    "zoning" : null,
+    "hoaFee" : "$650 monthly",
+    "livingAreaRange" : null,
+    "parkingFeatures" : [ "Assigned", "Covered" ],
+    "parkingCapacity" : 2,
+    "cropsIncludedYN" : null,
+    "tenantPays" : null,
+    "builderModel" : null,
+    "otherStructures" : null,
+    "otherFacts" : { },
+    "additionalFeeInfo" : null,
+    "hasView" : true,
+    "openParkingCapacity" : null,
+    "securityFeatures" : null,
+    "numberOfUnitsInCommunity" : 5,
+    "hasHomeWarranty" : false,
+    "basementYN" : null,
+    "doorFeatures" : null,
+    "ownershipType" : null,
+    "aboveGradeFinishedArea" : null,
+    "associations" : [ {
+      "feeFrequency" : "$650 monthly",
+      "name" : "1754 11th st HOA",
+      "phone" : "310-480-5309"
+    } ],
+    "waterView" : null,
+    "electric" : null,
+    "buildingFeatures" : null,
+    "hasOpenParking" : null,
+    "hasCarport" : null,
+    "bathroomsHalf" : 1,
+    "homeType" : "Condo",
+    "isSeniorCommunity" : null,
+    "municipality" : null,
+    "bathroomsThreeQuarter" : null,
+    "hasSpa" : false,
+    "basement" : null,
+    "associationFee2" : null,
+    "cooling" : [ "Central Air" ],
+    "hasHeating" : true,
+    "associationName2" : null,
+    "hasRentControl" : null,
+    "elementarySchoolDistrict" : null,
+    "otherEquipment" : null,
+    "bathrooms" : 3,
+    "buildingArea" : null,
+    "furnished" : false,
+    "vegetation" : null,
+    "patioAndPorchFeatures" : [ "Concrete" ],
+    "bathroomsFloat" : 3,
+    "builderName" : null,
+    "highSchoolDistrict" : "Santa Monica-Malibu Unified",
+    "hasElectricOnProperty" : null,
+    "laundryFeatures" : [ "Inside", "In Kitchen" ],
+    "entryLocation" : "1",
+    "fireplaces" : null,
+    "heating" : [ "Central" ],
+    "availabilityDate" : null,
+    "carportParkingCapacity" : null,
+    "hasAssociation" : true,
+    "irrigationWaterRightsYN" : null,
+    "isNewConstruction" : false,
+    "associationFeeIncludes" : [ "Earthquake Insurance" ],
+    "leaseTerm" : null,
+    "pricePerSquareFoot" : 698,
+    "associationName" : "1754 11th st HOA",
+    "elevation" : null
+  },
+  "datePosted" : "2025-10-04",
+  "bedrooms" : 2,
+  "propertyTypeDimension" : "Condo",
+  "mortgageZHLRates" : {
+    "thirtyYearFixedBucket" : {
+      "rate" : 6.156,
+      "rateSource" : "ZGMI",
+      "lastUpdated" : 1759726751000
+    },
+    "fifteenYearFixedBucket" : {
+      "rate" : 5.49,
+      "rateSource" : "ZGMI",
+      "lastUpdated" : 1759726751000
+    },
+    "arm5Bucket" : {
+      "rate" : 6.133,
+      "rateSource" : "ZGMI",
+      "lastUpdated" : 1759726751000
+    }
+  },
+  "comingSoonOnMarketDate" : null,
+  "favoriteCount" : 17,
+  "livingArea" : 1418,
+  "zestimateHighPercent" : "5",
+  "mlsid" : "PW25232544",
+  "isListedByOwner" : null,
+  "listingSubType" : {
+    "is_comingSoon" : false,
+    "is_pending" : false,
+    "is_forAuction" : false,
+    "is_bankOwned" : false,
+    "is_FSBA" : true,
+    "is_FSBO" : false,
+    "is_newHome" : false,
+    "is_foreclosure" : false
+  },
+  "buildingId" : "1013229319",
+  "country" : "USA",
+  "price" : 990000,
+  "priceChangeDate" : null,
+  "contingentListingType" : null
+}

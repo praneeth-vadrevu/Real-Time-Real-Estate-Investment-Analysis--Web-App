@@ -1,0 +1,17 @@
+{
+  "zpid" : null,
+  "address" : "1754 11th St UNIT 101",
+  "homeType" : "CONDO",
+  "price" : 990000.0,
+  "zestimate" : 1005000.0,
+  "livingArea" : 1418.0,
+  "lotArea" : null,
+  "beds" : 2.0,
+  "baths" : 3.0,
+  "lat" : 34.017593,
+  "lon" : -118.48273,
+  "hoaMonthly" : 650.0,
+  "annualTax" : 5164.94,
+  "yearBuilt" : 1990,
+  "photos" : [ "https://photos.zillowstatic.com/fp/cfc9a51e88f475eb8339bcdcb49dab43-p_d.jpg" ]
+}
