@@ -1,0 +1,41 @@
+### Test Google Maps API - Text Search
+GET http://localhost:8080/api/geo/text?text=white%20house&place=washington%20dc
+Accept: application/json
+
+### Test Google Maps API - Text Search with City
+GET http://localhost:8080/api/geo/text?text=empire%20state%20building&city=new%20york
+Accept: application/json
+
+### Test Google Maps API - Circle Search
+GET http://localhost:8080/api/geo/circle?lat=38.8977&lon=-77.0365&radius=50000&text=restaurant
+Accept: application/json
+
+### Test Google Maps API - Circle Search without text
+GET http://localhost:8080/api/geo/circle?lat=40.7484&lon=-73.9857&radius=1000
+Accept: application/json
+
+### Test Google Maps API - Raw Query (POST)
+POST http://localhost:8080/api/geo/raw
+Content-Type: application/json
+
+{
+  "text": "white house",
+  "place": "washington DC",
+  "radius": "my"
+}
+
+### Test Google Maps API - Raw Query with coordinates
+POST http://localhost:8080/api/geo/raw
+Content-Type: application/json
+
+{
+  "text": "starbucks",
+  "latitude": 40.7484,
+  "longitude": -73.9857,
+  "radius": 5000
+}
+
+### Test Google Maps API - Search by postcode
+GET http://localhost:8080/api/geo/text?postcode=10001&country=USA
+Accept: application/json
+
