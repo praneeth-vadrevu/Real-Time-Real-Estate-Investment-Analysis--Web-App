@@ -1,0 +1,17 @@
+{
+  "name": "real-time-real-estate-analyzer",
+  "version": "1.0.0",
+  "description": "A web application for real estate analysis using React and Parcel.",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel src/index.html --open",
+    "build": "parcel build src/index.html"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.10.0"
+  }
+}
