@@ -1,6 +1,7 @@
 # 编译后的class文件
 *.class
 com/
+cashflow-calculator/com/
 
 # IDE文件
 .idea/
