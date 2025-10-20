@@ -1,0 +1,193 @@
+{
+  "priceHistory" : [ {
+    "priceChangeRate" : -0.03989293351501,
+    "date" : "2025-10-04",
+    "source" : "CRMLS",
+    "postingIsRental" : false,
+    "time" : 1759536000000,
+    "sellerAgent" : null,
+    "showCountyLink" : false,
+    "attributeSource" : {
+      "infoString2" : "CRMLS",
+      "infoString3" : "https://photos.zillowstatic.com/fp/cb8caaa629c0af2058e60add67b2f2ee-zillow_web_logo_inf_11.jpg",
+      "infoString1" : "PW25232544"
+    },
+    "pricePerSquareFoot" : 698,
+    "buyerAgent" : null,
+    "event" : "Listed for sale",
+    "price" : 990000
+  }, {
+    "priceChangeRate" : 3.0436666666667,
+    "date" : "2025-07-23",
+    "source" : "Public Record",
+    "postingIsRental" : false,
+    "time" : 1753228800000,
+    "sellerAgent" : null,
+    "showCountyLink" : false,
+    "attributeSource" : {
+      "infoString2" : "Public Record",
+      "infoString3" : null,
+      "infoString1" : null
+    },
+    "pricePerSquareFoot" : 727,
+    "buyerAgent" : null,
+    "event" : "Sold",
+    "price" : 1031135
+  }, {
+    "priceChangeRate" : 0,
+    "date" : "1999-06-09",
+    "source" : "Public Record",
+    "postingIsRental" : false,
+    "time" : 928886400000,
+    "sellerAgent" : null,
+    "showCountyLink" : false,
+    "attributeSource" : {
+      "infoString2" : "Public Record",
+      "infoString3" : null,
+      "infoString1" : null
+    },
+    "pricePerSquareFoot" : 180,
+    "buyerAgent" : null,
+    "event" : "Sold",
+    "price" : 255000
+  } ],
+  "taxHistory" : [ {
+    "time" : 1728200194126,
+    "valueIncreaseRate" : 0.01999901,
+    "taxIncreaseRate" : 0.01712286,
+    "taxPaid" : 5164.94,
+    "value" : 391903
+  }, {
+    "time" : 1696577794126,
+    "valueIncreaseRate" : 0.01999538,
+    "taxIncreaseRate" : 0.015825616,
+    "taxPaid" : 5077.99,
+    "value" : 384219
+  }, {
+    "time" : 1665041794126,
+    "valueIncreaseRate" : 0.019997183,
+    "taxIncreaseRate" : 0.030915774,
+    "taxPaid" : 4998.88,
+    "value" : 376687
+  }, {
+    "time" : 1633505794126,
+    "valueIncreaseRate" : 0.01035796,
+    "taxIncreaseRate" : 0.007500742,
+    "taxPaid" : 4848.97,
+    "value" : 369302
+  }, {
+    "time" : 1601969794126,
+    "valueIncreaseRate" : 0.01999721,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : 4812.87,
+    "value" : 365516
+  }, {
+    "time" : 1570347394126,
+    "valueIncreaseRate" : 0.019998634,
+    "taxIncreaseRate" : 0.07496837,
+    "taxPaid" : 4812.87,
+    "value" : 358350
+  }, {
+    "time" : 1538811394126,
+    "valueIncreaseRate" : 0.01999791,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : 4477.22,
+    "value" : 351324
+  }, {
+    "time" : 1507275394126,
+    "valueIncreaseRate" : 0.019998046,
+    "taxIncreaseRate" : 0.0069812825,
+    "taxPaid" : 4477.22,
+    "value" : 344436
+  }, {
+    "time" : 1475739394126,
+    "valueIncreaseRate" : 0.015245993,
+    "taxIncreaseRate" : 0.035968535,
+    "taxPaid" : 4446.18,
+    "value" : 337683
+  }, {
+    "time" : 1444116994126,
+    "valueIncreaseRate" : 0.019978719,
+    "taxIncreaseRate" : 0.02591676,
+    "taxPaid" : 4291.81,
+    "value" : 332612
+  }, {
+    "time" : 1412580994126,
+    "valueIncreaseRate" : 0.02462452,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : 4183.39,
+    "value" : 326097
+  }, {
+    "time" : 1349508994126,
+    "valueIncreaseRate" : 0.01999545,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 318260
+  }, {
+    "time" : 1317886594126,
+    "valueIncreaseRate" : 0.0075268815,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 312021
+  }, {
+    "time" : 1286350594126,
+    "valueIncreaseRate" : -0.0023741492,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 309690
+  }, {
+    "time" : 1254814594126,
+    "valueIncreaseRate" : 0.019997306,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 310427
+  }, {
+    "time" : 1223278594126,
+    "valueIncreaseRate" : 0.019994972,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 304341
+  }, {
+    "time" : 1191656194126,
+    "valueIncreaseRate" : 0.019994805,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 298375
+  }, {
+    "time" : 1160120194126,
+    "valueIncreaseRate" : 0,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 292526
+  }, {
+    "time" : 1128584194126,
+    "valueIncreaseRate" : 0.04039208,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 292526
+  }, {
+    "time" : 1097048194126,
+    "valueIncreaseRate" : 0.018665517,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 281169
+  }, {
+    "time" : 1065425794126,
+    "valueIncreaseRate" : 0.01999586,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 276017
+  }, {
+    "time" : 1033889794126,
+    "valueIncreaseRate" : 0.040392157,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 270606
+  }, {
+    "time" : 970817794126,
+    "valueIncreaseRate" : 0,
+    "taxIncreaseRate" : 0,
+    "taxPaid" : null,
+    "value" : 260100
+  } ]
+}

@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+zillow:
+  rapidapi:
+    host: zillow-com1.p.rapidapi.com
+    key: ${RAPIDAPI_KEY:cdff686e3dmsh63e57fae45f21f1p113364jsn85fbadde0225}
+
+googleapi31:
+  rapidapi:
+    host: google-api31.p.rapidapi.com
+    key: ${RAPIDAPI_KEY:cdff686e3dmsh63e57fae45f21f1p113364jsn85fbadde0225}
+  endpoint: https://google-api31.p.rapidapi.com/map
