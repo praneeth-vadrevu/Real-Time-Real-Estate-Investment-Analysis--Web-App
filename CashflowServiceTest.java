@@ -4,8 +4,9 @@ import com.example.analysis.dto.CashflowRequest;
 import com.example.analysis.dto.CashflowResponse;
 
 /**
- * 测试类：验证现金流分析计算器的核心功能
- * 包括收入计算、费用计算、债务服务、资本化率和投资回报率等指标
+ * Test Suite for Cashflow Analysis Calculator
+ * Validates core functionality including income calculations, expense calculations,
+ * debt service, capitalization rates, and return on investment metrics.
  */
 public class CashflowServiceTest {
 
@@ -13,128 +14,150 @@ public class CashflowServiceTest {
         CashflowServiceTest test = new CashflowServiceTest();
         
         System.out.println("====================================");
-        System.out.println("   现金流分析计算器 - 测试套件");
+        System.out.println("  Cashflow Analysis Calculator");
+        System.out.println("  Comprehensive Test Suite");
         System.out.println("====================================\n");
         
         int passed = 0;
         int total = 0;
         
-        // 测试 1: 基础收入和NOI计算
+        // Test 1: Basic Income and NOI Calculation
         total++;
+        System.out.println("\n--- TEST 1: Basic Income and NOI Calculation ---");
         if (test.testBasicIncomeAndNOI()) {
             passed++;
-            System.out.println("✓ 测试 1: 基础收入和NOI计算 - 通过");
+            System.out.println("✓ PASSED: Basic Income and NOI Calculation");
         } else {
-            System.out.println("✗ 测试 1: 基础收入和NOI计算 - 失败");
+            System.out.println("✗ FAILED: Basic Income and NOI Calculation");
         }
         
-        // 测试 2: 债务服务和DSCR计算
+        // Test 2: Debt Service and DSCR Calculation
         total++;
+        System.out.println("\n--- TEST 2: Debt Service and DSCR Calculation ---");
         if (test.testDebtServiceAndDSCR()) {
             passed++;
-            System.out.println("✓ 测试 2: 债务服务和DSCR计算 - 通过");
+            System.out.println("✓ PASSED: Debt Service and DSCR Calculation");
         } else {
-            System.out.println("✗ 测试 2: 债务服务和DSCR计算 - 失败");
+            System.out.println("✗ FAILED: Debt Service and DSCR Calculation");
         }
         
-        // 测试 3: 资本化率计算
+        // Test 3: Cap Rate Calculation
         total++;
+        System.out.println("\n--- TEST 3: Cap Rate Calculation ---");
         if (test.testCapRates()) {
             passed++;
-            System.out.println("✓ 测试 3: 资本化率计算 - 通过");
+            System.out.println("✓ PASSED: Cap Rate Calculation");
         } else {
-            System.out.println("✗ 测试 3: 资本化率计算 - 失败");
+            System.out.println("✗ FAILED: Cap Rate Calculation");
         }
         
-        // 测试 4: 现金对现金回报率和ROI
+        // Test 4: Cash-on-Cash Return and ROI
         total++;
+        System.out.println("\n--- TEST 4: Cash-on-Cash Return and ROI ---");
         if (test.testCashOnCashAndROI()) {
             passed++;
-            System.out.println("✓ 测试 4: 现金对现金回报率和ROI - 通过");
+            System.out.println("✓ PASSED: Cash-on-Cash Return and ROI");
         } else {
-            System.out.println("✗ 测试 4: 现金对现金回报率和ROI - 失败");
+            System.out.println("✗ FAILED: Cash-on-Cash Return and ROI");
         }
         
-        // 测试 5: 多年期预测
+        // Test 5: Multi-Year Projection
         total++;
+        System.out.println("\n--- TEST 5: Multi-Year Projection ---");
         if (test.testMultiYearProjection()) {
             passed++;
-            System.out.println("✓ 测试 5: 多年期预测 - 通过");
+            System.out.println("✓ PASSED: Multi-Year Projection");
         } else {
-            System.out.println("✗ 测试 5: 多年期预测 - 失败");
+            System.out.println("✗ FAILED: Multi-Year Projection");
         }
         
-        // 测试 6: 综合场景测试
+        // Test 6: Complete Real-World Scenario
         total++;
+        System.out.println("\n--- TEST 6: Complete Real-World Scenario ---");
         if (test.testCompleteScenario()) {
             passed++;
-            System.out.println("✓ 测试 6: 综合场景测试 - 通过");
+            System.out.println("✓ PASSED: Complete Real-World Scenario");
         } else {
-            System.out.println("✗ 测试 6: 综合场景测试 - 失败");
+            System.out.println("✗ FAILED: Complete Real-World Scenario");
         }
         
-        // 测试 7: 纯利息期间测试
+        // Test 7: Interest-Only Period
         total++;
+        System.out.println("\n--- TEST 7: Interest-Only Period ---");
         if (test.testInterestOnlyPeriod()) {
             passed++;
-            System.out.println("✓ 测试 7: 纯利息期间测试 - 通过");
+            System.out.println("✓ PASSED: Interest-Only Period");
         } else {
-            System.out.println("✗ 测试 7: 纯利息期间测试 - 失败");
+            System.out.println("✗ FAILED: Interest-Only Period");
         }
         
         System.out.println("\n====================================");
-        System.out.println("测试结果: " + passed + "/" + total + " 通过");
-        System.out.println("成功率: " + String.format("%.1f%%", (passed * 100.0 / total)));
+        System.out.println("TEST RESULTS: " + passed + "/" + total + " PASSED");
+        System.out.println("Success Rate: " + String.format("%.1f%%", (passed * 100.0 / total)));
         System.out.println("====================================");
+        
+        if (passed == total) {
+            System.out.println("\n🎉 All tests passed! The calculator is ready for production.");
+        } else {
+            System.out.println("\n⚠️  Some tests failed. Please review the output above.");
+        }
         
         System.exit(passed == total ? 0 : 1);
     }
     
     /**
-     * 测试 1: 基础收入和净营业收入(NOI)计算
+     * Test 1: Basic Income and Net Operating Income (NOI) Calculation
      */
     public boolean testBasicIncomeAndNOI() {
         CashflowService service = new CashflowService();
         CashflowRequest req = new CashflowRequest();
         
-        // 设置基本收入
-        req.grossRentsAnnual = 120000.0;  // 年租金收入
-        req.parkingAnnual = 6000.0;       // 停车费
-        req.storageAnnual = 2400.0;       // 仓储费
-        req.vacancyRate = 0.05;           // 5% 空置率
+        // Set basic income streams
+        req.grossRentsAnnual = 120000.0;  // Annual rent income
+        req.parkingAnnual = 6000.0;       // Parking income
+        req.storageAnnual = 2400.0;       // Storage income
+        req.vacancyRate = 0.05;           // 5% vacancy rate
         
-        // 设置费用
-        req.managementRate = 0.10;        // 10% 管理费
-        req.propertyTaxes = 15000.0;      // 房产税
-        req.insurance = 3000.0;           // 保险
+        // Set expenses
+        req.managementRate = 0.10;        // 10% management fee
+        req.propertyTaxes = 15000.0;      // Property taxes
+        req.insurance = 3000.0;           // Insurance
         
         CashflowResponse resp = service.analyze(req);
         
-        // 验证总收入 = 租金 + 停车 + 仓储
-        double expectedTotalIncome = 120000 + 6000 + 2400; // = 128400
+        // Verify total income = rent + parking + storage
+        double expectedTotalIncome = 120000 + 6000 + 2400; // = 128,400
+        System.out.println("  Total Income: $" + String.format("%,.2f", resp.summary.totalIncomeY1) + 
+                          " (Expected: $" + String.format("%,.2f", expectedTotalIncome) + ")");
         if (!approxEqual(resp.summary.totalIncomeY1, expectedTotalIncome)) {
-            System.out.println("  错误: 总收入不匹配. 期望: " + expectedTotalIncome + ", 实际: " + resp.summary.totalIncomeY1);
+            System.out.println("  ERROR: Total income mismatch!");
             return false;
         }
         
-        // 验证空置损失 = 总收入 * 空置率 (负数)
-        double expectedVacancyLoss = -128400 * 0.05; // = -6420
+        // Verify vacancy loss = total income * vacancy rate (negative)
+        double expectedVacancyLoss = -128400 * 0.05; // = -6,420
+        System.out.println("  Vacancy Loss: $" + String.format("%,.2f", resp.summary.vacancyLossY1) + 
+                          " (Expected: $" + String.format("%,.2f", expectedVacancyLoss) + ")");
         if (!approxEqual(resp.summary.vacancyLossY1, expectedVacancyLoss)) {
-            System.out.println("  错误: 空置损失不匹配. 期望: " + expectedVacancyLoss + ", 实际: " + resp.summary.vacancyLossY1);
+            System.out.println("  ERROR: Vacancy loss mismatch!");
             return false;
         }
         
-        // 验证有效总收入(EGI) = 总收入 + 空置损失
-        double expectedEGI = 128400 - 6420; // = 121980
+        // Verify Effective Gross Income (EGI) = total income + vacancy loss
+        double expectedEGI = 128400 - 6420; // = 121,980
+        System.out.println("  Effective Gross Income: $" + String.format("%,.2f", resp.summary.egiY1) + 
+                          " (Expected: $" + String.format("%,.2f", expectedEGI) + ")");
         if (!approxEqual(resp.summary.egiY1, expectedEGI)) {
-            System.out.println("  错误: EGI不匹配. 期望: " + expectedEGI + ", 实际: " + resp.summary.egiY1);
+            System.out.println("  ERROR: EGI mismatch!");
             return false;
         }
         
-        // 验证NOI (无债务时)
+        // Verify NOI (without debt)
         double expectedNOI = expectedEGI - (expectedEGI * 0.10) - 15000 - 3000;
+        System.out.println("  Net Operating Income: $" + String.format("%,.2f", resp.summary.noiY1) + 
+                          " (Expected: $" + String.format("%,.2f", expectedNOI) + ")");
         if (!approxEqual(resp.summary.noiY1, expectedNOI)) {
-            System.out.println("  错误: NOI不匹配. 期望: " + expectedNOI + ", 实际: " + resp.summary.noiY1);
+            System.out.println("  ERROR: NOI mismatch!");
             return false;
         }
         
@@ -142,62 +165,67 @@ public class CashflowServiceTest {
     }
     
     /**
-     * 测试 2: 债务服务和债务偿还覆盖率(DSCR)计算
+     * Test 2: Debt Service and Debt Service Coverage Ratio (DSCR) Calculation
      */
     public boolean testDebtServiceAndDSCR() {
         CashflowService service = new CashflowService();
         CashflowRequest req = new CashflowRequest();
         
-        // 设置收入
+        // Set income
         req.grossRentsAnnual = 100000.0;
         req.vacancyRate = 0.05;
         
-        // 设置费用（简单场景）
+        // Set expenses (simple scenario)
         req.managementRate = 0.08;
         req.propertyTaxes = 10000.0;
         req.insurance = 2000.0;
         
-        // 设置贷款
-        req.firstPrincipal = 1000000.0;   // 100万贷款
-        req.firstRateAnnual = 0.05;       // 5% 年利率
-        req.firstAmortYears = 30;         // 30年摊还
-        req.firstInterestOnlyYears = 0;   // 无纯利息期
+        // Set loan
+        req.firstPrincipal = 1000000.0;   // $1M loan
+        req.firstRateAnnual = 0.05;       // 5% APR
+        req.firstAmortYears = 30;         // 30-year amortization
+        req.firstInterestOnlyYears = 0;   // No interest-only period
         
         CashflowResponse resp = service.analyze(req);
         
-        // 验证年债务服务存在且为正数
+        // Verify annual debt service exists and is positive
+        System.out.println("  Annual Debt Service: $" + String.format("%,.2f", resp.summary.annualDebtServiceY1));
         if (resp.summary.annualDebtServiceY1 == null || resp.summary.annualDebtServiceY1 <= 0) {
-            System.out.println("  错误: 年债务服务应为正数");
+            System.out.println("  ERROR: Annual debt service should be positive!");
             return false;
         }
         
-        // 验证DSCR = NOI / 年债务服务
+        // Verify DSCR = NOI / Annual Debt Service
         double expectedDSCR = resp.summary.noiY1 / resp.summary.annualDebtServiceY1;
+        System.out.println("  DSCR: " + String.format("%.3f", resp.summary.dscrY1) + 
+                          " (Expected: " + String.format("%.3f", expectedDSCR) + ")");
         if (!approxEqual(resp.summary.dscrY1, expectedDSCR)) {
-            System.out.println("  错误: DSCR不匹配. 期望: " + expectedDSCR + ", 实际: " + resp.summary.dscrY1);
+            System.out.println("  ERROR: DSCR mismatch!");
             return false;
         }
         
-        // DSCR应该大于1才算健康投资
+        // DSCR should be > 1.0 for healthy investment
         if (resp.summary.dscrY1 < 1.0) {
-            System.out.println("  警告: DSCR < 1.0，这在实际投资中可能有风险");
+            System.out.println("  WARNING: DSCR < 1.0 may indicate risky investment");
+        } else {
+            System.out.println("  ✓ Healthy DSCR (>1.0)");
         }
         
         return true;
     }
     
     /**
-     * 测试 3: 资本化率(Cap Rate)计算
+     * Test 3: Capitalization Rate (Cap Rate) Calculation
      */
     public boolean testCapRates() {
         CashflowService service = new CashflowService();
         CashflowRequest req = new CashflowRequest();
         
-        // 设置物业价值
-        req.fmv = 1500000.0;              // 公允市场价值 150万
-        req.offerPrice = 1400000.0;       // 报价 140万
+        // Set property values
+        req.fmv = 1500000.0;              // Fair Market Value $1.5M
+        req.offerPrice = 1400000.0;       // Offer Price $1.4M
         
-        // 设置收入
+        // Set income
         req.grossRentsAnnual = 120000.0;
         req.vacancyRate = 0.05;
         req.managementRate = 0.08;
@@ -206,85 +234,99 @@ public class CashflowServiceTest {
         
         CashflowResponse resp = service.analyze(req);
         
-        // 验证基于报价的资本化率
+        // Verify cap rate based on purchase price
         double expectedCapRatePP = resp.summary.noiY1 / req.offerPrice;
+        System.out.println("  Cap Rate (Purchase Price): " + String.format("%.2f%%", resp.summary.capRatePPY1 * 100) + 
+                          " (Expected: " + String.format("%.2f%%", expectedCapRatePP * 100) + ")");
         if (!approxEqual(resp.summary.capRatePPY1, expectedCapRatePP)) {
-            System.out.println("  错误: Cap Rate (PP)不匹配. 期望: " + expectedCapRatePP + ", 实际: " + resp.summary.capRatePPY1);
+            System.out.println("  ERROR: Cap Rate (PP) mismatch!");
             return false;
         }
         
-        // 验证基于公允市场价值的资本化率
+        // Verify cap rate based on FMV
         double expectedCapRateFMV = resp.summary.noiY1 / req.fmv;
+        System.out.println("  Cap Rate (Fair Market Value): " + String.format("%.2f%%", resp.summary.capRateFMVY1 * 100) + 
+                          " (Expected: " + String.format("%.2f%%", expectedCapRateFMV * 100) + ")");
         if (!approxEqual(resp.summary.capRateFMVY1, expectedCapRateFMV)) {
-            System.out.println("  错误: Cap Rate (FMV)不匹配. 期望: " + expectedCapRateFMV + ", 实际: " + resp.summary.capRateFMVY1);
+            System.out.println("  ERROR: Cap Rate (FMV) mismatch!");
             return false;
         }
         
-        // Cap Rate应该在合理范围内 (通常 3%-10%)
+        // Cap Rate should be in reasonable range (typically 3%-10%)
         if (resp.summary.capRatePPY1 < 0.03 || resp.summary.capRatePPY1 > 0.15) {
-            System.out.println("  警告: Cap Rate超出典型范围: " + String.format("%.2f%%", resp.summary.capRatePPY1 * 100));
+            System.out.println("  WARNING: Cap Rate outside typical range (3%-10%)");
+        } else {
+            System.out.println("  ✓ Cap Rate within typical range");
         }
         
         return true;
     }
     
     /**
-     * 测试 4: 现金对现金回报率和ROI指标
+     * Test 4: Cash-on-Cash Return and ROI Metrics
      */
     public boolean testCashOnCashAndROI() {
         CashflowService service = new CashflowService();
         CashflowRequest req = new CashflowRequest();
         
-        // 设置物业
+        // Set property
         req.fmv = 1200000.0;
         req.offerPrice = 1000000.0;
-        req.annualAppreciation = 0.03;    // 3% 年增值
+        req.annualAppreciation = 0.03;    // 3% annual appreciation
         
-        // 设置收入
+        // Set income
         req.grossRentsAnnual = 100000.0;
         req.vacancyRate = 0.05;
         req.managementRate = 0.08;
         req.propertyTaxes = 12000.0;
         req.insurance = 2500.0;
         
-        // 设置融资
+        // Set financing
         req.firstPrincipal = 800000.0;    // 80% LTV
         req.firstRateAnnual = 0.045;
         req.firstAmortYears = 30;
         
-        // 设置交割成本
+        // Set closing costs
         req.lenderFee = 8000.0;
         req.brokerFee = 10000.0;
         req.transferTax = 5000.0;
         
         CashflowResponse resp = service.analyze(req);
         
-        // 验证真实购买价格(RPP)
-        double expectedRPP = req.offerPrice + 8000 + 10000 + 5000; // = 1023000
+        // Verify Real Purchase Price (RPP)
+        double expectedRPP = req.offerPrice + 8000 + 10000 + 5000; // = 1,023,000
+        System.out.println("  Real Purchase Price: $" + String.format("%,.2f", resp.summary.rpp) + 
+                          " (Expected: $" + String.format("%,.2f", expectedRPP) + ")");
         if (!approxEqual(resp.summary.rpp, expectedRPP)) {
-            System.out.println("  错误: RPP不匹配. 期望: " + expectedRPP + ", 实际: " + resp.summary.rpp);
+            System.out.println("  ERROR: RPP mismatch!");
             return false;
         }
         
-        // 验证交割现金 = RPP - 贷款
-        double expectedCashToClose = expectedRPP - 800000; // = 223000
+        // Verify Cash to Close = RPP - Loan
+        double expectedCashToClose = expectedRPP - 800000; // = 223,000
+        System.out.println("  Cash to Close: $" + String.format("%,.2f", resp.summary.cashToClose) + 
+                          " (Expected: $" + String.format("%,.2f", expectedCashToClose) + ")");
         if (!approxEqual(resp.summary.cashToClose, expectedCashToClose)) {
-            System.out.println("  错误: 交割现金不匹配. 期望: " + expectedCashToClose + ", 实际: " + resp.summary.cashToClose);
+            System.out.println("  ERROR: Cash to Close mismatch!");
             return false;
         }
         
-        // 验证现金对现金回报率
+        // Verify Cash-on-Cash Return
         double annualCashFlow = resp.summary.noiY1 - resp.summary.annualDebtServiceY1;
         double expectedCoC = annualCashFlow / resp.summary.cashToClose;
+        System.out.println("  Cash-on-Cash Return: " + String.format("%.2f%%", resp.summary.cashOnCashY1 * 100) + 
+                          " (Expected: " + String.format("%.2f%%", expectedCoC * 100) + ")");
         if (!approxEqual(resp.summary.cashOnCashY1, expectedCoC)) {
-            System.out.println("  错误: CoC不匹配. 期望: " + expectedCoC + ", 实际: " + resp.summary.cashOnCashY1);
+            System.out.println("  ERROR: CoC mismatch!");
             return false;
         }
         
-        // 验证强制增值ROI = (FMV - RPP) / 交割现金
+        // Verify Forced Appreciation ROI = (FMV - RPP) / Cash to Close
         double expectedForcedAppROI = (req.fmv - expectedRPP) / resp.summary.cashToClose;
+        System.out.println("  Forced Appreciation ROI: " + String.format("%.2f%%", resp.summary.forcedAppreciationROIY1 * 100) + 
+                          " (Expected: " + String.format("%.2f%%", expectedForcedAppROI * 100) + ")");
         if (!approxEqual(resp.summary.forcedAppreciationROIY1, expectedForcedAppROI)) {
-            System.out.println("  错误: 强制增值ROI不匹配. 期望: " + expectedForcedAppROI + ", 实际: " + resp.summary.forcedAppreciationROIY1);
+            System.out.println("  ERROR: Forced Appreciation ROI mismatch!");
             return false;
         }
         
@@ -292,13 +334,13 @@ public class CashflowServiceTest {
     }
     
     /**
-     * 测试 5: 多年期预测
+     * Test 5: Multi-Year Projection
      */
     public boolean testMultiYearProjection() {
         CashflowService service = new CashflowService();
         CashflowRequest req = new CashflowRequest();
         
-        // 设置基本参数
+        // Set basic parameters
         req.offerPrice = 1000000.0;
         req.grossRentsAnnual = 100000.0;
         req.vacancyRate = 0.05;
@@ -306,59 +348,60 @@ public class CashflowServiceTest {
         req.propertyTaxes = 12000.0;
         req.insurance = 2000.0;
         
-        // 设置增长率
-        req.holdYears = 5;                // 持有5年
-        req.rentGrowth = 0.03;            // 租金年增长3%
-        req.expenseGrowth = 0.02;         // 费用年增长2%
-        req.annualAppreciation = 0.04;    // 物业增值4%
+        // Set growth rates
+        req.holdYears = 5;                // Hold for 5 years
+        req.rentGrowth = 0.03;            // 3% annual rent growth
+        req.expenseGrowth = 0.02;         // 2% annual expense growth
+        req.annualAppreciation = 0.04;    // 4% annual appreciation
         
         CashflowResponse resp = service.analyze(req);
         
-        // 验证预测年数
+        // Verify projection years
+        System.out.println("  Projection Period: " + resp.projection.size() + " years");
         if (resp.projection.size() != 5) {
-            System.out.println("  错误: 预测年数不匹配. 期望: 5, 实际: " + resp.projection.size());
+            System.out.println("  ERROR: Projection years mismatch! Expected: 5");
             return false;
         }
         
-        // 验证第一年数据
+        // Verify Year 1 data
         CashflowResponse.YearRow year1 = resp.projection.get(0);
-        if (year1.year != 1) {
-            System.out.println("  错误: 第一年的年份应为1");
+        System.out.println("  Year 1 Total Income: $" + String.format("%,.2f", year1.totalIncome));
+        if (year1.year != 1 || !approxEqual(year1.totalIncome, 100000.0)) {
+            System.out.println("  ERROR: Year 1 data mismatch!");
             return false;
         }
         
-        // 验证第一年总收入
-        if (!approxEqual(year1.totalIncome, 100000.0)) {
-            System.out.println("  错误: 第一年总收入不匹配");
-            return false;
-        }
-        
-        // 验证第五年收入增长
+        // Verify Year 5 income growth
         CashflowResponse.YearRow year5 = resp.projection.get(4);
-        double expectedYear5Income = 100000 * Math.pow(1.03, 4); // 增长4年到第5年
+        double expectedYear5Income = 100000 * Math.pow(1.03, 4); // Growth for 4 years to reach year 5
+        System.out.println("  Year 5 Total Income: $" + String.format("%,.2f", year5.totalIncome) + 
+                          " (Expected: $" + String.format("%,.2f", expectedYear5Income) + ")");
         if (!approxEqual(year5.totalIncome, expectedYear5Income, 1.0)) {
-            System.out.println("  错误: 第五年收入增长不匹配. 期望: " + expectedYear5Income + ", 实际: " + year5.totalIncome);
+            System.out.println("  ERROR: Year 5 income growth mismatch!");
             return false;
         }
         
-        // 验证物业价值增长
+        // Verify property value growth
         double expectedYear5Value = 1000000 * Math.pow(1.04, 5);
+        System.out.println("  Year 5 Property Value: $" + String.format("%,.2f", year5.propertyValue) + 
+                          " (Expected: $" + String.format("%,.2f", expectedYear5Value) + ")");
         if (!approxEqual(year5.propertyValue, expectedYear5Value, 1.0)) {
-            System.out.println("  错误: 第五年物业价值不匹配. 期望: " + expectedYear5Value + ", 实际: " + year5.propertyValue);
+            System.out.println("  ERROR: Year 5 property value mismatch!");
             return false;
         }
         
+        System.out.println("  ✓ Multi-year projection validated with correct growth rates");
         return true;
     }
     
     /**
-     * 测试 6: 综合真实场景
+     * Test 6: Complete Real-World Scenario
      */
     public boolean testCompleteScenario() {
         CashflowService service = new CashflowService();
         CashflowRequest req = new CashflowRequest();
         
-        // 物业信息
+        // Property information
         req.address = "123 Main St";
         req.city = "Boston";
         req.state = "MA";
@@ -367,18 +410,18 @@ public class CashflowServiceTest {
         req.annualAppreciation = 0.035;
         req.numberOfUnits = 12;
         
-        // 收入
-        req.grossRentsAnnual = 240000.0;  // 每单元每月$2000
+        // Income streams
+        req.grossRentsAnnual = 240000.0;  // $2,000 per unit per month
         req.parkingAnnual = 12000.0;
         req.storageAnnual = 4800.0;
         req.laundryVendingAnnual = 3600.0;
         
-        // 空置和管理
+        // Vacancy and management
         req.vacancyRate = 0.06;
         req.managementRate = 0.09;
         req.repairsRate = 0.05;
         
-        // 运营费用
+        // Operating expenses
         req.propertyTaxes = 35000.0;
         req.insurance = 8000.0;
         req.electricity = 6000.0;
@@ -386,20 +429,20 @@ public class CashflowServiceTest {
         req.trash = 3600.0;
         req.commonAreaMaintenance = 8000.0;
         
-        // 主贷款
+        // Primary loan
         req.firstPrincipal = 1840000.0;   // 80% LTV on offer price
         req.firstRateAnnual = 0.0525;
         req.firstAmortYears = 30;
         req.firstInterestOnlyYears = 0;
         
-        // 交割成本
+        // Closing costs
         req.lenderFee = 18400.0;
         req.brokerFee = 23000.0;
         req.transferTax = 11500.0;
         req.legalClose = 5000.0;
         req.inspections = 2000.0;
         
-        // 持有期
+        // Hold period
         req.holdYears = 10;
         req.rentGrowth = 0.03;
         req.expenseGrowth = 0.025;
@@ -407,65 +450,80 @@ public class CashflowServiceTest {
         
         CashflowResponse resp = service.analyze(req);
         
-        // 验证关键指标的存在性和合理性
+        System.out.println("\n  === 12-UNIT APARTMENT BUILDING ANALYSIS ===");
+        System.out.println("  Property: " + req.address + ", " + req.city + ", " + req.state);
+        System.out.println("  Units: " + req.numberOfUnits);
+        System.out.println("  Offer Price: $" + String.format("%,.2f", req.offerPrice));
+        System.out.println("  Fair Market Value: $" + String.format("%,.2f", req.fmv));
+        System.out.println("\n  --- YEAR 1 METRICS ---");
+        System.out.println("  Real Purchase Price: $" + String.format("%,.2f", resp.summary.rpp));
+        System.out.println("  Cash to Close: $" + String.format("%,.2f", resp.summary.cashToClose));
+        System.out.println("  Gross Annual Rent: $" + String.format("%,.2f", req.grossRentsAnnual));
+        System.out.println("  Avg Rent per Unit/Month: $" + String.format("%,.2f", resp.summary.avgRentPerUnitY1));
+        System.out.println("  Net Operating Income (NOI): $" + String.format("%,.2f", resp.summary.noiY1));
+        System.out.println("  Annual Debt Service: $" + String.format("%,.2f", resp.summary.annualDebtServiceY1));
+        System.out.println("\n  --- INVESTMENT METRICS ---");
+        System.out.println("  Cap Rate (Purchase Price): " + String.format("%.2f%%", resp.summary.capRatePPY1 * 100));
+        System.out.println("  Cap Rate (FMV): " + String.format("%.2f%%", resp.summary.capRateFMVY1 * 100));
+        System.out.println("  DSCR: " + String.format("%.2f", resp.summary.dscrY1));
+        System.out.println("  LTV (vs FMV): " + String.format("%.2f%%", resp.summary.ltvFMV * 100));
+        System.out.println("  Cash-on-Cash Return: " + String.format("%.2f%%", resp.summary.cashOnCashY1 * 100));
+        System.out.println("  Total ROI (Year 1): " + String.format("%.2f%%", resp.summary.totalROIY1 * 100));
+        System.out.println("\n  --- 10-YEAR PROJECTIONS ---");
+        System.out.println("  IRR (Internal Rate of Return): " + String.format("%.2f%%", resp.summary.irr * 100));
+        System.out.println("  Equity Multiple: " + String.format("%.2fx", resp.summary.equityMultiple));
+        System.out.println("  Net Sale Proceeds (Year 10): $" + String.format("%,.2f", resp.summary.saleProceedsNet));
+        
+        // Validate key metrics
         if (resp.summary == null) {
-            System.out.println("  错误: 摘要为空");
+            System.out.println("\n  ERROR: Summary is null!");
             return false;
         }
         
-        // 验证每单元平均租金
-        double expectedAvgRent = 240000.0 / 12.0 / 12.0; // = $2000/月
+        // Verify avg rent per unit
+        double expectedAvgRent = 240000.0 / 12.0 / 12.0; // = $2,000/month
         if (!approxEqual(resp.summary.avgRentPerUnitY1, expectedAvgRent)) {
-            System.out.println("  错误: 每单元平均租金不匹配. 期望: " + expectedAvgRent + ", 实际: " + resp.summary.avgRentPerUnitY1);
+            System.out.println("\n  ERROR: Avg rent per unit mismatch!");
             return false;
         }
         
-        // 验证LTV
+        // Verify LTV
         double expectedLTV = 1840000.0 / 2500000.0;
         if (!approxEqual(resp.summary.ltvFMV, expectedLTV)) {
-            System.out.println("  错误: LTV不匹配. 期望: " + expectedLTV + ", 实际: " + resp.summary.ltvFMV);
+            System.out.println("\n  ERROR: LTV mismatch!");
             return false;
         }
         
-        // 验证IRR存在
+        // Verify IRR exists
         if (resp.summary.irr == null) {
-            System.out.println("  错误: IRR应该被计算");
+            System.out.println("\n  ERROR: IRR should be calculated!");
             return false;
         }
         
-        // 验证权益倍数存在且合理
+        // Verify equity multiple exists and is reasonable
         if (resp.summary.equityMultiple == null || resp.summary.equityMultiple <= 0) {
-            System.out.println("  错误: 权益倍数应为正数");
+            System.out.println("\n  ERROR: Equity multiple should be positive!");
             return false;
         }
         
-        // 验证退出收益存在
+        // Verify exit proceeds exist
         if (resp.summary.saleProceedsNet == null) {
-            System.out.println("  错误: 退出收益应该被计算");
+            System.out.println("\n  ERROR: Sale proceeds should be calculated!");
             return false;
         }
         
-        System.out.println("  详细结果:");
-        System.out.println("    - 真实购买价格: $" + String.format("%,.2f", resp.summary.rpp));
-        System.out.println("    - 交割现金: $" + String.format("%,.2f", resp.summary.cashToClose));
-        System.out.println("    - 第一年NOI: $" + String.format("%,.2f", resp.summary.noiY1));
-        System.out.println("    - Cap Rate (PP): " + String.format("%.2f%%", resp.summary.capRatePPY1 * 100));
-        System.out.println("    - DSCR: " + String.format("%.2f", resp.summary.dscrY1));
-        System.out.println("    - 现金对现金回报率: " + String.format("%.2f%%", resp.summary.cashOnCashY1 * 100));
-        System.out.println("    - IRR: " + String.format("%.2f%%", resp.summary.irr * 100));
-        System.out.println("    - 权益倍数: " + String.format("%.2fx", resp.summary.equityMultiple));
-        
+        System.out.println("\n  ✓ Complete scenario analysis validated successfully!");
         return true;
     }
     
     /**
-     * 测试 7: 纯利息期间
+     * Test 7: Interest-Only Period
      */
     public boolean testInterestOnlyPeriod() {
         CashflowService service = new CashflowService();
         CashflowRequest req = new CashflowRequest();
         
-        // 设置基本参数
+        // Set basic parameters
         req.offerPrice = 1000000.0;
         req.grossRentsAnnual = 100000.0;
         req.vacancyRate = 0.05;
@@ -473,19 +531,23 @@ public class CashflowServiceTest {
         req.propertyTaxes = 10000.0;
         req.insurance = 2000.0;
         
-        // 设置有利息期的贷款
+        // Set loan with interest-only period
         req.firstPrincipal = 800000.0;
         req.firstRateAnnual = 0.05;
         req.firstAmortYears = 30;
-        req.firstInterestOnlyYears = 3;   // 前3年只付利息
+        req.firstInterestOnlyYears = 3;   // First 3 years interest-only
         
         req.holdYears = 5;
         
         CashflowResponse resp = service.analyze(req);
         
-        // 在利息期内，本金余额应该保持不变
+        System.out.println("  Loan Amount: $" + String.format("%,.2f", req.firstPrincipal));
+        System.out.println("  Interest-Only Period: " + req.firstInterestOnlyYears + " years");
+        System.out.println("  Annual Interest Rate: " + String.format("%.2f%%", req.firstRateAnnual * 100));
+        
+        // During interest-only period, principal balance should remain unchanged
         if (resp.projection.size() < 3) {
-            System.out.println("  错误: 预测期不足");
+            System.out.println("\n  ERROR: Projection period insufficient!");
             return false;
         }
         
@@ -493,45 +555,45 @@ public class CashflowServiceTest {
         double year2Balance = resp.projection.get(1).endingBalanceFirst;
         double year3Balance = resp.projection.get(2).endingBalanceFirst;
         
-        // 前3年余额应该等于原始本金
+        System.out.println("\n  --- LOAN BALANCE TRACKING ---");
+        System.out.println("  Year 1 Ending Balance: $" + String.format("%,.2f", year1Balance));
+        System.out.println("  Year 2 Ending Balance: $" + String.format("%,.2f", year2Balance));
+        System.out.println("  Year 3 Ending Balance: $" + String.format("%,.2f", year3Balance));
+        
+        // First 3 years balance should equal original principal
         if (!approxEqual(year1Balance, 800000.0, 10.0) || 
             !approxEqual(year2Balance, 800000.0, 10.0) || 
             !approxEqual(year3Balance, 800000.0, 10.0)) {
-            System.out.println("  错误: 利息期内本金余额应保持不变");
-            System.out.println("    年1余额: " + year1Balance);
-            System.out.println("    年2余额: " + year2Balance);
-            System.out.println("    年3余额: " + year3Balance);
+            System.out.println("\n  ERROR: Principal balance should remain unchanged during interest-only period!");
             return false;
         }
         
-        // 第4年开始应该有本金偿还
+        // Year 4 should show principal paydown
         if (resp.projection.size() >= 4) {
             double year4Balance = resp.projection.get(3).endingBalanceFirst;
+            System.out.println("  Year 4 Ending Balance: $" + String.format("%,.2f", year4Balance));
+            double principalPaidYear4 = year3Balance - year4Balance;
+            System.out.println("  Principal Paid in Year 4: $" + String.format("%,.2f", principalPaidYear4));
+            
             if (year4Balance >= year3Balance) {
-                System.out.println("  错误: 第4年本金余额应该减少");
+                System.out.println("\n  ERROR: Year 4 principal balance should decrease!");
                 return false;
             }
-        }
-        
-        System.out.println("  详细结果:");
-        System.out.println("    - 年1贷款余额: $" + String.format("%,.2f", year1Balance));
-        System.out.println("    - 年3贷款余额: $" + String.format("%,.2f", year3Balance));
-        if (resp.projection.size() >= 4) {
-            System.out.println("    - 年4贷款余额: $" + String.format("%,.2f", resp.projection.get(3).endingBalanceFirst));
+            System.out.println("\n  ✓ Interest-only period validated: Balance constant for 3 years, then amortization begins");
         }
         
         return true;
     }
     
     /**
-     * 辅助方法：比较两个双精度数是否近似相等（默认容差0.01）
+     * Helper method: Compare two doubles with default tolerance (0.01)
      */
     private boolean approxEqual(Double a, Double b) {
         return approxEqual(a, b, 0.01);
     }
     
     /**
-     * 辅助方法：比较两个双精度数是否近似相等（指定容差）
+     * Helper method: Compare two doubles with specified tolerance
      */
     private boolean approxEqual(Double a, Double b, double tolerance) {
         if (a == null && b == null) return true;
@@ -539,4 +601,3 @@ public class CashflowServiceTest {
         return Math.abs(a - b) < tolerance;
     }
 }
-
