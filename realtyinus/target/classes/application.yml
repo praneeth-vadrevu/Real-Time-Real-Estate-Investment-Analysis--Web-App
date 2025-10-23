@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+realty:
+  rapidapi:
+    host: realty-in-us.p.rapidapi.com
+    key: ${RAPIDAPI_KEY:}   # 推荐用环境变量注入
+  aggregation:
+    detailTimeoutSec: 20
+    perPageEnrichLimit: 20   # 每页最多并发聚合多少条，避免触达上游限流
