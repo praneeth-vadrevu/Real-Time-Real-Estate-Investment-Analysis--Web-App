@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
-import { FiSearch, FiBell, FiUser, FiChevronDown, FiHelpCircle, FiSettings } from 'react-icons/fi';
+import { FiBell, FiUser, FiHelpCircle, FiSettings } from 'react-icons/fi';
 
 interface NavbarProps {
   onNavigate: (page: string) => void;
@@ -16,11 +16,13 @@ interface User {
 const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleGoogleSuccess = (credentialResponse: any) => {
     console.log('Login Success:', credentialResponse);
     const userInfo = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
     setUser(userInfo);
+    setIsUserMenuOpen(false);
   };
 
   const handleGoogleError = () => {
@@ -31,6 +33,23 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
     setUser(null);
     setIsUserMenuOpen(false);
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    if (isUserMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isUserMenuOpen]);
 
   return (
     <nav className="navbar">
@@ -43,21 +62,21 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
               <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
             </svg>
           </div>
-          <span className="logo-text">Real Time Analyzer</span>
+          <span className="logo-text">HouseHustle</span>
         </div>
 
         {/* Navigation Links */}
         <div className="nav-links">
           <button
             onClick={() => onNavigate('my-properties')}
-            className="nav-link"
+            className={`nav-link ${activePage === 'my-properties' ? 'nav-link-active' : ''}`}
           >
             My Properties
           </button>
           <div style={{ position: 'relative' }}>
             <button
               onClick={() => onNavigate('search-properties')}
-              className="nav-link"
+              className={`nav-link ${activePage === 'search-properties' ? 'nav-link-active' : ''}`}
             >
               Search Properties
             </button>
@@ -67,25 +86,15 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
           </div>
           <button
             onClick={() => onNavigate('search-lenders')}
-            className="nav-link"
+            className={`nav-link ${activePage === 'search-lenders' ? 'nav-link-active' : ''}`}
           >
             Search Lenders
           </button>
         </div>
       </div>
 
-      {/* Right side - Search, Icons, and User Menu */}
+      {/* Right side - Icons and User Menu */}
       <div className="navbar-right">
-        {/* Search Bar */}
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="search-input"
-          />
-          <FiSearch className="search-icon" />
-        </div>
-
         {/* Icons */}
         <button className="icon-button">
           <FiHelpCircle style={{ width: '1.25rem', height: '1.25rem' }} />
@@ -99,30 +108,35 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
         </button>
 
         {/* User Menu */}
-        <div className="user-menu">
+        <div className="user-menu" ref={dropdownRef}>
           {user ? (
-            <div className="user-info">
-              <div className="user-info">
+            <>
+              <button
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                className="user-avatar-button"
+              >
                 <img
                   src={user.picture}
                   alt={user.name}
                   className="user-avatar"
                 />
-                <div>
-                  <p className="user-name">{user.name}</p>
-                </div>
-              </div>
-              
-              <button
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="icon-button"
-              >
-                <FiChevronDown style={{ width: '1rem', height: '1rem' }} />
               </button>
 
               {/* Dropdown Menu */}
               {isUserMenuOpen && (
                 <div className="dropdown-menu">
+                  <div className="dropdown-user-info">
+                    <img
+                      src={user.picture}
+                      alt={user.name}
+                      className="dropdown-user-avatar"
+                    />
+                    <div>
+                      <p className="dropdown-user-name">{user.name}</p>
+                      <p className="dropdown-user-email">{user.email}</p>
+                    </div>
+                  </div>
+                  <hr style={{ margin: '0.5rem 0' }} />
                   <button
                     onClick={() => {
                       onNavigate('profile');
@@ -152,17 +166,38 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
                   </button>
                 </div>
               )}
-            </div>
+            </>
           ) : (
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleError}
-              theme="outline"
-              size="medium"
-              text="signin_with"
-              shape="rectangular"
-              logo_alignment="left"
-            />
+            <>
+              <button
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                className="user-icon-button"
+              >
+                <FiUser style={{ width: '1.5rem', height: '1.5rem' }} />
+              </button>
+
+              {/* Dropdown Menu for Sign In */}
+              {isUserMenuOpen && (
+                <div className="dropdown-menu signin-dropdown">
+                  <div className="signin-header">
+                    <h3>Welcome!</h3>
+                    <p>Sign in to access your account</p>
+                  </div>
+                  <div className="google-signin-container">
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleError}
+                      theme="outline"
+                      size="large"
+                      text="signin_with"
+                      shape="rectangular"
+                      logo_alignment="left"
+                      width="280"
+                    />
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

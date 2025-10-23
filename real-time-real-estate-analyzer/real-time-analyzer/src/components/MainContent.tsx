@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiSearch, FiChevronDown, FiDownload, FiPlus, FiChevronRight, FiCheck } from 'react-icons/fi';
+import PropertyForm from './PropertyForm';
 
 interface MainContentProps {
   activeSection: string;
 }
 
 const MainContent: React.FC<MainContentProps> = ({ activeSection }) => {
+  const [showPropertyForm, setShowPropertyForm] = useState(false);
+
+  const getStrategyType = (): 'rental' | 'brrrr' | 'flip' | 'wholesale' => {
+    switch (activeSection) {
+      case "rentals": return 'rental';
+      case "brrrr": return 'brrrr';
+      case "flips": return 'flip';
+      case "wholesale": return 'wholesale';
+      default: return 'rental';
+    }
+  };
   const getSectionTitle = () => {
     switch (activeSection) {
       case "rentals":
@@ -48,6 +60,11 @@ const MainContent: React.FC<MainContentProps> = ({ activeSection }) => {
     image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=300&h=200&fit=crop"
   };
 
+  // Show PropertyForm if button is clicked
+  if (showPropertyForm) {
+    return <PropertyForm strategy={getStrategyType()} onClose={() => setShowPropertyForm(false)} />;
+  }
+
   return (
     <div className="main-content">
       {/* Header */}
@@ -64,7 +81,7 @@ const MainContent: React.FC<MainContentProps> = ({ activeSection }) => {
               </svg>
               <span>Compare</span>
             </button>
-            <button className="btn-primary">
+            <button className="btn-primary" onClick={() => setShowPropertyForm(true)}>
               <FiPlus style={{ width: '1rem', height: '1rem' }} />
               <span>Add Property</span>
             </button>
