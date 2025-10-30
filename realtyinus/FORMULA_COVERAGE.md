@@ -210,3 +210,4 @@ The **Expense-to-Income Ratio** was the last missing piece, and I just added it.
 All PDF formulas are now calculated and included in the reports! 🎊
 
 
+
