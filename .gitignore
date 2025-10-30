@@ -14,3 +14,10 @@ cashflow-calculator/com/
 *.swo
 *~
 
+# Gradle build files
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+build/
+
