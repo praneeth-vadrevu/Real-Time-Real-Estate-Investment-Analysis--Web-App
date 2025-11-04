@@ -4,7 +4,7 @@ server:
 realty:
   rapidapi:
     host: realty-in-us.p.rapidapi.com
-    key: ${RAPIDAPI_KEY:}   # 推荐用环境变量注入
+    key: ${RAPIDAPI_KEY:}   # Recommended to inject via environment variable
   aggregation:
     detailTimeoutSec: 20
-    perPageEnrichLimit: 20   # 每页最多并发聚合多少条，避免触达上游限流
+    perPageEnrichLimit: 20   # Maximum concurrent enrichment per page to avoid upstream rate limits

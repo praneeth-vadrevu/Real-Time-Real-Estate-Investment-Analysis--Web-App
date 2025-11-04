@@ -1,98 +1,98 @@
-# RealtyInUS - 房地产聚合服务
+# RealtyInUS - Real Estate Aggregation Service
 
-## 项目简介
+## Project Overview
 
-RealtyInUS 是一个基于 Spring Boot 的房地产数据聚合服务，提供房产数据的查询、聚合和可视化功能。
+RealtyInUS is a Spring Boot-based real estate data aggregation service that provides property data querying, aggregation, and visualization capabilities.
 
-## 功能特性
+## Features
 
-- ✅ 房地产数据聚合 (RapidAPI集成)
-- ✅ 多条件筛选查询 (位置、价格、房型等)
-- ✅ 并发数据获取和处理
-- ✅ JSON数据导出
-- ✅ HTML可视化报告生成
-- ✅ 统计分析报告
+- ✅ Real estate data aggregation (RapidAPI integration)
+- ✅ Multi-criteria filtering (location, price, property type, etc.)
+- ✅ Concurrent data fetching and processing
+- ✅ JSON data export
+- ✅ HTML visualization report generation
+- ✅ Statistical analysis reports
 
-## 项目结构
+## Project Structure
 
 ```
 realtyinus/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/ireia/realty/
-│   │   │   ├── RealtyApplication.java          # Spring Boot主应用
+│   │   │   ├── RealtyApplication.java          # Spring Boot main application
 │   │   │   ├── api/
-│   │   │   │   ├── RapidApiGenericClient.java  # API客户端
+│   │   │   │   ├── RapidApiGenericClient.java  # API client
 │   │   │   │   └── dto/
-│   │   │   │       ├── EnrichedProperty.java   # 房产数据DTO
-│   │   │   │       └── EnrichedListQuery.java  # 查询参数DTO
+│   │   │   │       ├── EnrichedProperty.java   # Property data DTO
+│   │   │   │       └── EnrichedListQuery.java  # Query parameters DTO
 │   │   │   ├── service/
-│   │   │   │   └── RealtyAggregationService.java # 聚合服务
+│   │   │   │   └── RealtyAggregationService.java # Aggregation service
 │   │   │   └── web/
-│   │   │       └── EnrichedController.java      # REST控制器
+│   │   │       └── EnrichedController.java      # REST controller
 │   │   └── resources/
-│   │       └── application.yml                  # 应用配置
+│   │       └── application.yml                  # Application configuration
 │   └── test/
 │       └── java/com/ireia/realty/
-│           └── RealtyVisualizerTest.java        # 测试和可视化工具
-├── output/                                       # 输出目录
-│   ├── properties_*.json                        # JSON数据
-│   ├── visualization_*.html                     # HTML可视化
-│   └── statistics_report_*.txt                  # 统计报告
-└── pom.xml                                       # Maven配置
+│           └── RealtyVisualizerTest.java        # Test and visualization tools
+├── output/                                       # Output directory
+│   ├── properties_*.json                        # JSON data
+│   ├── visualization_*.html                     # HTML visualization
+│   └── statistics_report_*.txt                  # Statistics reports
+└── pom.xml                                       # Maven configuration
 ```
 
-## 技术栈
+## Technology Stack
 
 - Java 17
 - Spring Boot 3.2.0
 - Apache HttpClient 5
-- Jackson (JSON处理)
+- Jackson (JSON processing)
 - Maven
 
-## 快速开始
+## Quick Start
 
-### 1. 环境要求
+### 1. Environment Requirements
 
 - Java 17+
 - Maven 3.6+
 
-### 2. 编译项目
+### 2. Compile Project
 
 ```bash
 cd realtyinus
 mvn clean compile
 ```
 
-### 3. 运行测试和生成可视化
+### 3. Run Tests and Generate Visualization
 
 ```bash
 mvn test-compile
 mvn exec:java -Dexec.mainClass="com.ireia.realty.RealtyVisualizerTest" -Dexec.classpathScope=test
 ```
 
-### 4. 查看可视化结果
+### 4. View Visualization Results
 
-生成的文件位于 `output/` 目录：
-- `visualization_*.html` - 在浏览器中打开查看精美的房产卡片展示
-- `properties_*.json` - JSON格式的房产数据
-- `statistics_report_*.txt` - 详细的统计分析报告
+Generated files are located in the `output/` directory:
+- `visualization_*.html` - Open in browser to view beautiful property cards
+- `properties_*.json` - JSON format property data
+- `statistics_report_*.txt` - Detailed statistical analysis reports
 
-## API端点
+## API Endpoints
 
-### 1. 原始列表查询
+### 1. Raw List Query
 ```
 POST /api/listings/raw
 ```
 
-### 2. 聚合查询（包含详细信息）
+### 2. Enriched Query (includes detailed information)
 ```
 POST /api/listings/enriched
 ```
 
-## 配置说明
+## Configuration
 
-在 `src/main/resources/application.yml` 中配置：
+Configure in `src/main/resources/application.yml`:
 
 ```yaml
 server:
@@ -101,13 +101,13 @@ server:
 realty:
   rapidapi:
     host: realty-in-us.p.rapidapi.com
-    key: ${RAPIDAPI_KEY}  # 通过环境变量注入
+    key: ${RAPIDAPI_KEY}  # Inject via environment variable
   aggregation:
     detailTimeoutSec: 20
     perPageEnrichLimit: 20
 ```
 
-## 查询参数示例
+## Query Parameters Example
 
 ```json
 {
@@ -128,69 +128,67 @@ realty:
 }
 ```
 
-## 可视化输出示例
+## Visualization Output Example
 
-测试工具会生成包含以下内容的可视化报告：
+The test tool generates visualization reports containing:
 
-### 统计概览
-- 总房源数
-- 平均价格
-- 平均面积
-- 在售房源数
+### Statistics Overview
+- Total number of properties
+- Average price
+- Average area
+- Number of properties for sale
 
-### 房产卡片
-每个房产包含：
-- 封面图片
-- 价格
-- 地址
-- 卧室/浴室/面积
-- 房产类型和状态
+### Property Cards
+Each property includes:
+- Cover image
+- Price
+- Address
+- Bedrooms/Bathrooms/Area
+- Property type and status
 
-### 数据分析
-- 按城市分布
-- 按状态分布
-- 按类型分布
-- 价格范围分析
+### Data Analysis
+- Distribution by city
+- Distribution by status
+- Distribution by type
+- Price range analysis
 
-## 测试结果示例
+## Test Results Example
 
 ```
-=== 开始生成测试数据和可视化 ===
-JSON数据已保存: output/properties_20251021_154303.json
-HTML可视化已生成: output/visualization_20251021_154303.html
+=== Starting test data and visualization generation ===
+JSON data saved: output/properties_20251021_154303.json
+HTML visualization generated: output/visualization_20251021_154303.html
 
-【基本统计】
-总房源数: 20
-平均价格: $877,251.85
-最低价格: $427,537
-最高价格: $1,353,607
+[Basic Statistics]
+Total properties: 20
+Average price: $877,251.85
+Minimum price: $427,537
+Maximum price: $1,353,607
 
-【按城市分布】
-  Boston: 4 套
-  Cambridge: 4 套
-  Newton: 4 套
-  Brookline: 4 套
-  Somerville: 4 套
+[Distribution by City]
+  Boston: 4 properties
+  Cambridge: 4 properties
+  Newton: 4 properties
+  Brookline: 4 properties
+  Somerville: 4 properties
 ```
 
-## 开发说明
+## Development Notes
 
-### 添加新的数据源
-在 `RapidApiGenericClient` 中添加新的API调用方法。
+### Adding New Data Sources
+Add new API call methods in `RapidApiGenericClient`.
 
-### 扩展聚合功能
-在 `RealtyAggregationService` 中添加新的聚合逻辑。
+### Extending Aggregation Features
+Add new aggregation logic in `RealtyAggregationService`.
 
-### 自定义可视化
-修改 `RealtyVisualizerTest` 中的HTML生成逻辑。
+### Customizing Visualization
+Modify HTML generation logic in `RealtyVisualizerTest`.
 
 ## License
 
 MIT License
 
-## 作者
+## Authors
 
 Real-Time Real Estate Investment Analysis Team
-
-
 
