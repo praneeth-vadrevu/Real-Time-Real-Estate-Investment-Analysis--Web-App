@@ -508,10 +508,15 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
 
   // Load property data when selectedZpid is provided
   useEffect(() => {
-    if (selectedZpid && inputMethod === 'manual') {
+    if (selectedZpid) {
+      // Ensure inputMethod is set to 'manual' when a property is selected
+      if (inputMethod !== 'manual') {
+        setInputMethod('manual');
+      }
+      // Load the property data
       handlePropertySelect(selectedZpid);
     }
-  }, [selectedZpid, inputMethod, handlePropertySelect]);
+  }, [selectedZpid, handlePropertySelect]); // Removed inputMethod from dependencies to avoid race conditions
 
   const handleInputChange = (field: keyof PropertyData, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));

@@ -260,20 +260,33 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
           </div>
         </div>
 
-        {/* View Mode Toggle - Show when searching for properties */}
+        {/* View Mode Toggle - Always show when searching for properties */}
         {searchType === 'properties' && (
-          <div style={{ marginTop: '2rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            {searchResults.length > 0 && (
-              <h2 style={{ marginRight: 'auto' }}>
+          <div style={{ 
+            marginTop: '2rem', 
+            display: 'flex', 
+            gap: '0.5rem', 
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap'
+          }}>
+            {searchResults.length > 0 ? (
+              <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '600', color: '#111827' }}>
                 Found {searchResults.length} {searchResults.length === 1 ? 'property' : 'properties'}
               </h2>
-            )}
-            {searchResults.length === 0 && (
-              <h2 style={{ marginRight: 'auto', color: '#6b7280', fontSize: '1rem', fontWeight: 'normal' }}>
+            ) : (
+              <h2 style={{ margin: 0, color: '#6b7280', fontSize: '1rem', fontWeight: 'normal' }}>
                 Search for properties to see them on the map
               </h2>
             )}
-            <div style={{ display: 'flex', gap: '0.5rem', backgroundColor: '#f3f4f6', padding: '0.25rem', borderRadius: '0.5rem' }}>
+            <div style={{ 
+              display: 'flex', 
+              gap: '0.25rem', 
+              backgroundColor: '#f3f4f6', 
+              padding: '0.25rem', 
+              borderRadius: '0.5rem',
+              boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+            }}>
               <button
                 onClick={() => setViewMode('list')}
                 style={{
@@ -284,7 +297,18 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
                   color: viewMode === 'list' ? 'white' : '#374151',
                   cursor: 'pointer',
                   fontSize: '0.875rem',
-                  fontWeight: viewMode === 'list' ? '600' : '400',
+                  fontWeight: viewMode === 'list' ? '600' : '500',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  if (viewMode !== 'list') {
+                    e.currentTarget.style.backgroundColor = '#e5e7eb';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (viewMode !== 'list') {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }
                 }}
               >
                 List
@@ -299,7 +323,18 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
                   color: viewMode === 'both' ? 'white' : '#374151',
                   cursor: 'pointer',
                   fontSize: '0.875rem',
-                  fontWeight: viewMode === 'both' ? '600' : '400',
+                  fontWeight: viewMode === 'both' ? '600' : '500',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  if (viewMode !== 'both') {
+                    e.currentTarget.style.backgroundColor = '#e5e7eb';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (viewMode !== 'both') {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }
                 }}
               >
                 Both
@@ -314,7 +349,18 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
                   color: viewMode === 'map' ? 'white' : '#374151',
                   cursor: 'pointer',
                   fontSize: '0.875rem',
-                  fontWeight: viewMode === 'map' ? '600' : '400',
+                  fontWeight: viewMode === 'map' ? '600' : '500',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  if (viewMode !== 'map') {
+                    e.currentTarget.style.backgroundColor = '#e5e7eb';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (viewMode !== 'map') {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }
                 }}
               >
                 Map
@@ -389,7 +435,7 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
           )}
 
           {/* Google Map - Always show when searching for properties */}
-          {searchType === 'properties' && (
+          {searchType === 'properties' && (viewMode === 'map' || viewMode === 'both' || searchResults.length === 0) && (
             <div 
               key={`map-${searchResults.length}-${viewMode}`}
               style={{ 
