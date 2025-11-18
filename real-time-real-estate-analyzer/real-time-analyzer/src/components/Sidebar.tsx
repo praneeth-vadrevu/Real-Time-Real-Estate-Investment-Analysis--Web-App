@@ -4,6 +4,8 @@ import { FiHome, FiList, FiPlus } from 'react-icons/fi';
 interface SidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
+  onItemClick: (itemId: string) => void;
+  onAddProperty?: (strategy: 'rental' | 'brrrr' | 'flip' | 'wholesale') => void;
 }
 
 interface SectionItem {
@@ -19,7 +21,7 @@ interface Section {
   items: SectionItem[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange, onItemClick, onAddProperty }) => {
   const sections: Section[] = [
     {
       id: "rentals",
@@ -73,7 +75,23 @@ const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange }) => 
                 <span className="section-name">{section.label}</span>
                 <span className="section-count">{section.count}</span>
               </div>
-              <button className="add-button">
+              <button 
+                className="add-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Map section ID to strategy
+                  const strategyMap: { [key: string]: 'rental' | 'brrrr' | 'flip' | 'wholesale' } = {
+                    'rentals': 'rental',
+                    'brrrr': 'brrrr',
+                    'flips': 'flip',
+                    'wholesale': 'wholesale'
+                  };
+                  const strategy = strategyMap[section.id] || 'rental';
+                  if (onAddProperty) {
+                    onAddProperty(strategy);
+                  }
+                }}
+              >
                 <FiPlus style={{ width: '1rem', height: '1rem' }} />
               </button>
             </div>
@@ -84,6 +102,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange }) => 
                 <button
                   key={item.id}
                   className="section-item"
+                  onClick={() => onItemClick(item.id)}
                 >
                   {item.icon}
                   <span>{item.label}</span>

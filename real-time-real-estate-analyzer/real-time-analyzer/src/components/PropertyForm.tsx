@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FiDownload, FiHome } from 'react-icons/fi';
+import { useProperties } from '../context/PropertiesContext';
 import PropertySearch from './PropertySearch';
 
 interface PropertyFormProps {
   strategy: 'rental' | 'brrrr' | 'flip' | 'wholesale';
   onClose: () => void;
+  selectedZpid?: string | null;
 }
 
 interface PropertyData {
@@ -100,8 +102,13 @@ interface PropertyData {
   parkingFeatures?: string;
 }
 
-export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
-  const [inputMethod, setInputMethod] = useState<'select' | 'import' | 'manual' | 'search'>('select');
+export default function PropertyForm({ strategy, onClose, selectedZpid }: PropertyFormProps) {
+  const { addProperty, properties } = useProperties();
+  const [inputMethod, setInputMethod] = useState<'select' | 'import' | 'manual' | 'search'>(selectedZpid ? 'manual' : 'select');
+  const [isLoadingProperty, setIsLoadingProperty] = useState(false);
+  const [propertyCoordinates, setPropertyCoordinates] = useState<{ lat?: number; lon?: number }>({});
+  // Track which fields were auto-filled from Zillow API
+  const [autoFilledFields, setAutoFilledFields] = useState<Set<keyof PropertyData>>(new Set());
   const [formData, setFormData] = useState<PropertyData>({
     // Property Info
     address: '',
@@ -183,54 +190,80 @@ export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
     }
   };
 
-  const handlePropertySelect = async (zpid: string) => {
+  const handlePropertySelect = useCallback(async (zpid: string) => {
     try {
-      // Call backend API to fetch property details
-      const response = await fetch(`http://localhost:8080/api/properties/${zpid}`);
+      setIsLoadingProperty(true);
+      
+      // Check if property already exists in properties list
+      const existingProperty = properties.find(p => p.zpid === zpid);
+      if (existingProperty) {
+        alert('This property is already in your My Properties list!');
+        setIsLoadingProperty(false);
+        return;
+      }
+
+      // Call backend API to fetch property details from both Zillow and RealtyinUS APIs
+      const response = await fetch(`http://localhost:8080/api/properties/${zpid}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       
       if (!response.ok) {
-        throw new Error('Failed to fetch property data');
+        if (response.status === 0 || response.status === 503 || response.status === 502) {
+          throw new Error('BACKEND_NOT_RUNNING');
+        }
+        throw new Error(`Failed to fetch property data: ${response.status} ${response.statusText}`);
       }
 
       const property = await response.json();
       
       // Debug: Log the raw address from API
       console.log('Raw address from API:', property.address);
+      console.log('Property coordinates:', { lat: property.lat, lon: property.lon });
       
       // Parse address into components
-      // Address format can be:
-      // "Street, City, State ZIP" or "Street, City State ZIP" or just "Full Address"
+      // First, check if API provides separate city, state, zipCode fields
       let streetAddress = '';
-      let city = '';
-      let state = '';
-      let zipCode = '';
+      let city = property.city || property.cityName || '';
+      let state = property.state || property.stateCode || '';
+      let zipCode = property.zipCode || property.zipcode || property.postalCode || property.postcode || '';
 
-      if (property.address) {
+      // If separate fields not available, parse from address string
+      if (property.address && (!city || !state || !zipCode)) {
         const addressParts = property.address.split(',').map((part: string) => part.trim());
         console.log('Address parts after split:', addressParts);
         
         if (addressParts.length >= 3) {
           // Format: "Street, City, State ZIP"
           streetAddress = addressParts[0];
-          city = addressParts[1];
+          if (!city) city = addressParts[1];
           
           // Parse "State ZIP" - state is usually 2 letters, ZIP is 5 digits
           const lastPart = addressParts[2];
           console.log('Trying to parse state/ZIP from:', lastPart);
-          const stateZipMatch = lastPart.match(/([A-Z]{2})\s+(\d{5})/);
+          const stateZipMatch = lastPart.match(/([A-Z]{2})\s+(\d{5}(?:-\d{4})?)/);
           
           if (stateZipMatch) {
-            state = stateZipMatch[1];
-            zipCode = stateZipMatch[2];
-            console.log('✅ Regex matched! State:', state, 'ZIP:', zipCode);
+            if (!state) state = stateZipMatch[1];
+            if (!zipCode) zipCode = stateZipMatch[2].substring(0, 5); // Take first 5 digits
+            console.log('Regex matched! State:', state, 'ZIP:', zipCode);
           } else {
-            console.log('❌ Regex did not match, using fallback');
+            console.log('Regex did not match, using fallback');
             // Fallback: split by space and take last as ZIP, second to last as state
             const parts = lastPart.split(/\s+/).filter(p => p.length > 0);
             console.log('Fallback parts:', parts);
             if (parts.length >= 2) {
-              zipCode = parts[parts.length - 1];
-              state = parts[parts.length - 2];
+              const lastPart = parts[parts.length - 1];
+              const zipMatch = lastPart.match(/(\d{5})/);
+              if (zipMatch && !zipCode) zipCode = zipMatch[1];
+              if (!state && parts.length >= 2) {
+                const stateCandidate = parts[parts.length - 2];
+                if (stateCandidate.length === 2 && /^[A-Z]{2}$/.test(stateCandidate)) {
+                  state = stateCandidate;
+                }
+              }
               console.log('Fallback result - State:', state, 'ZIP:', zipCode);
             }
           }
@@ -241,55 +274,153 @@ export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
           console.log('Trying 2-part format. City/State/ZIP part:', cityStatePart);
           
           // Try to extract city, state, and ZIP
-          const match = cityStatePart.match(/^(.+?)\s+([A-Z]{2})\s+(\d{5})$/);
+          const match = cityStatePart.match(/^(.+?)\s+([A-Z]{2})\s+(\d{5}(?:-\d{4})?)$/);
           if (match) {
-            city = match[1];
-            state = match[2];
-            zipCode = match[3];
-            console.log('✅ 2-part regex matched! City:', city, 'State:', state, 'ZIP:', zipCode);
+            if (!city) city = match[1].trim();
+            if (!state) state = match[2];
+            if (!zipCode) zipCode = match[3].substring(0, 5); // Take first 5 digits
+            console.log('2-part regex matched! City:', city, 'State:', state, 'ZIP:', zipCode);
           } else {
-            console.log('❌ 2-part regex did not match');
+            // Try to extract just city if state/zip pattern doesn't match
+            const cityMatch = cityStatePart.match(/^(.+?)(?:\s+[A-Z]{2}\s+\d{5})?$/);
+            if (cityMatch && !city) {
+              city = cityMatch[1].trim();
+            }
+            // Try to extract state and zip separately
+            const stateZipMatch = cityStatePart.match(/([A-Z]{2})\s+(\d{5})/);
+            if (stateZipMatch) {
+              if (!state) state = stateZipMatch[1];
+              if (!zipCode) zipCode = stateZipMatch[2];
+            }
+            console.log('2-part regex did not match, partial extraction');
           }
         } else {
-          // Single string - use as is
-          console.log('Single string address, no parsing');
+          // Single string - use as is, but try to extract state/zip if present
           streetAddress = property.address;
+          const stateZipMatch = property.address.match(/([A-Z]{2})\s+(\d{5})/);
+          if (stateZipMatch) {
+            if (!state) state = stateZipMatch[1];
+            if (!zipCode) zipCode = stateZipMatch[2];
+          }
+          console.log('Single string address, attempted parsing');
         }
+      } else if (property.address && !streetAddress) {
+        streetAddress = property.address;
       }
       
       // Debug: Log parsed address components
       console.log('Parsed address components:', { streetAddress, city, state, zipCode });
+      console.log('API property object:', property);
       
-      // Map API response to form data
+      // Parse coordinates from API if available
+      const apiLat = property.lat || property.latitude || null;
+      const apiLon = property.lon || property.lng || property.longitude || null;
+      
+      console.log('API coordinates:', { apiLat, apiLon, property: property });
+      
+      // Parse coordinates for adding to properties
+      let lat: number | undefined = undefined;
+      let lon: number | undefined = undefined;
+      
+      if (apiLat != null && apiLon != null) {
+        const parsedLat = typeof apiLat === 'number' ? apiLat : (apiLat !== '' ? parseFloat(String(apiLat)) : null);
+        const parsedLon = typeof apiLon === 'number' ? apiLon : (apiLon !== '' ? parseFloat(String(apiLon)) : null);
+        if (parsedLat != null && !isNaN(parsedLat) && parsedLon != null && !isNaN(parsedLon)) {
+          lat = parsedLat;
+          lon = parsedLon;
+          setPropertyCoordinates({ lat, lon });
+          console.log('Stored coordinates from API:', { lat, lon });
+        }
+      }
+
+      // If we have coordinates but missing city/state/zip, try reverse geocoding
+      if (lat && lon && (!city || !state || !zipCode) && typeof google !== 'undefined' && google.maps && google.maps.Geocoder) {
+        try {
+          console.log('Attempting reverse geocoding for city, state, zip...');
+          const geocoder = new google.maps.Geocoder();
+          const result = await new Promise<{ city: string; state: string; zipCode: string } | null>((resolve) => {
+            geocoder.geocode({ location: { lat, lng: lon } }, (results, status) => {
+              if (status === 'OK' && results && results[0]) {
+                let foundCity = city;
+                let foundState = state;
+                let foundZipCode = zipCode;
+                
+                // Parse address components
+                for (const component of results[0].address_components) {
+                  const types = component.types;
+                  if (types.includes('locality') || types.includes('sublocality') || types.includes('sublocality_level_1')) {
+                    if (!foundCity) foundCity = component.long_name;
+                  }
+                  if (types.includes('administrative_area_level_1')) {
+                    if (!foundState) foundState = component.short_name;
+                  }
+                  if (types.includes('postal_code')) {
+                    if (!foundZipCode) foundZipCode = component.long_name.substring(0, 5);
+                  }
+                }
+                
+                console.log('Reverse geocoding result:', { foundCity, foundState, foundZipCode });
+                resolve({ city: foundCity, state: foundState, zipCode: foundZipCode });
+              } else {
+                console.log('Reverse geocoding failed:', status);
+                resolve(null);
+              }
+            });
+          });
+          
+          if (result) {
+            if (!city && result.city) city = result.city;
+            if (!state && result.state) state = result.state;
+            if (!zipCode && result.zipCode) zipCode = result.zipCode;
+            console.log('Updated address from reverse geocoding:', { city, state, zipCode });
+          }
+        } catch (error) {
+          console.warn('Reverse geocoding error:', error);
+        }
+      }
+      
+      // Track which fields were auto-filled from API
+      const filledFields = new Set<keyof PropertyData>();
+      
+      // Helper to check if value exists and add to filledFields
+      const setIfAvailable = (field: keyof PropertyData, value: any, defaultValue: any = '') => {
+        if (value !== null && value !== undefined && value !== '') {
+          filledFields.add(field);
+          return value;
+        }
+        return defaultValue;
+      };
+      
+      // Map API response to form data, tracking which fields were filled
       const newFormData: PropertyData = {
-        zpid: property.zpid,
+        zpid: setIfAvailable('zpid', property.zpid),
         
         // Property Info
-        address: streetAddress,
-        city: city,
-        state: state,
-        zipCode: zipCode,
-        fairMarketValue: property.zestimate || property.price || '',
-        vacancyRate: 5, // Default
-        advertisingCostPerVacancy: 0, // Default
-        numberOfUnits: 1, // Default
-        annualAppreciationRate: 3, // Default
+        address: setIfAvailable('address', streetAddress),
+        city: setIfAvailable('city', city),
+        state: setIfAvailable('state', state),
+        zipCode: setIfAvailable('zipCode', zipCode),
+        fairMarketValue: setIfAvailable('fairMarketValue', property.zestimate || property.price, ''),
+        vacancyRate: 5, // Default (not from API)
+        advertisingCostPerVacancy: 0, // Default (not from API)
+        numberOfUnits: 1, // Default (not from API)
+        annualAppreciationRate: 3, // Default (not from API)
         
         // Purchase Info
-        offerPrice: property.price || '',
-        repairs: 0,
-        repairsContingency: 0,
-        lendersFee: 0,
-        brokerFee: 0,
-        environmentals: 0,
-        inspectionsOrEngineerReport: 0,
-        appraisals: 0,
-        misc: 0,
-        transferTax: 0,
-        legal: 0,
-        realPurchasePrice: property.price || '',
+        offerPrice: setIfAvailable('offerPrice', property.price, ''),
+        repairs: 0, // Default (not from API)
+        repairsContingency: 0, // Default (not from API)
+        lendersFee: 0, // Default (not from API)
+        brokerFee: 0, // Default (not from API)
+        environmentals: 0, // Default (not from API)
+        inspectionsOrEngineerReport: 0, // Default (not from API)
+        appraisals: 0, // Default (not from API)
+        misc: 0, // Default (not from API)
+        transferTax: 0, // Default (not from API)
+        legal: 0, // Default (not from API)
+        realPurchasePrice: setIfAvailable('realPurchasePrice', property.price, ''),
         
-        // Financing (Monthly) - Defaults
+        // Financing (Monthly) - Not available from API
         firstMtgPrincipleBorrowed: '',
         firstMtgAmortizationPeriod: '',
         firstMtgCMHCFeePercent: 0,
@@ -302,36 +433,36 @@ export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
         cashRequiredToClose: '',
         
         // Income (Annual) - Can estimate from API
-        grossRents: property.rentEstimate ? property.rentEstimate * 12 : '',
-        parking: 0,
-        storage: 0,
-        laundryVending: 0,
-        otherIncome: 0,
+        grossRents: setIfAvailable('grossRents', property.rentEstimate ? property.rentEstimate * 12 : null, ''),
+        parking: 0, // Default (not from API)
+        storage: 0, // Default (not from API)
+        laundryVending: 0, // Default (not from API)
+        otherIncome: 0, // Default (not from API)
         
         // Operating Expenses (Annual) - Can estimate from API
-        propertyTaxes: property.annualTax || '',
-        insurance: 0,
-        repairsExpense: 0,
-        electricity: 0,
-        gas: 0,
-        lawnSnowMaintenance: 0,
-        waterSewer: 0,
-        cable: 0,
-        management: 0,
-        caretaking: 0,
-        advertising: 0,
-        associationFees: property.hoaMonthly ? property.hoaMonthly * 12 : 0,
-        pestControl: 0,
-        security: 0,
-        trashRemoval: 0,
-        miscellaneous: 0,
-        commonAreaMaintenance: 0,
-        capitalImprovements: 0,
-        accounting: 0,
-        legalExpense: 0,
-        badDebts: 0,
-        otherExpense: 0,
-        evictions: 0,
+        propertyTaxes: setIfAvailable('propertyTaxes', property.annualTax, ''),
+        insurance: 0, // Default (not from API)
+        repairsExpense: 0, // Default (not from API)
+        electricity: 0, // Default (not from API)
+        gas: 0, // Default (not from API)
+        lawnSnowMaintenance: 0, // Default (not from API)
+        waterSewer: 0, // Default (not from API)
+        cable: 0, // Default (not from API)
+        management: 0, // Default (not from API)
+        caretaking: 0, // Default (not from API)
+        advertising: 0, // Default (not from API)
+        associationFees: setIfAvailable('associationFees', property.hoaMonthly ? property.hoaMonthly * 12 : null, 0),
+        pestControl: 0, // Default (not from API)
+        security: 0, // Default (not from API)
+        trashRemoval: 0, // Default (not from API)
+        miscellaneous: 0, // Default (not from API)
+        commonAreaMaintenance: 0, // Default (not from API)
+        capitalImprovements: 0, // Default (not from API)
+        accounting: 0, // Default (not from API)
+        legalExpense: 0, // Default (not from API)
+        badDebts: 0, // Default (not from API)
+        otherExpense: 0, // Default (not from API)
+        evictions: 0, // Default (not from API)
         
         // Legacy fields (for reference)
         propertyType: property.propertyType,
@@ -353,34 +484,216 @@ export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
         rehabBudget: (strategy === 'brrrr' || strategy === 'flip') ? 0 : undefined,
       };
       
-      console.log('📝 Setting form data:', newFormData);
-      console.log('📍 Location fields:', {
-        address: newFormData.address,
-        city: newFormData.city,
-        state: newFormData.state,
-        zipCode: newFormData.zipCode
-      });
+      console.log('Setting form data:', newFormData);
+      console.log('Auto-filled fields from Zillow API:', Array.from(filledFields));
+      console.log('Fields requiring manual input:', Object.keys(newFormData).filter(key => !filledFields.has(key as keyof PropertyData)));
       
+      // Set form data instead of directly adding to properties
+      // This allows user to review and edit before submitting
       setFormData(newFormData);
-      
-      // Switch to form view for review/editing
+      setAutoFilledFields(filledFields);
       setInputMethod('manual');
-    } catch (error) {
+      setIsLoadingProperty(false);
+    } catch (error: any) {
       console.error('Error fetching property:', error);
-      alert('Failed to import property data. Please make sure the backend server is running on port 8080.');
+      setIsLoadingProperty(false);
+      
+      if (error.message === 'BACKEND_NOT_RUNNING' || error.message?.includes('Failed to fetch') || error.name === 'TypeError') {
+        alert('Backend server is not running. Please start the backend server on port 8080.\n\nMake sure:\n1. The backend server is running on port 8080\n2. The server has access to Zillow and RealtyinUS APIs\n3. Check the console for detailed error messages');
+      } else {
+        alert(`Failed to fetch property data: ${error.message || 'Unknown error'}\n\nPlease make sure the backend server is running and has access to the property APIs.`);
+      }
     }
-  };
+  }, [properties, strategy]);
+
+  // Load property data when selectedZpid is provided
+  useEffect(() => {
+    if (selectedZpid && inputMethod === 'manual') {
+      handlePropertySelect(selectedZpid);
+    }
+  }, [selectedZpid, inputMethod, handlePropertySelect]);
 
   const handleInputChange = (field: keyof PropertyData, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    // Remove from auto-filled fields if user manually edits
+    setAutoFilledFields(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(field);
+      return newSet;
+    });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Send data to analysis service
-    console.log('Form submitted:', { strategy, data: formData });
-    alert(`${getStrategyTitle()} analysis data submitted!`);
+  // Helper to check if field needs highlighting (not filled from API)
+  const isFieldMissingData = (field: keyof PropertyData): boolean => {
+    // Only show highlighting if we have auto-filled fields (i.e., property was imported)
+    if (autoFilledFields.size === 0) return false;
+    return !autoFilledFields.has(field);
   };
+  
+  const handleSaveProperty = async () => {
+    // Check if property already exists
+    if (formData.zpid) {
+      const existingProperty = properties.find(p => p.zpid === formData.zpid);
+      if (existingProperty) {
+        alert('This property is already in your My Properties list!');
+        return;
+      }
+    }
+
+    // Use coordinates from API import if available, otherwise geocode
+    let lat: number | undefined = propertyCoordinates.lat;
+    let lon: number | undefined = propertyCoordinates.lon;
+    
+    // Try to geocode the address if we have city, state, and zip but no coordinates yet
+    if (formData.city && formData.state && formData.zipCode && !lat && !lon) {
+      try {
+        const fullAddress = `${formData.address || ''}, ${formData.city}, ${formData.state} ${formData.zipCode}`.trim();
+        if (fullAddress && typeof google !== 'undefined' && google.maps && google.maps.Geocoder) {
+          const geocoder = new google.maps.Geocoder();
+          const result = await new Promise<{ lat: number; lon: number } | null>((resolve) => {
+            geocoder.geocode({ address: fullAddress }, (results, status) => {
+              if (status === 'OK' && results && results[0]) {
+                const location = results[0].geometry.location;
+                resolve({ lat: location.lat(), lon: location.lng() });
+              } else {
+                resolve(null);
+              }
+            });
+          });
+          if (result) {
+            lat = result.lat;
+            lon = result.lon;
+            setPropertyCoordinates({ lat, lon });
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to geocode address:', err);
+      }
+    }
+    
+    // Save property to context
+    addProperty({
+      zpid: formData.zpid,
+      strategy: strategy,
+      address: formData.address,
+      city: formData.city,
+      state: formData.state,
+      zipCode: formData.zipCode,
+      price: typeof formData.offerPrice === 'number' ? formData.offerPrice : undefined,
+      purchasePrice: typeof formData.realPurchasePrice === 'number' ? formData.realPurchasePrice : 
+                     (typeof formData.offerPrice === 'number' ? formData.offerPrice : undefined),
+      cashFlow: undefined, // Will be calculated later
+      capRate: undefined, // Will be calculated later
+      coc: undefined, // Will be calculated later
+      image: undefined, // Will be set from API if available
+      propertyType: formData.propertyType,
+      bedrooms: formData.bedrooms,
+      lat: lat,
+      lon: lon,
+      bathrooms: formData.bathrooms,
+      livingArea: formData.livingArea,
+      isShortlisted: false,
+    });
+    
+    console.log('Property saved:', { strategy, data: formData });
+    alert(`${getStrategyTitle()} has been saved to your My Properties list!`);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Use coordinates from API import if available, otherwise geocode
+    let lat: number | undefined = propertyCoordinates.lat;
+    let lon: number | undefined = propertyCoordinates.lon;
+    
+    // Try to geocode the address if we have city, state, and zip but no coordinates yet
+    if (formData.city && formData.state && formData.zipCode && !lat && !lon) {
+      try {
+        const fullAddress = `${formData.address || ''}, ${formData.city}, ${formData.state} ${formData.zipCode}`.trim();
+        if (fullAddress && typeof google !== 'undefined' && google.maps && google.maps.Geocoder) {
+          const geocoder = new google.maps.Geocoder();
+          const result = await new Promise<{ lat: number; lon: number } | null>((resolve) => {
+            geocoder.geocode({ address: fullAddress }, (results, status) => {
+              if (status === 'OK' && results && results[0]) {
+                const location = results[0].geometry.location;
+                resolve({ lat: location.lat(), lon: location.lng() });
+              } else {
+                resolve(null);
+              }
+            });
+          });
+          if (result) {
+            lat = result.lat;
+            lon = result.lon;
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to geocode address:', err);
+      }
+    }
+    
+    // Save property to context
+    addProperty({
+      zpid: formData.zpid,
+      strategy: strategy,
+      address: formData.address,
+      city: formData.city,
+      state: formData.state,
+      zipCode: formData.zipCode,
+      price: typeof formData.offerPrice === 'number' ? formData.offerPrice : undefined,
+      purchasePrice: typeof formData.realPurchasePrice === 'number' ? formData.realPurchasePrice : 
+                     (typeof formData.offerPrice === 'number' ? formData.offerPrice : undefined),
+      cashFlow: undefined, // Will be calculated later
+      capRate: undefined, // Will be calculated later
+      coc: undefined, // Will be calculated later
+      image: undefined, // Will be set from API if available
+      propertyType: formData.propertyType,
+      bedrooms: formData.bedrooms,
+      lat: lat,
+      lon: lon,
+      bathrooms: formData.bathrooms,
+      livingArea: formData.livingArea,
+      isShortlisted: false,
+    });
+    
+    console.log('Form submitted:', { strategy, data: formData });
+    alert(`${getStrategyTitle()} has been added to your dashboard!`);
+    onClose();
+  };
+
+  // Show loading state while fetching property data
+  if (isLoadingProperty && selectedZpid) {
+    return (
+      <div className="property-form-container">
+        <div className="property-form-header">
+          <h2>Loading Property Data</h2>
+          <button onClick={onClose} className="close-button">×</button>
+        </div>
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          padding: '4rem 2rem',
+          minHeight: '400px'
+        }}>
+          <div style={{ 
+            width: '48px', 
+            height: '48px', 
+            border: '4px solid #e5e7eb',
+            borderTop: '4px solid #3b82f6',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            marginBottom: '1rem'
+          }}></div>
+          <p style={{ color: '#6b7280', fontSize: '1rem', marginBottom: '0.5rem' }}>Fetching property details...</p>
+          <p style={{ color: '#9ca3af', fontSize: '0.875rem', textAlign: 'center' }}>
+            Loading data from Zillow and RealtyinUS APIs
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Selection Screen
   if (inputMethod === 'select') {
@@ -441,26 +754,28 @@ export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
             <h3>1. Property Info</h3>
           </div>
           <div className="form-grid">
-            <div className="form-group full-width">
+            <div className={`form-group full-width ${isFieldMissingData('address') ? 'field-missing-data' : ''}`}>
               <label>Address</label>
               <input
                 type="text"
                 value={formData.address}
                 onChange={(e) => handleInputChange('address', e.target.value)}
                 placeholder="123 Main Street, City, State ZIP"
+                className={isFieldMissingData('address') ? 'field-missing-data' : ''}
                 required
               />
             </div>
-            <div className="form-group">
+            <div className={`form-group ${isFieldMissingData('city') ? 'field-missing-data' : ''}`}>
               <label>City</label>
               <input
                 type="text"
                 value={formData.city}
                 onChange={(e) => handleInputChange('city', e.target.value)}
+                className={isFieldMissingData('city') ? 'field-missing-data' : ''}
                 required
               />
             </div>
-            <div className="form-group">
+            <div className={`form-group ${isFieldMissingData('state') ? 'field-missing-data' : ''}`}>
               <label>State</label>
               <input
                 type="text"
@@ -468,26 +783,29 @@ export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
                 onChange={(e) => handleInputChange('state', e.target.value)}
                 maxLength={2}
                 placeholder="MA"
+                className={isFieldMissingData('state') ? 'field-missing-data' : ''}
                 required
               />
             </div>
-            <div className="form-group">
+            <div className={`form-group ${isFieldMissingData('zipCode') ? 'field-missing-data' : ''}`}>
               <label>ZIP Code</label>
               <input
                 type="text"
                 value={formData.zipCode}
                 onChange={(e) => handleInputChange('zipCode', e.target.value)}
                 maxLength={5}
+                className={isFieldMissingData('zipCode') ? 'field-missing-data' : ''}
                 required
               />
             </div>
-            <div className="form-group">
+            <div className={`form-group ${isFieldMissingData('fairMarketValue') ? 'field-missing-data' : ''}`}>
               <label>Fair Market Value ($)</label>
               <input
                 type="number"
                 value={formData.fairMarketValue}
                 onChange={(e) => handleInputChange('fairMarketValue', parseFloat(e.target.value) || '')}
                 placeholder="0"
+                className={isFieldMissingData('fairMarketValue') ? 'field-missing-data' : ''}
                 required
               />
             </div>
@@ -543,13 +861,14 @@ export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
             <h3>2. Purchase Info</h3>
           </div>
           <div className="form-grid">
-            <div className="form-group">
+            <div className={`form-group ${isFieldMissingData('offerPrice') ? 'field-missing-data' : ''}`}>
               <label>Offer Price ($)</label>
               <input
                 type="number"
                 value={formData.offerPrice}
                 onChange={(e) => handleInputChange('offerPrice', parseFloat(e.target.value) || '')}
                 placeholder="0"
+                className={isFieldMissingData('offerPrice') ? 'field-missing-data' : ''}
                 required
               />
             </div>
@@ -771,13 +1090,15 @@ export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
             <h3>4. Income (Annual)</h3>
           </div>
           <div className="form-grid">
-            <div className="form-group">
+            <div className={`form-group ${isFieldMissingData('grossRents') ? 'field-missing-data' : ''}`}>
               <label>Gross Rents ($)</label>
               <input
                 type="number"
                 value={formData.grossRents}
                 onChange={(e) => handleInputChange('grossRents', parseFloat(e.target.value) || '')}
                 placeholder="0"
+                className={isFieldMissingData('grossRents') ? 'field-missing-data' : ''}
+                required
               />
             </div>
             <div className="form-group">
@@ -927,13 +1248,14 @@ export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
                 placeholder="0"
               />
             </div>
-            <div className="form-group">
+            <div className={`form-group ${isFieldMissingData('associationFees') ? 'field-missing-data' : ''}`}>
               <label>Association Fees ($)</label>
               <input
                 type="number"
                 value={formData.associationFees}
                 onChange={(e) => handleInputChange('associationFees', parseFloat(e.target.value) || '')}
                 placeholder="0"
+                className={isFieldMissingData('associationFees') ? 'field-missing-data' : ''}
               />
             </div>
             <div className="form-group">
@@ -1042,6 +1364,9 @@ export default function PropertyForm({ strategy, onClose }: PropertyFormProps) {
         <div className="form-actions">
           <button type="button" onClick={onClose} className="btn-secondary">
             Cancel
+          </button>
+          <button type="button" onClick={handleSaveProperty} className="btn-secondary" style={{ backgroundColor: '#10b981', color: 'white', border: 'none' }}>
+            Save this Property
           </button>
           <button type="submit" className="btn-primary">
             Analyze {getStrategyTitle()}

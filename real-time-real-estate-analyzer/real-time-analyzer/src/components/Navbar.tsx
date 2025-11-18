@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GoogleLogin } from '@react-oauth/google';
+import { useAuth } from '../context/AuthContext';
 import { FiBell, FiUser, FiHelpCircle, FiSettings } from 'react-icons/fi';
 
 interface NavbarProps {
@@ -7,31 +7,25 @@ interface NavbarProps {
   activePage: string;
 }
 
-interface User {
-  name: string;
-  email: string;
-  picture: string;
-}
-
 const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
+  const { user, isGuest, logout } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleGoogleSuccess = (credentialResponse: any) => {
-    console.log('Login Success:', credentialResponse);
-    const userInfo = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
-    setUser(userInfo);
+  const handleSignIn = () => {
+    onNavigate('auth');
     setIsUserMenuOpen(false);
-  };
-
-  const handleGoogleError = () => {
-    console.log('Login Failed');
   };
 
   const handleLogout = () => {
-    setUser(null);
+    logout();
     setIsUserMenuOpen(false);
+    onNavigate('auth');
+  };
+
+  const handleBackToLanding = () => {
+    logout();
+    onNavigate('auth');
   };
 
   // Close dropdown when clicking outside
@@ -56,7 +50,11 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
       {/* Left side - Logo and Navigation */}
       <div className="navbar-left">
         {/* Logo */}
-        <div className="logo-container">
+        <div 
+          className="logo-container" 
+          onClick={() => onNavigate('home')}
+          style={{ cursor: 'pointer' }}
+        >
           <div className="logo-icon">
             <svg className="w-5 h-5 text-blue-800" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
@@ -159,10 +157,57 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
                   </button>
                   <hr style={{ margin: '0.25rem 0' }} />
                   <button
+                    onClick={handleBackToLanding}
+                    className="dropdown-item logout"
+                  >
+                    <span>Back to Landing Page</span>
+                  </button>
+                  <button
                     onClick={handleLogout}
                     className="dropdown-item logout"
                   >
                     <span>Sign Out</span>
+                  </button>
+                </div>
+              )}
+            </>
+          ) : isGuest ? (
+            <>
+              <button
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                className="user-icon-button guest-button"
+              >
+                <FiUser style={{ width: '1.5rem', height: '1.5rem' }} />
+                <span className="guest-badge">Guest</span>
+              </button>
+
+              {/* Dropdown Menu for Guest */}
+              {isUserMenuOpen && (
+                <div className="dropdown-menu signin-dropdown">
+                  <div className="signin-header">
+                    <h3>Browsing as Guest</h3>
+                    <p>Sign in to save your data and access all features</p>
+                  </div>
+                  <button
+                    onClick={handleSignIn}
+                    className="btn-primary"
+                    style={{ width: '100%', marginTop: '1rem' }}
+                  >
+                    Sign in with Google
+                  </button>
+                  <button
+                    onClick={handleBackToLanding}
+                    className="btn-secondary"
+                    style={{ width: '100%', marginTop: '0.5rem' }}
+                  >
+                    Back to Landing Page
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="btn-secondary"
+                    style={{ width: '100%', marginTop: '0.5rem' }}
+                  >
+                    Continue as Guest
                   </button>
                 </div>
               )}
@@ -183,18 +228,13 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
                     <h3>Welcome!</h3>
                     <p>Sign in to access your account</p>
                   </div>
-                  <div className="google-signin-container">
-                    <GoogleLogin
-                      onSuccess={handleGoogleSuccess}
-                      onError={handleGoogleError}
-                      theme="outline"
-                      size="large"
-                      text="signin_with"
-                      shape="rectangular"
-                      logo_alignment="left"
-                      width="280"
-                    />
-                  </div>
+                  <button
+                    onClick={handleSignIn}
+                    className="btn-primary"
+                    style={{ width: '100%', marginTop: '1rem' }}
+                  >
+                    Sign in with Google
+                  </button>
                 </div>
               )}
             </>
