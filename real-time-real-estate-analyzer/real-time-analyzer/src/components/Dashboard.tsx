@@ -172,77 +172,80 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddProperty }) => {
           </div>
         </div>
 
-        {/* View Mode Toggle */}
-        {filteredProperties.length > 0 && (
-          <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: 'flex-end' }}>
-            <div style={{ display: 'flex', gap: '0.5rem', backgroundColor: '#f3f4f6', padding: '0.25rem', borderRadius: '0.5rem' }}>
-              <button
-                onClick={() => setViewMode('list')}
-                style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.375rem',
-                  border: 'none',
-                  backgroundColor: viewMode === 'list' ? '#3b82f6' : 'transparent',
-                  color: viewMode === 'list' ? 'white' : '#374151',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: viewMode === 'list' ? '600' : '400',
-                }}
-              >
-                List
-              </button>
-              <button
-                onClick={() => setViewMode('both')}
-                style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.375rem',
-                  border: 'none',
-                  backgroundColor: viewMode === 'both' ? '#3b82f6' : 'transparent',
-                  color: viewMode === 'both' ? 'white' : '#374151',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: viewMode === 'both' ? '600' : '400',
-                }}
-              >
-                Both
-              </button>
-              <button
-                onClick={() => setViewMode('map')}
-                style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.375rem',
-                  border: 'none',
-                  backgroundColor: viewMode === 'map' ? '#3b82f6' : 'transparent',
-                  color: viewMode === 'map' ? 'white' : '#374151',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: viewMode === 'map' ? '600' : '400',
-                }}
-              >
-                Map
-              </button>
-            </div>
+        {/* View Mode Toggle - Always visible */}
+        <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: 'flex-end' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', backgroundColor: '#f3f4f6', padding: '0.25rem', borderRadius: '0.5rem' }}>
+            <button
+              onClick={() => setViewMode('list')}
+              style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '0.375rem',
+                border: 'none',
+                backgroundColor: viewMode === 'list' ? '#3b82f6' : 'transparent',
+                color: viewMode === 'list' ? 'white' : '#374151',
+                cursor: 'pointer',
+                fontSize: '0.875rem',
+                fontWeight: viewMode === 'list' ? '600' : '400',
+              }}
+            >
+              List
+            </button>
+            <button
+              onClick={() => setViewMode('both')}
+              style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '0.375rem',
+                border: 'none',
+                backgroundColor: viewMode === 'both' ? '#3b82f6' : 'transparent',
+                color: viewMode === 'both' ? 'white' : '#374151',
+                cursor: 'pointer',
+                fontSize: '0.875rem',
+                fontWeight: viewMode === 'both' ? '600' : '400',
+              }}
+            >
+              Both
+            </button>
+            <button
+              onClick={() => setViewMode('map')}
+              style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '0.375rem',
+                border: 'none',
+                backgroundColor: viewMode === 'map' ? '#3b82f6' : 'transparent',
+                color: viewMode === 'map' ? 'white' : '#374151',
+                cursor: 'pointer',
+                fontSize: '0.875rem',
+                fontWeight: viewMode === 'map' ? '600' : '400',
+              }}
+            >
+              Map
+            </button>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Property Cards and Map */}
       <div style={{ marginTop: '1.5rem' }}>
         {(viewMode === 'list' || viewMode === 'both') && (
           <div className="property-cards" style={{ marginBottom: viewMode === 'both' ? '2rem' : '0' }}>
-            {filteredProperties.length === 0 ? (
+            {properties.length === 0 ? (
               <div className="empty-state">
                 <div className="empty-state-icon">
                   <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <h3>Search for your new dream rental/flip property</h3>
+              </div>
+            ) : filteredProperties.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-state-icon">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
                 <h3>No properties found</h3>
-                <p>
-                  {searchQuery || selectedStrategy !== 'all'
-                    ? 'Try adjusting your filters or search query'
-                    : 'Start by adding a property to your dashboard'}
-                </p>
+                <p>Try adjusting your filters or search query</p>
               </div>
             ) : (
               <div>
@@ -438,37 +441,38 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddProperty }) => {
           </div>
         )}
 
-        {/* Map View */}
-        {(viewMode === 'map' || viewMode === 'both') && filteredProperties.length > 0 && (
+        {/* Map View - Always show when map or both view is selected */}
+        {(viewMode === 'map' || viewMode === 'both') && (
           <div style={{ 
             marginTop: viewMode === 'both' ? '2rem' : '0',
-            height: viewMode === 'both' ? '500px' : 'calc(100vh - 300px)',
-            minHeight: '400px',
+            height: viewMode === 'both' ? '550px' : 'calc(100vh - 250px)',
+            minHeight: viewMode === 'both' ? '550px' : '600px',
+            width: '90%',
+            maxWidth: '1200px',
+            margin: viewMode === 'both' ? '0 auto' : '0 auto',
+            borderRadius: '0.5rem',
+            overflow: 'hidden',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
           }}>
             <PropertyMap
               properties={mapProperties}
               selectedProperty={selectedProperty}
               onPropertySelect={setSelectedProperty}
-              mapHeight={viewMode === 'both' ? '500px' : '100%'}
+              mapHeight={viewMode === 'both' ? '550px' : '100%'}
             />
           </div>
         )}
 
-        {/* Empty State - Only show when no properties at all */}
-        {filteredProperties.length === 0 && viewMode !== 'map' && (
+        {/* Empty State - Only show when no properties at all and in map view */}
+        {properties.length === 0 && viewMode === 'map' && (
           <div className="property-cards">
             <div className="empty-state">
               <div className="empty-state-icon">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
-              <h3>No properties found</h3>
-              <p>
-                {searchQuery || selectedStrategy !== 'all'
-                  ? 'Try adjusting your filters or search query'
-                  : 'Start by adding a property to your dashboard'}
-              </p>
+              <h3>Search for your new dream rental/flip property</h3>
             </div>
           </div>
         )}

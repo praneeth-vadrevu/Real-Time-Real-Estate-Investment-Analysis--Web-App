@@ -32,8 +32,8 @@ function AppContent() {
   const { isAuthenticated, isGuest, isLoading } = useAuth();
   const [activePage, setActivePage] = useState("my-properties");
   const [activeSection, setActiveSection] = useState("brrrr");
-  // Default to null - will show auth page if not authenticated/guest, dashboard otherwise
-  const [activeView, setActiveView] = useState<string | null>(null);
+  // Default to 'auth' - always show landing page on initial load
+  const [activeView, setActiveView] = useState<string | null>('auth');
   const [showPropertyForm, setShowPropertyForm] = useState(false);
   const [propertyFormStrategy, setPropertyFormStrategy] = useState<'rental' | 'brrrr' | 'flip' | 'wholesale'>('rental');
   const [selectedPropertyZpid, setSelectedPropertyZpid] = useState<string | null>(null);
@@ -130,13 +130,8 @@ function AppContent() {
     setActivePage('my-properties');
   };
 
-  // After loading, if user is authenticated or guest, show dashboard by default
-  // Otherwise, auth page will be shown (handled in the condition below)
-  useEffect(() => {
-    if (!isLoading && (isAuthenticated || isGuest) && activeView === null) {
-      setActiveView('dashboard');
-    }
-  }, [isLoading, isAuthenticated, isGuest, activeView]);
+  // Don't auto-navigate to dashboard on load - always start with auth page
+  // User must explicitly authenticate to see dashboard
 
   // Show loading state
   if (isLoading) {
@@ -155,61 +150,16 @@ function AppContent() {
     );
   }
 
-  // Show auth page as landing page if not authenticated and not guest, or if explicitly navigating to auth
-  // This ensures the auth page is the first thing users see when they visit
-  if (activeView === 'auth' || (!isAuthenticated && !isGuest)) {
-    // Check if Google Client ID is configured
-    if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === "") {
+  // Show auth page as landing page if explicitly set to 'auth' view
+  // This ensures the auth page is the first thing users see when they visit or restart the server
+  if (activeView === 'auth') {
+    // If Google Client ID is not configured, still show auth page but allow guest access
+    // The AuthPage component will handle showing appropriate options
+    if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === "" || GOOGLE_CLIENT_ID.includes('your-client-id')) {
+      // Show auth page without Google OAuth - guest access only
       return (
-        <div style={{ 
-          minHeight: '100vh', 
-          backgroundColor: '#f8fafc',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '2rem'
-        }}>
-          <div style={{
-            maxWidth: '600px',
-            backgroundColor: 'white',
-            padding: '2rem',
-            borderRadius: '0.5rem',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-          }}>
-            <h2 style={{ color: '#dc2626', marginBottom: '1rem' }}>Google OAuth Client ID Not Configured</h2>
-            <p style={{ marginBottom: '1.5rem', color: '#374151' }}>
-              To enable Google Sign-In, you need to set up a Google OAuth Client ID.
-            </p>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ marginBottom: '0.75rem', color: '#111827' }}>Setup Instructions:</h3>
-              <ol style={{ marginLeft: '1.5rem', color: '#6b7280', lineHeight: '1.75' }}>
-                <li>Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6' }}>Google Cloud Console</a></li>
-                <li>Create a new project or select an existing one</li>
-                <li>Enable Google+ API</li>
-                <li>Go to "Credentials" → "Create Credentials" → "OAuth client ID"</li>
-                <li>Select "Web application"</li>
-                <li>Add authorized JavaScript origins: <code style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '0.25rem' }}>http://localhost:3000</code></li>
-                <li>Copy your Client ID</li>
-                <li>Create a <code style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '0.25rem' }}>.env</code> file in the project root with: <br/>
-                  <code style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', display: 'block', marginTop: '0.5rem' }}>REACT_APP_GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com</code>
-                </li>
-                <li>Restart the development server</li>
-              </ol>
-            </div>
-            <button
-              onClick={() => window.location.reload()}
-              className="btn-primary"
-              style={{ marginRight: '0.5rem' }}
-            >
-              Reload Page
-            </button>
-            <button
-              onClick={handleAuthSuccess}
-              className="btn-secondary"
-            >
-              Continue as Guest
-            </button>
-          </div>
+        <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+          <AuthPage onAuthSuccess={handleAuthSuccess} />
         </div>
       );
     }

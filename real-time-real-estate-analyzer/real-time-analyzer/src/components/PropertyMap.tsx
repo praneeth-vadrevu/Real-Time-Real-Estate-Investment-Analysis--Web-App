@@ -2,6 +2,26 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+// TypeScript declaration for MapboxSearchBox (loaded from CDN)
+declare global {
+  interface Window {
+    MapboxSearchBox: new () => {
+      accessToken: string;
+      marker: boolean;
+      mapboxgl: typeof mapboxgl;
+      placeholder?: string;
+      options?: {
+        proximity?: [number, number];
+        bbox?: [[number, number], [number, number]];
+      };
+      componentOptions?: {
+        allowReverse?: boolean;
+        flipCoordinates?: boolean;
+      };
+    };
+  }
+}
+
 interface Property {
   zpid: string;
   address: string;
@@ -46,6 +66,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<mapboxgl.Marker[]>([]);
   const popupRef = useRef<mapboxgl.Popup | null>(null);
+  const searchBoxRef = useRef<any>(null);
 
   const [activeMarker, setActiveMarker] = useState<string | null>(null);
   const [mapError, setMapError] = useState<string | null>(null);
@@ -217,6 +238,134 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
       setMapError(null);
     });
 
+    // Initialize Mapbox Search Box - following the demo pattern with window.addEventListener('load')
+    const initSearchBox = () => {
+      // Wait for both the map to be loaded and the window to be loaded
+      if (!mapRef.current || !mapRef.current.loaded()) {
+        setTimeout(initSearchBox, 100);
+        return;
+      }
+
+      if (window.MapboxSearchBox && mapboxToken && mapRef.current) {
+        try {
+          // Calculate proximity from properties or use default center
+          const propsWithCoords = properties.filter(p => p.lat && p.lon);
+          let proximityCoords: [number, number] = defaultCenter;
+          
+          if (propsWithCoords.length > 0) {
+            const avgLat = propsWithCoords.reduce((sum, p) => sum + (p.lat || 0), 0) / propsWithCoords.length;
+            const avgLon = propsWithCoords.reduce((sum, p) => sum + (p.lon || 0), 0) / propsWithCoords.length;
+            proximityCoords = [avgLon, avgLat];
+          }
+
+          // Calculate bounding box from properties or use a default area around the center
+          let bbox: [[number, number], [number, number]] | undefined;
+          if (propsWithCoords.length > 0) {
+            const lats = propsWithCoords.map(p => p.lat!);
+            const lons = propsWithCoords.map(p => p.lon!);
+            const minLat = Math.min(...lats);
+            const maxLat = Math.max(...lats);
+            const minLon = Math.min(...lons);
+            const maxLon = Math.max(...lons);
+            // Add padding to bounding box
+            const latPadding = (maxLat - minLat) * 0.1 || 0.05;
+            const lonPadding = (maxLon - minLon) * 0.1 || 0.05;
+            bbox = [
+              [minLon - lonPadding, minLat - latPadding], // southwest corner
+              [maxLon + lonPadding, maxLat + latPadding]  // northeast corner
+            ];
+          } else {
+            // Default bounding box around center (approximately 50km radius)
+            bbox = [
+              [proximityCoords[0] - 0.5, proximityCoords[1] - 0.5], // southwest
+              [proximityCoords[0] + 0.5, proximityCoords[1] + 0.5]  // northeast
+            ];
+          }
+
+          // Create search box following the demo pattern
+          const searchBox = new window.MapboxSearchBox();
+          searchBox.accessToken = mapboxToken;
+          searchBox.options = {
+            proximity: proximityCoords,
+            bbox: bbox
+          };
+          searchBox.placeholder = 'Search for places';
+          searchBox.marker = true;
+          searchBox.mapboxgl = mapboxgl;
+          searchBox.componentOptions = {
+            allowReverse: true,
+            flipCoordinates: true
+          };
+
+          // Type assertion to fix TypeScript error - MapboxSearchBox implements IControl internally
+          mapRef.current.addControl(searchBox as any);
+          searchBoxRef.current = searchBox;
+
+          // Optional: Visualize the bounding box
+          if (bbox && mapRef.current) {
+            const bboxPolygon = {
+              type: 'Feature' as const,
+              geometry: {
+                type: 'Polygon' as const,
+                coordinates: [[
+                  [bbox[0][0], bbox[0][1]], // southwest
+                  [bbox[1][0], bbox[0][1]], // southeast
+                  [bbox[1][0], bbox[1][1]], // northeast
+                  [bbox[0][0], bbox[1][1]], // northwest
+                  [bbox[0][0], bbox[0][1]]  // close polygon
+                ]]
+              },
+              properties: {}
+            };
+
+            mapRef.current.addSource('bbox', {
+              type: 'geojson',
+              data: bboxPolygon
+            });
+
+            mapRef.current.addLayer({
+              id: 'bbox-fill',
+              type: 'fill',
+              source: 'bbox',
+              paint: {
+                'fill-color': '#3b82f6',
+                'fill-opacity': 0.1
+              }
+            });
+
+            mapRef.current.addLayer({
+              id: 'bbox-border',
+              type: 'line',
+              source: 'bbox',
+              paint: {
+                'line-color': '#3b82f6',
+                'line-width': 2,
+                'line-dasharray': [2, 2]
+              }
+            });
+          }
+
+          console.log('Mapbox Search Box initialized');
+        } catch (error) {
+          console.error('Error initializing Mapbox Search Box:', error);
+        }
+      } else if (!window.MapboxSearchBox) {
+        // Retry after a short delay if script not loaded yet
+        setTimeout(initSearchBox, 100);
+      }
+    };
+
+    // Initialize search box when window loads (following demo pattern exactly)
+    // This matches the demo: window.addEventListener('load', () => { ... })
+    if (document.readyState === 'complete') {
+      // Window already loaded, initialize search box
+      initSearchBox();
+    } else {
+      window.addEventListener('load', () => {
+        initSearchBox();
+      });
+    }
+
     // Listen for map errors
     mapRef.current.on('error', (e) => {
       console.error('Mapbox map error:', e);
@@ -236,6 +385,33 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
 
     // Cleanup
     return () => {
+      // Remove search box
+      if (searchBoxRef.current && mapRef.current) {
+        try {
+          mapRef.current.removeControl(searchBoxRef.current);
+        } catch (e) {
+          console.warn('Error removing search box:', e);
+        }
+        searchBoxRef.current = null;
+      }
+
+      // Remove bounding box layers and source
+      if (mapRef.current) {
+        try {
+          if (mapRef.current.getLayer('bbox-border')) {
+            mapRef.current.removeLayer('bbox-border');
+          }
+          if (mapRef.current.getLayer('bbox-fill')) {
+            mapRef.current.removeLayer('bbox-fill');
+          }
+          if (mapRef.current.getSource('bbox')) {
+            mapRef.current.removeSource('bbox');
+          }
+        } catch (e) {
+          console.warn('Error removing bbox layers:', e);
+        }
+      }
+
       // Remove all markers
       markersRef.current.forEach(marker => marker.remove());
       markersRef.current = [];
@@ -311,7 +487,23 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
     }
   }, [geocodedProperties, isMapLoaded]);
 
+  // Center map on selected property when it changes
+  useEffect(() => {
+    if (!mapRef.current || !isMapLoaded || !selectedProperty) return;
+
+    const property = geocodedProperties.find(p => p.zpid === selectedProperty && p.lat && p.lon);
+    if (property) {
+      mapRef.current.flyTo({
+        center: [property.lon!, property.lat!],
+        zoom: 15,
+        duration: 1000
+      });
+    }
+  }, [selectedProperty, geocodedProperties, isMapLoaded]);
+
   // Update popup when active marker changes
+  // Only show simple popup if onPropertySelect is not provided (for Dashboard use)
+  // If onPropertySelect is provided (SearchPage), let parent handle the detailed popup
   useEffect(() => {
     if (!mapRef.current || !isMapLoaded) return;
 
@@ -321,8 +513,9 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
       popupRef.current = null;
     }
 
-    // Show popup for active marker
-    if (activeMarker) {
+    // Only show simple popup if onPropertySelect is not provided
+    // When onPropertySelect is provided, the parent component will show detailed popup
+    if (activeMarker && !onPropertySelect) {
       const property = geocodedProperties.find(p => p.zpid === activeMarker && p.lat && p.lon);
       if (property) {
         const popupContent = document.createElement('div');
@@ -355,7 +548,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
         });
       }
     }
-  }, [activeMarker, geocodedProperties, isMapLoaded]);
+  }, [activeMarker, geocodedProperties, isMapLoaded, onPropertySelect]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropertySearch from './PropertySearch';
 import PropertyMap from './PropertyMap';
+import PropertyPopup from './PropertyPopup';
 import { useProperties } from '../context/PropertiesContext';
 
 interface SearchPageProps {
@@ -30,16 +31,18 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
   const [searchResults, setSearchResults] = useState<PropertyResult[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
-  // Default to 'both' for properties search, 'list' for lenders
-  const [viewMode, setViewMode] = useState<'list' | 'map' | 'both'>(searchType === 'properties' ? 'both' : 'list');
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupProperty, setPopupProperty] = useState<PropertyResult | null>(null);
+  // Default to 'list' for properties search (only List and Map views)
+  const [viewMode, setViewMode] = useState<'list' | 'map'>(searchType === 'properties' ? 'list' : 'list');
 
   // Debug: Log when map should be rendered
   useEffect(() => {
-    if (searchResults.length > 0 && (viewMode === 'map' || viewMode === 'both')) {
+    if (searchResults.length > 0 && viewMode === 'map') {
       console.log('SearchPage: PropertyMap should be rendered:', {
         propertiesCount: searchResults.length,
         viewMode,
-        mapHeight: viewMode === 'both' ? '500px' : '100%',
+        mapHeight: '100%',
         propertiesWithCoords: searchResults.filter(p => p.lat && p.lon).length,
       });
     }
@@ -117,89 +120,88 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
     }
   };
 
-  const handlePropertySelect = async (zpid: string) => {
+  const handlePropertySelect = (zpid: string) => {
+    // Show popup when property is clicked
+    const property = searchResults.find(p => p.zpid === zpid);
+    if (property) {
+      setPopupProperty(property);
+      setShowPopup(true);
+      setSelectedProperty(zpid);
+    }
+  };
+
+  const handleAddToList = (property: PropertyResult) => {
     try {
       // Check if property already exists
-      const existingProperty = properties.find(p => p.zpid === zpid);
+      const existingProperty = properties.find(p => p.zpid === property.zpid);
       if (existingProperty) {
         alert('This property is already in your My Properties list!');
         return;
       }
 
-      // If onPropertySelect callback is provided, use it to open the form
-      if (onPropertySelect) {
-        onPropertySelect(zpid, 'rental'); // Default to rental strategy
-        return;
-      }
+      // Parse address from property
+      let streetAddress = '';
+      let city = '';
+      let state = '';
+      let zipCode = '';
 
-      // Fallback: If no callback, add directly (old behavior)
-      const property = searchResults.find(p => p.zpid === zpid);
-      if (property) {
-        // Parse address from property
-        let streetAddress = '';
-        let city = '';
-        let state = '';
-        let zipCode = '';
-
-        if (property.address) {
-          const addressParts = property.address.split(',').map((part: string) => part.trim());
+      if (property.address) {
+        const addressParts = property.address.split(',').map((part: string) => part.trim());
+        
+        if (addressParts.length >= 3) {
+          streetAddress = addressParts[0];
+          city = addressParts[1];
+          const lastPart = addressParts[2];
+          const stateZipMatch = lastPart.match(/([A-Z]{2})\s+(\d{5})/);
           
-          if (addressParts.length >= 3) {
-            streetAddress = addressParts[0];
-            city = addressParts[1];
-            const lastPart = addressParts[2];
-            const stateZipMatch = lastPart.match(/([A-Z]{2})\s+(\d{5})/);
-            
-            if (stateZipMatch) {
-              state = stateZipMatch[1];
-              zipCode = stateZipMatch[2];
-            } else {
-              const parts = lastPart.split(/\s+/).filter(p => p.length > 0);
-              if (parts.length >= 2) {
-                zipCode = parts[parts.length - 1];
-                state = parts[parts.length - 2];
-              }
-            }
-          } else if (addressParts.length === 2) {
-            streetAddress = addressParts[0];
-            const cityStatePart = addressParts[1];
-            const match = cityStatePart.match(/^(.+?)\s+([A-Z]{2})\s+(\d{5})$/);
-            if (match) {
-              city = match[1];
-              state = match[2];
-              zipCode = match[3];
-            }
+          if (stateZipMatch) {
+            state = stateZipMatch[1];
+            zipCode = stateZipMatch[2];
           } else {
-            streetAddress = property.address;
+            const parts = lastPart.split(/\s+/).filter(p => p.length > 0);
+            if (parts.length >= 2) {
+              zipCode = parts[parts.length - 1];
+              state = parts[parts.length - 2];
+            }
           }
+        } else if (addressParts.length === 2) {
+          streetAddress = addressParts[0];
+          const cityStatePart = addressParts[1];
+          const match = cityStatePart.match(/^(.+?)\s+([A-Z]{2})\s+(\d{5})$/);
+          if (match) {
+            city = match[1];
+            state = match[2];
+            zipCode = match[3];
+          }
+        } else {
+          streetAddress = property.address;
         }
-
-        // Add property to My Properties with default strategy 'rental'
-        addProperty({
-          zpid: property.zpid,
-          strategy: 'rental',
-          address: streetAddress || property.address || '',
-          city: city || '',
-          state: state || '',
-          zipCode: zipCode || '',
-          price: property.price || undefined,
-          purchasePrice: property.price || undefined,
-          image: property.imgSrc || undefined,
-          propertyType: property.propertyType || '',
-          bedrooms: property.bedrooms,
-          bathrooms: property.bathrooms,
-          livingArea: property.livingArea || undefined,
-          lat: property.lat,
-          lon: property.lon,
-          isShortlisted: false,
-        });
-
-        setSelectedProperty(zpid);
-        alert('Property has been added to your My Properties list!');
       }
+
+      // Add property to My Properties with default strategy 'rental'
+      addProperty({
+        zpid: property.zpid,
+        strategy: 'rental',
+        address: streetAddress || property.address || '',
+        city: city || '',
+        state: state || '',
+        zipCode: zipCode || '',
+        price: property.price || undefined,
+        purchasePrice: property.price || undefined,
+        image: property.imgSrc || undefined,
+        propertyType: property.propertyType || '',
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
+        livingArea: property.livingArea || undefined,
+        lat: property.lat,
+        lon: property.lon,
+        isShortlisted: false,
+      });
+
+      alert('Property has been added to your My Properties list!');
     } catch (error) {
-      console.error('Error selecting property:', error);
-      alert('Failed to select property. Please try again.');
+      console.error('Error adding property:', error);
+      alert('Failed to add property. Please try again.');
     }
   };
 
@@ -260,8 +262,8 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
           </div>
         </div>
 
-        {/* View Mode Toggle - Always show when searching for properties */}
-        {searchType === 'properties' && (
+        {/* View Mode Toggle - List View and Map View buttons */}
+        {searchType === 'properties' && searchResults.length > 0 && (
           <div style={{ 
             marginTop: '2rem', 
             display: 'flex', 
@@ -270,15 +272,9 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
             justifyContent: 'space-between',
             flexWrap: 'wrap'
           }}>
-            {searchResults.length > 0 ? (
-              <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '600', color: '#111827' }}>
-                Found {searchResults.length} {searchResults.length === 1 ? 'property' : 'properties'}
-              </h2>
-            ) : (
-              <h2 style={{ margin: 0, color: '#6b7280', fontSize: '1rem', fontWeight: 'normal' }}>
-                Search for properties to see them on the map
-              </h2>
-            )}
+            <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '600', color: '#111827' }}>
+              Found {searchResults.length} {searchResults.length === 1 ? 'property' : 'properties'}
+            </h2>
             <div style={{ 
               display: 'flex', 
               gap: '0.25rem', 
@@ -311,33 +307,7 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
                   }
                 }}
               >
-                List
-              </button>
-              <button
-                onClick={() => setViewMode('both')}
-                style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.375rem',
-                  border: 'none',
-                  backgroundColor: viewMode === 'both' ? '#3b82f6' : 'transparent',
-                  color: viewMode === 'both' ? 'white' : '#374151',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: viewMode === 'both' ? '600' : '500',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  if (viewMode !== 'both') {
-                    e.currentTarget.style.backgroundColor = '#e5e7eb';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (viewMode !== 'both') {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                  }
-                }}
-              >
-                Both
+                List View
               </button>
               <button
                 onClick={() => setViewMode('map')}
@@ -363,7 +333,7 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
                   }
                 }}
               >
-                Map
+                Map View
               </button>
             </div>
           </div>
@@ -372,8 +342,8 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
         {/* Search Results - List and Map */}
         <div style={{ marginTop: '1.5rem' }}>
           {/* Property List */}
-          {searchResults.length > 0 && (viewMode === 'list' || viewMode === 'both') && (
-            <div className="property-cards" style={{ marginBottom: viewMode === 'both' ? '2rem' : '0' }}>
+          {searchResults.length > 0 && viewMode === 'list' && (
+            <div className="property-cards">
               <div className="results-grid">
                 {searchResults.map((property) => (
                   <div 
@@ -434,14 +404,14 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
             </div>
           )}
 
-          {/* Google Map - Always show when searching for properties */}
-          {searchType === 'properties' && (viewMode === 'map' || viewMode === 'both' || searchResults.length === 0) && (
+          {/* Map View - Show when map view is selected */}
+          {searchType === 'properties' && viewMode === 'map' && (
             <div 
               key={`map-${searchResults.length}-${viewMode}`}
               style={{ 
-                marginTop: (viewMode === 'both' && searchResults.length > 0) ? '2rem' : (viewMode === 'list' && searchResults.length > 0 ? '2rem' : (searchResults.length === 0 ? '2rem' : '0')),
-                height: viewMode === 'both' ? '500px' : (viewMode === 'map' ? 'calc(100vh - 300px)' : '600px'),
-                minHeight: '400px',
+                marginTop: searchResults.length > 0 ? '0' : '2rem',
+                height: 'calc(100vh - 300px)',
+                minHeight: '500px',
                 width: '100%',
                 border: '2px solid #3b82f6',
                 borderRadius: '0.5rem',
@@ -456,14 +426,14 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
                 properties={searchResults}
                 selectedProperty={selectedProperty}
                 onPropertySelect={handlePropertySelect}
-                mapHeight={viewMode === 'both' ? '500px' : (viewMode === 'map' ? '100%' : '600px')}
+                mapHeight="100%"
               />
             </div>
           )}
         </div>
 
-        {/* Empty State - Only show when no results and not in map view */}
-        {!isSearching && searchResults.length === 0 && !error && viewMode !== 'map' && (
+        {/* Empty State - Only show when no results and in list view */}
+        {!isSearching && searchResults.length === 0 && !error && viewMode === 'list' && (
           <div className="search-empty-state" style={{ marginTop: '3rem' }}>
             <svg className="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -471,6 +441,20 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
             <h3>Search for Properties</h3>
             <p>Enter a zipcode or area name to find properties available for analysis</p>
           </div>
+        )}
+
+        {/* Property Popup */}
+        {showPopup && popupProperty && (
+          <PropertyPopup
+            property={popupProperty}
+            onClose={() => {
+              setShowPopup(false);
+              setPopupProperty(null);
+              setSelectedProperty(null);
+            }}
+            onAddToList={handleAddToList}
+            isAlreadyAdded={!!properties.find(p => p.zpid === popupProperty.zpid)}
+          />
         )}
       </div>
     );

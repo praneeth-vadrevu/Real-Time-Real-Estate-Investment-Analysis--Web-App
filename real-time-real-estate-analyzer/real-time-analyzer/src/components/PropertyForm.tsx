@@ -20,6 +20,7 @@ interface PropertyData {
   zipCode: string;
   fairMarketValue: number | '';
   vacancyRate: number | '';
+  managementRate: number | ''; // Management Rate as percentage
   advertisingCostPerVacancy: number | '';
   numberOfUnits: number | '';
   annualAppreciationRate: number | '';
@@ -27,59 +28,38 @@ interface PropertyData {
   // 2. Purchase Info
   offerPrice: number | '';
   repairs: number | '';
-  repairsContingency: number | '';
   lendersFee: number | '';
   brokerFee: number | '';
-  environmentals: number | '';
   inspectionsOrEngineerReport: number | '';
   appraisals: number | '';
   misc: number | ''; // Site Visit, Title Ins, Corp, Assign Fee
   transferTax: number | '';
   legal: number | '';
-  realPurchasePrice: number | ''; // PPP (calculated)
+  realPurchasePrice: number | ''; // RPP (calculated)
   
   // 3. Financing (Monthly)
   firstMtgPrincipleBorrowed: number | '';
+  firstMtgInterestRate: number | ''; // Interest Rate as percentage
   firstMtgAmortizationPeriod: number | '';
-  firstMtgCMHCFeePercent: number | '';
-  firstMtgTotalPrinciple: number | '';
+  firstMtgTotalPrinciple: number | ''; // Incl. CMHC Fees
   firstMtgTotalMonthlyPayment: number | '';
-  interestOnlyPrincipleAmount: number | '';
-  interestOnlyInterestRate: number | '';
-  interestOnlyTotalPaymentRate: number | '';
-  otherMonthlyFinancingCost: number | '';
+  secondMtgInterestRate: number | ''; // 2nd Mortgage Interest Rate as percentage
+  secondMtgAmortizationPeriod: number | '';
   cashRequiredToClose: number | '';
   
   // 4. Income (Annual)
   grossRents: number | '';
-  parking: number | '';
-  storage: number | '';
-  laundryVending: number | '';
-  otherIncome: number | '';
   
   // 5. Operating Expenses (Annual)
   propertyTaxes: number | '';
   insurance: number | '';
-  repairsExpense: number | '';
+  repairsExpensePercent: number | ''; // Repairs as percentage
   electricity: number | '';
-  gas: number | '';
-  lawnSnowMaintenance: number | '';
   waterSewer: number | '';
-  cable: number | '';
-  management: number | '';
-  caretaking: number | '';
+  management: number | ''; // Will be calculated from managementRate
   advertising: number | '';
-  associationFees: number | '';
   pestControl: number | '';
   security: number | '';
-  trashRemoval: number | '';
-  miscellaneous: number | '';
-  commonAreaMaintenance: number | '';
-  capitalImprovements: number | '';
-  accounting: number | '';
-  legalExpense: number | '';
-  badDebts: number | '';
-  otherExpense: number | '';
   evictions: number | '';
   
   // Legacy fields (for backward compatibility with API)
@@ -109,6 +89,8 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
   const [propertyCoordinates, setPropertyCoordinates] = useState<{ lat?: number; lon?: number }>({});
   // Track which fields were auto-filled from Zillow API
   const [autoFilledFields, setAutoFilledFields] = useState<Set<keyof PropertyData>>(new Set());
+  // Track if validation has been attempted (when analyze button is clicked)
+  const [validationAttempted, setValidationAttempted] = useState(false);
   const [formData, setFormData] = useState<PropertyData>({
     // Property Info
     address: '',
@@ -117,6 +99,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
     zipCode: '',
     fairMarketValue: '',
     vacancyRate: 5,
+    managementRate: 10,
     advertisingCostPerVacancy: 0,
     numberOfUnits: 1,
     annualAppreciationRate: 3,
@@ -124,10 +107,8 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
     // Purchase Info
     offerPrice: '',
     repairs: 0,
-    repairsContingency: 0,
     lendersFee: 0,
     brokerFee: 0,
-    environmentals: 0,
     inspectionsOrEngineerReport: 0,
     appraisals: 0,
     misc: 0,
@@ -137,46 +118,27 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
     
     // Financing (Monthly)
     firstMtgPrincipleBorrowed: '',
+    firstMtgInterestRate: '',
     firstMtgAmortizationPeriod: '',
-    firstMtgCMHCFeePercent: 0,
     firstMtgTotalPrinciple: '',
     firstMtgTotalMonthlyPayment: '',
-    interestOnlyPrincipleAmount: 0,
-    interestOnlyInterestRate: 0,
-    interestOnlyTotalPaymentRate: 0,
-    otherMonthlyFinancingCost: 0,
+    secondMtgInterestRate: '',
+    secondMtgAmortizationPeriod: '',
     cashRequiredToClose: '',
     
     // Income (Annual)
     grossRents: '',
-    parking: 0,
-    storage: 0,
-    laundryVending: 0,
-    otherIncome: 0,
     
     // Operating Expenses (Annual)
     propertyTaxes: '',
     insurance: 0,
-    repairsExpense: 0,
+    repairsExpensePercent: 5,
     electricity: 0,
-    gas: 0,
-    lawnSnowMaintenance: 0,
     waterSewer: 0,
-    cable: 0,
-    management: 0,
-    caretaking: 0,
+    management: 0, // Will be calculated
     advertising: 0,
-    associationFees: 0,
     pestControl: 0,
     security: 0,
-    trashRemoval: 0,
-    miscellaneous: 0,
-    commonAreaMaintenance: 0,
-    capitalImprovements: 0,
-    accounting: 0,
-    legalExpense: 0,
-    badDebts: 0,
-    otherExpense: 0,
     evictions: 0,
   });
 
@@ -187,6 +149,16 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
       case 'flip': return 'Fix & Flip Property';
       case 'wholesale': return 'Wholesale Deal';
       default: return 'Property';
+    }
+  };
+
+  const getStrategyDescription = () => {
+    switch (strategy) {
+      case 'rental': return 'Properties you plan to buy and hold for long-term cash flow, including short-term rentals.';
+      case 'brrrr': return 'Properties you plan to buy, rehab, rent, refinance and repeat (BRRRR method).';
+      case 'flip': return 'Properties you plan to buy, rehab and flip for a profit.';
+      case 'wholesale': return 'Properties you plan to put under contract and wholesale to other investors.';
+      default: return '';
     }
   };
 
@@ -402,6 +374,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
         zipCode: setIfAvailable('zipCode', zipCode),
         fairMarketValue: setIfAvailable('fairMarketValue', property.zestimate || property.price, ''),
         vacancyRate: 5, // Default (not from API)
+        managementRate: 10, // Default (not from API)
         advertisingCostPerVacancy: 0, // Default (not from API)
         numberOfUnits: 1, // Default (not from API)
         annualAppreciationRate: 3, // Default (not from API)
@@ -409,10 +382,8 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
         // Purchase Info
         offerPrice: setIfAvailable('offerPrice', property.price, ''),
         repairs: 0, // Default (not from API)
-        repairsContingency: 0, // Default (not from API)
         lendersFee: 0, // Default (not from API)
         brokerFee: 0, // Default (not from API)
-        environmentals: 0, // Default (not from API)
         inspectionsOrEngineerReport: 0, // Default (not from API)
         appraisals: 0, // Default (not from API)
         misc: 0, // Default (not from API)
@@ -422,46 +393,27 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
         
         // Financing (Monthly) - Not available from API
         firstMtgPrincipleBorrowed: '',
+        firstMtgInterestRate: '',
         firstMtgAmortizationPeriod: '',
-        firstMtgCMHCFeePercent: 0,
         firstMtgTotalPrinciple: '',
         firstMtgTotalMonthlyPayment: '',
-        interestOnlyPrincipleAmount: 0,
-        interestOnlyInterestRate: 0,
-        interestOnlyTotalPaymentRate: 0,
-        otherMonthlyFinancingCost: 0,
+        secondMtgInterestRate: '',
+        secondMtgAmortizationPeriod: '',
         cashRequiredToClose: '',
         
         // Income (Annual) - Can estimate from API
         grossRents: setIfAvailable('grossRents', property.rentEstimate ? property.rentEstimate * 12 : null, ''),
-        parking: 0, // Default (not from API)
-        storage: 0, // Default (not from API)
-        laundryVending: 0, // Default (not from API)
-        otherIncome: 0, // Default (not from API)
         
         // Operating Expenses (Annual) - Can estimate from API
         propertyTaxes: setIfAvailable('propertyTaxes', property.annualTax, ''),
         insurance: 0, // Default (not from API)
-        repairsExpense: 0, // Default (not from API)
+        repairsExpensePercent: 5, // Default percentage
         electricity: 0, // Default (not from API)
-        gas: 0, // Default (not from API)
-        lawnSnowMaintenance: 0, // Default (not from API)
         waterSewer: 0, // Default (not from API)
-        cable: 0, // Default (not from API)
-        management: 0, // Default (not from API)
-        caretaking: 0, // Default (not from API)
+        management: 0, // Will be calculated from managementRate
         advertising: 0, // Default (not from API)
-        associationFees: setIfAvailable('associationFees', property.hoaMonthly ? property.hoaMonthly * 12 : null, 0),
         pestControl: 0, // Default (not from API)
         security: 0, // Default (not from API)
-        trashRemoval: 0, // Default (not from API)
-        miscellaneous: 0, // Default (not from API)
-        commonAreaMaintenance: 0, // Default (not from API)
-        capitalImprovements: 0, // Default (not from API)
-        accounting: 0, // Default (not from API)
-        legalExpense: 0, // Default (not from API)
-        badDebts: 0, // Default (not from API)
-        otherExpense: 0, // Default (not from API)
         evictions: 0, // Default (not from API)
         
         // Legacy fields (for reference)
@@ -528,11 +480,28 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
     });
   };
 
-  // Helper to check if field needs highlighting (not filled from API)
+  // Helper to check if field needs highlighting (only after validation is attempted)
   const isFieldMissingData = (field: keyof PropertyData): boolean => {
-    // Only show highlighting if we have auto-filled fields (i.e., property was imported)
-    if (autoFilledFields.size === 0) return false;
-    return !autoFilledFields.has(field);
+    // Only highlight if validation has been attempted (analyze button clicked)
+    if (!validationAttempted) return false;
+    
+    // Check if field is empty (no value from API or user)
+    const value = formData[field];
+    
+    // Fields that can have 0 as a valid value
+    const fieldsThatCanBeZero = ['vacancyRate', 'numberOfUnits', 'annualAppreciationRate', 
+      'repairs', 'lendersFee', 'brokerFee', 'inspectionsOrEngineerReport', 'appraisals', 
+      'misc', 'transferTax', 'legal', 'insurance', 'repairsExpensePercent', 'electricity', 
+      'waterSewer', 'management', 'advertising', 'pestControl', 'security', 'evictions', 
+      'advertisingCostPerVacancy', 'managementRate'];
+    
+    if (typeof value === 'number' && value === 0 && fieldsThatCanBeZero.includes(field)) {
+      return false; // 0 is valid for these fields
+    }
+    
+    // Check if field is truly empty
+    return value === '' || value === null || value === undefined || 
+           (typeof value === 'number' && value === 0);
   };
   
   const handleSaveProperty = async () => {
@@ -606,6 +575,30 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Mark validation as attempted to show missing field highlights
+    setValidationAttempted(true);
+    
+    // Check for required fields (matching the required attributes in the form)
+    const requiredFields: (keyof PropertyData)[] = [
+      'address', 'city', 'state', 'zipCode', 'fairMarketValue', 
+      'numberOfUnits', 'offerPrice', 'grossRents'
+    ];
+    
+    const missingFields = requiredFields.filter(field => {
+      const value = formData[field];
+      // numberOfUnits has a default of 1, so check if it's less than 1
+      if (field === 'numberOfUnits') {
+        return !value || (typeof value === 'number' && value < 1);
+      }
+      return value === '' || value === null || value === undefined || 
+             (typeof value === 'number' && value === 0);
+    });
+    
+    if (missingFields.length > 0) {
+      alert(`Please fill in the following required fields:\n${missingFields.map(f => f.toString()).join(', ')}`);
+      return; // Don't proceed if required fields are missing
+    }
     
     // Use coordinates from API import if available, otherwise geocode
     let lat: number | undefined = propertyCoordinates.lat;
@@ -705,7 +698,17 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
     return (
       <div className="property-form-container">
         <div className="property-form-header">
-          <h2>Add New {getStrategyTitle()}</h2>
+          <div>
+            <h2>Add New {getStrategyTitle()}</h2>
+            <p style={{ 
+              marginTop: '0.5rem', 
+              color: '#6b7280', 
+              fontSize: '0.875rem',
+              lineHeight: '1.5'
+            }}>
+              {getStrategyDescription()}
+            </p>
+          </div>
           <button onClick={onClose} className="close-button">×</button>
         </div>
 
@@ -747,7 +750,17 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
   return (
     <div className="property-form-container">
       <div className="property-form-header">
-        <h2>{formData.zpid ? 'Review' : 'Enter'} {getStrategyTitle()} Details</h2>
+        <div>
+          <h2>{formData.zpid ? 'Review' : 'Enter'} {getStrategyTitle()} Details</h2>
+          <p style={{ 
+            marginTop: '0.5rem', 
+            color: '#6b7280', 
+            fontSize: '0.875rem',
+            lineHeight: '1.5'
+          }}>
+            {getStrategyDescription()}
+          </p>
+        </div>
         <button onClick={onClose} className="close-button">×</button>
       </div>
 
@@ -770,25 +783,39 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
                 required
               />
             </div>
-            <div className={`form-group ${isFieldMissingData('city') ? 'field-missing-data' : ''}`}>
-              <label>City</label>
+            <div className={`form-group ${isFieldMissingData('city') || isFieldMissingData('state') ? 'field-missing-data' : ''}`}>
+              <label>City, State</label>
               <input
                 type="text"
-                value={formData.city}
-                onChange={(e) => handleInputChange('city', e.target.value)}
-                className={isFieldMissingData('city') ? 'field-missing-data' : ''}
-                required
-              />
-            </div>
-            <div className={`form-group ${isFieldMissingData('state') ? 'field-missing-data' : ''}`}>
-              <label>State</label>
-              <input
-                type="text"
-                value={formData.state}
-                onChange={(e) => handleInputChange('state', e.target.value)}
-                maxLength={2}
-                placeholder="MA"
-                className={isFieldMissingData('state') ? 'field-missing-data' : ''}
+                value={formData.city && formData.state ? `${formData.city}, ${formData.state}` : (formData.city || formData.state || '')}
+                onChange={(e) => {
+                  const value = e.target.value.trim();
+                  // Parse "City, State" format
+                  if (value.includes(',')) {
+                    const parts = value.split(',').map(p => p.trim());
+                    const city = parts[0] || '';
+                    const state = parts[1] || '';
+                    setFormData(prev => ({ ...prev, city, state }));
+                    // Remove from auto-filled fields if user manually edits
+                    setAutoFilledFields(prev => {
+                      const newSet = new Set(prev);
+                      newSet.delete('city');
+                      newSet.delete('state');
+                      return newSet;
+                    });
+                  } else {
+                    // If no comma, treat as city only
+                    setFormData(prev => ({ ...prev, city: value, state: '' }));
+                    setAutoFilledFields(prev => {
+                      const newSet = new Set(prev);
+                      newSet.delete('city');
+                      newSet.delete('state');
+                      return newSet;
+                    });
+                  }
+                }}
+                placeholder="Boston, MA"
+                className={isFieldMissingData('city') || isFieldMissingData('state') ? 'field-missing-data' : ''}
                 required
               />
             </div>
@@ -822,6 +849,16 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
                 value={formData.vacancyRate}
                 onChange={(e) => handleInputChange('vacancyRate', parseFloat(e.target.value) || '')}
                 placeholder="5"
+              />
+            </div>
+            <div className="form-group">
+              <label>Management Rate (%)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={formData.managementRate}
+                onChange={(e) => handleInputChange('managementRate', parseFloat(e.target.value) || '')}
+                placeholder="10"
               />
             </div>
             <div className="form-group">
@@ -887,16 +924,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
               />
             </div>
             <div className="form-group">
-              <label>Repairs Contingency ($)</label>
-              <input
-                type="number"
-                value={formData.repairsContingency}
-                onChange={(e) => handleInputChange('repairsContingency', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Lenders Fee ($)</label>
+              <label>Lender Fee ($)</label>
               <input
                 type="number"
                 value={formData.lendersFee}
@@ -910,15 +938,6 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
                 type="number"
                 value={formData.brokerFee}
                 onChange={(e) => handleInputChange('brokerFee', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Environmentals ($)</label>
-              <input
-                type="number"
-                value={formData.environmentals}
-                onChange={(e) => handleInputChange('environmentals', parseFloat(e.target.value) || '')}
                 placeholder="0"
               />
             </div>
@@ -968,7 +987,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
               />
             </div>
             <div className="form-group">
-              <label>Real Purchase Price (PPP) ($)</label>
+              <label>Real Purchase Price (RPP) ($)</label>
               <input
                 type="number"
                 value={formData.realPurchasePrice}
@@ -1000,22 +1019,22 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
               />
             </div>
             <div className="form-group">
+              <label>1st Mtg Interest Rate (%)</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.firstMtgInterestRate}
+                onChange={(e) => handleInputChange('firstMtgInterestRate', parseFloat(e.target.value) || '')}
+                placeholder="7.00"
+              />
+            </div>
+            <div className="form-group">
               <label>1st Mtg Amortization Period (Years)</label>
               <input
                 type="number"
                 value={formData.firstMtgAmortizationPeriod}
                 onChange={(e) => handleInputChange('firstMtgAmortizationPeriod', parseFloat(e.target.value) || '')}
                 placeholder="30"
-              />
-            </div>
-            <div className="form-group">
-              <label>1st Mtg CMHC Fee (% of Principle)</label>
-              <input
-                type="number"
-                step="0.01"
-                value={formData.firstMtgCMHCFeePercent}
-                onChange={(e) => handleInputChange('firstMtgCMHCFeePercent', parseFloat(e.target.value) || '')}
-                placeholder="0"
               />
             </div>
             <div className="form-group">
@@ -1037,45 +1056,26 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
               />
             </div>
             <div className="form-group">
-              <label>Interest Only Principle Amount ($)</label>
-              <input
-                type="number"
-                value={formData.interestOnlyPrincipleAmount}
-                onChange={(e) => handleInputChange('interestOnlyPrincipleAmount', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Interest Only Interest Rate (%)</label>
+              <label>2nd Mtg Interest Rate (%)</label>
               <input
                 type="number"
                 step="0.01"
-                value={formData.interestOnlyInterestRate}
-                onChange={(e) => handleInputChange('interestOnlyInterestRate', parseFloat(e.target.value) || '')}
-                placeholder="0"
+                value={formData.secondMtgInterestRate}
+                onChange={(e) => handleInputChange('secondMtgInterestRate', parseFloat(e.target.value) || '')}
+                placeholder="12.00"
               />
             </div>
             <div className="form-group">
-              <label>Interest Only Total Payment Rate (%)</label>
+              <label>2nd Mtg Amortization Period (Years)</label>
               <input
                 type="number"
-                step="0.01"
-                value={formData.interestOnlyTotalPaymentRate}
-                onChange={(e) => handleInputChange('interestOnlyTotalPaymentRate', parseFloat(e.target.value) || '')}
-                placeholder="0"
+                value={formData.secondMtgAmortizationPeriod}
+                onChange={(e) => handleInputChange('secondMtgAmortizationPeriod', parseFloat(e.target.value) || '')}
+                placeholder="9999"
               />
             </div>
             <div className="form-group">
-              <label>Other Monthly Financing Cost ($)</label>
-              <input
-                type="number"
-                value={formData.otherMonthlyFinancingCost}
-                onChange={(e) => handleInputChange('otherMonthlyFinancingCost', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Cash Required to Close ($)</label>
+              <label>Cash Required to Close (After Financing) ($)</label>
               <input
                 type="number"
                 value={formData.cashRequiredToClose}
@@ -1104,42 +1104,6 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
                 placeholder="0"
                 className={isFieldMissingData('grossRents') ? 'field-missing-data' : ''}
                 required
-              />
-            </div>
-            <div className="form-group">
-              <label>Parking ($)</label>
-              <input
-                type="number"
-                value={formData.parking}
-                onChange={(e) => handleInputChange('parking', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Storage ($)</label>
-              <input
-                type="number"
-                value={formData.storage}
-                onChange={(e) => handleInputChange('storage', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Laundry/Vending ($)</label>
-              <input
-                type="number"
-                value={formData.laundryVending}
-                onChange={(e) => handleInputChange('laundryVending', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Other ($)</label>
-              <input
-                type="number"
-                value={formData.otherIncome}
-                onChange={(e) => handleInputChange('otherIncome', parseFloat(e.target.value) || '')}
-                placeholder="0"
               />
             </div>
           </div>
@@ -1173,12 +1137,13 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
               />
             </div>
             <div className="form-group">
-              <label>Repairs ($)</label>
+              <label>Repairs (%)</label>
               <input
                 type="number"
-                value={formData.repairsExpense}
-                onChange={(e) => handleInputChange('repairsExpense', parseFloat(e.target.value) || '')}
-                placeholder="0"
+                step="0.1"
+                value={formData.repairsExpensePercent}
+                onChange={(e) => handleInputChange('repairsExpensePercent', parseFloat(e.target.value) || '')}
+                placeholder="5.00"
               />
             </div>
             <div className="form-group">
@@ -1191,38 +1156,11 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
               />
             </div>
             <div className="form-group">
-              <label>Gas ($)</label>
-              <input
-                type="number"
-                value={formData.gas}
-                onChange={(e) => handleInputChange('gas', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Lawn / Snow Maintenance ($)</label>
-              <input
-                type="number"
-                value={formData.lawnSnowMaintenance}
-                onChange={(e) => handleInputChange('lawnSnowMaintenance', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Water/Sewer ($)</label>
+              <label>Water / Sewer ($)</label>
               <input
                 type="number"
                 value={formData.waterSewer}
                 onChange={(e) => handleInputChange('waterSewer', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Cable ($)</label>
-              <input
-                type="number"
-                value={formData.cable}
-                onChange={(e) => handleInputChange('cable', parseFloat(e.target.value) || '')}
                 placeholder="0"
               />
             </div>
@@ -1233,15 +1171,8 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
                 value={formData.management}
                 onChange={(e) => handleInputChange('management', parseFloat(e.target.value) || '')}
                 placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Caretaking ($)</label>
-              <input
-                type="number"
-                value={formData.caretaking}
-                onChange={(e) => handleInputChange('caretaking', parseFloat(e.target.value) || '')}
-                placeholder="0"
+                disabled
+                title="Calculated from Management Rate"
               />
             </div>
             <div className="form-group">
@@ -1251,16 +1182,6 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
                 value={formData.advertising}
                 onChange={(e) => handleInputChange('advertising', parseFloat(e.target.value) || '')}
                 placeholder="0"
-              />
-            </div>
-            <div className={`form-group ${isFieldMissingData('associationFees') ? 'field-missing-data' : ''}`}>
-              <label>Association Fees ($)</label>
-              <input
-                type="number"
-                value={formData.associationFees}
-                onChange={(e) => handleInputChange('associationFees', parseFloat(e.target.value) || '')}
-                placeholder="0"
-                className={isFieldMissingData('associationFees') ? 'field-missing-data' : ''}
               />
             </div>
             <div className="form-group">
@@ -1278,78 +1199,6 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
                 type="number"
                 value={formData.security}
                 onChange={(e) => handleInputChange('security', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Trash Removal ($)</label>
-              <input
-                type="number"
-                value={formData.trashRemoval}
-                onChange={(e) => handleInputChange('trashRemoval', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Miscellaneous ($)</label>
-              <input
-                type="number"
-                value={formData.miscellaneous}
-                onChange={(e) => handleInputChange('miscellaneous', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Common Area Maintenance ($)</label>
-              <input
-                type="number"
-                value={formData.commonAreaMaintenance}
-                onChange={(e) => handleInputChange('commonAreaMaintenance', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Capital Improvements ($)</label>
-              <input
-                type="number"
-                value={formData.capitalImprovements}
-                onChange={(e) => handleInputChange('capitalImprovements', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Accounting ($)</label>
-              <input
-                type="number"
-                value={formData.accounting}
-                onChange={(e) => handleInputChange('accounting', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Legal ($)</label>
-              <input
-                type="number"
-                value={formData.legalExpense}
-                onChange={(e) => handleInputChange('legalExpense', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Bad Debts ($)</label>
-              <input
-                type="number"
-                value={formData.badDebts}
-                onChange={(e) => handleInputChange('badDebts', parseFloat(e.target.value) || '')}
-                placeholder="0"
-              />
-            </div>
-            <div className="form-group">
-              <label>Other ($)</label>
-              <input
-                type="number"
-                value={formData.otherExpense}
-                onChange={(e) => handleInputChange('otherExpense', parseFloat(e.target.value) || '')}
                 placeholder="0"
               />
             </div>

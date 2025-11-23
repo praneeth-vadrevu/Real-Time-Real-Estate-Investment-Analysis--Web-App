@@ -7,6 +7,10 @@ interface AuthPageProps {
   onAuthSuccess?: () => void;
 }
 
+// Get Google Client ID from environment
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
+const hasGoogleAuth = GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID !== "" && !GOOGLE_CLIENT_ID.includes('your-client-id');
+
 export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
   const { login, browseAsGuest } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -159,23 +163,42 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
               </div>
             )}
 
-            <div className="auth-google-container">
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={handleGoogleError}
-                theme="outline"
-                size="large"
-                text="signin_with"
-                shape="rectangular"
-                logo_alignment="left"
-                width="100%"
-                useOneTap={false}
-              />
-            </div>
+            {hasGoogleAuth && (
+              <>
+                <div className="auth-google-container">
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleError}
+                    theme="outline"
+                    size="large"
+                    text="signin_with"
+                    shape="rectangular"
+                    logo_alignment="left"
+                    width="100%"
+                    useOneTap={false}
+                  />
+                </div>
 
-            <div className="auth-divider">
-              <span>or</span>
-            </div>
+                <div className="auth-divider">
+                  <span>or</span>
+                </div>
+              </>
+            )}
+
+            {!hasGoogleAuth && (
+              <div style={{ 
+                backgroundColor: '#fef3c7', 
+                border: '1px solid #fbbf24', 
+                borderRadius: '0.5rem', 
+                padding: '1rem', 
+                marginBottom: '1.5rem',
+                textAlign: 'center'
+              }}>
+                <p style={{ color: '#92400e', fontSize: '0.875rem', margin: 0 }}>
+                  <strong>Note:</strong> Google Sign-In is not configured. You can still use the app as a guest.
+                </p>
+              </div>
+            )}
 
             <button
               onClick={handleBrowseAsGuest}

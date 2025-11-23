@@ -52,7 +52,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
         {/* Logo */}
         <div 
           className="logo-container" 
-          onClick={() => onNavigate('home')}
+          onClick={() => onNavigate('my-properties')}
           style={{ cursor: 'pointer' }}
         >
           <div className="logo-icon">

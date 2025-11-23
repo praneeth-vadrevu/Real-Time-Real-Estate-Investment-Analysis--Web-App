@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropertyMap from './PropertyMap';
 
 interface PropertySearchProps {
   onPropertySelect: (zpid: string) => Promise<void>;
@@ -15,6 +16,8 @@ interface PropertyResult {
   propertyType: string;
   imgSrc: string;
   status: string;
+  lat?: number;
+  lon?: number;
 }
 
 interface SearchSuggestion {
@@ -32,6 +35,8 @@ export default function PropertySearch({ onPropertySelect, onCancel }: PropertyS
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
   const [loadingPropertyId, setLoadingPropertyId] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -174,7 +179,26 @@ export default function PropertySearch({ onPropertySelect, onCancel }: PropertyS
       }
 
       const data = await response.json();
-      setSearchResults(data);
+      
+      // Handle different response formats
+      let properties = Array.isArray(data) ? data : (data.properties || data.results || []);
+      
+      // Map properties to ensure they have the correct structure with coordinates
+      const propertiesWithCoords = properties.map((prop: any) => ({
+        zpid: prop.zpid || prop.id || '',
+        address: prop.address || '',
+        price: prop.price || prop.unformattedPrice || 0,
+        bedrooms: prop.bedrooms || prop.beds || 0,
+        bathrooms: prop.bathrooms || prop.baths || 0,
+        livingArea: prop.livingArea || prop.sqft || prop.area || 0,
+        propertyType: prop.propertyType || '',
+        imgSrc: prop.imgSrc || prop.image || prop.img || '',
+        status: prop.status || prop.listingStatus || '',
+        lat: prop.lat || prop.latitude || undefined,
+        lon: prop.lon || prop.lng || prop.longitude || undefined,
+      })).filter((prop: any) => prop.zpid); // Filter out invalid properties
+      
+      setSearchResults(propertiesWithCoords);
 
       if (data.length === 0) {
         setError('No properties found for this location. Try a different search.');
@@ -228,6 +252,7 @@ export default function PropertySearch({ onPropertySelect, onCancel }: PropertyS
   };
 
   const handlePropertyClick = async (zpid: string) => {
+    setSelectedProperty(zpid);
     setLoadingPropertyId(zpid);
     try {
       await onPropertySelect(zpid);
@@ -239,6 +264,11 @@ export default function PropertySearch({ onPropertySelect, onCancel }: PropertyS
     }
   };
 
+  const handleMapPropertySelect = (zpid: string) => {
+    setSelectedProperty(zpid);
+    handlePropertyClick(zpid);
+  };
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -248,9 +278,71 @@ export default function PropertySearch({ onPropertySelect, onCancel }: PropertyS
   };
 
   return (
-    <div className="property-search-container">
+    <div className={`property-search-container ${viewMode === 'map' ? 'map-view-active' : ''}`}>
       <div className="property-form-header">
-        <h2>Search Properties</h2>
+        <div>
+          <h2>Add New Property</h2>
+          {/* View Mode Toggle Buttons */}
+          {searchResults.length > 0 && (
+            <div style={{ 
+              display: 'flex', 
+              gap: '0.5rem', 
+              marginTop: '1rem',
+              alignItems: 'center'
+            }}>
+              <button
+                onClick={() => setViewMode('list')}
+                style={{
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.375rem',
+                  border: '1px solid #d1d5db',
+                  backgroundColor: viewMode === 'list' ? '#3b82f6' : 'white',
+                  color: viewMode === 'list' ? 'white' : '#374151',
+                  cursor: 'pointer',
+                  fontWeight: viewMode === 'list' ? '600' : '400',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  if (viewMode !== 'list') {
+                    e.currentTarget.style.backgroundColor = '#f3f4f6';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (viewMode !== 'list') {
+                    e.currentTarget.style.backgroundColor = 'white';
+                  }
+                }}
+              >
+                List View
+              </button>
+              <button
+                onClick={() => setViewMode('map')}
+                style={{
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.375rem',
+                  border: '1px solid #d1d5db',
+                  backgroundColor: viewMode === 'map' ? '#3b82f6' : 'white',
+                  color: viewMode === 'map' ? 'white' : '#374151',
+                  cursor: 'pointer',
+                  fontWeight: viewMode === 'map' ? '600' : '400',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  if (viewMode !== 'map') {
+                    e.currentTarget.style.backgroundColor = '#f3f4f6';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (viewMode !== 'map') {
+                    e.currentTarget.style.backgroundColor = 'white';
+                  }
+                }}
+              >
+                Map View
+              </button>
+            </div>
+          )}
+        </div>
         <button onClick={onCancel} className="close-button">×</button>
       </div>
 
@@ -341,53 +433,73 @@ export default function PropertySearch({ onPropertySelect, onCancel }: PropertyS
 
       {/* Search Results */}
       {searchResults.length > 0 && (
-        <div className="search-results">
-          <h3 className="results-title">
-            Found {searchResults.length} {searchResults.length === 1 ? 'property' : 'properties'}
-          </h3>
-          <div className="results-grid">
-            {searchResults.map((property) => (
-              <div 
-                key={property.zpid} 
-                className="result-card"
-              >
-                {property.imgSrc && (
-                  <div className="result-card-image">
-                    <img src={property.imgSrc} alt={property.address} />
-                    {property.status && (
-                      <span className="result-status-badge">{property.status}</span>
-                    )}
-                  </div>
-                )}
-                
-                <div className="result-card-content">
-                  <div className="result-price">{formatPrice(property.price)}</div>
-                  <div className="result-address">{property.address}</div>
-                  
-                  <div className="result-details">
-                    <span>{property.bedrooms} bd</span>
-                    <span className="detail-separator">•</span>
-                    <span>{property.bathrooms} ba</span>
-                    <span className="detail-separator">•</span>
-                    <span>{property.livingArea?.toLocaleString()} sqft</span>
-                  </div>
-                  
-                  {property.propertyType && (
-                    <div className="result-type">{property.propertyType}</div>
-                  )}
-                  
-                  <button 
-                    className="btn-primary select-button"
+        <>
+          {viewMode === 'list' && (
+            <div className="search-results">
+              <h3 className="results-title">
+                Found {searchResults.length} {searchResults.length === 1 ? 'property' : 'properties'}
+              </h3>
+              <div className="results-grid">
+                {searchResults.map((property) => (
+                  <div 
+                    key={property.zpid} 
+                    className={`result-card ${selectedProperty === property.zpid ? 'selected' : ''}`}
                     onClick={() => handlePropertyClick(property.zpid)}
-                    disabled={loadingPropertyId === property.zpid}
+                    style={{ cursor: 'pointer' }}
                   >
-                    {loadingPropertyId === property.zpid ? 'Loading...' : 'Select Property'}
-                  </button>
-                </div>
+                    {property.imgSrc && (
+                      <div className="result-card-image">
+                        <img src={property.imgSrc} alt={property.address} />
+                        {property.status && (
+                          <span className="result-status-badge">{property.status}</span>
+                        )}
+                      </div>
+                    )}
+                    
+                    <div className="result-card-content">
+                      <div className="result-price">{formatPrice(property.price)}</div>
+                      <div className="result-address">{property.address}</div>
+                      
+                      <div className="result-details">
+                        <span>{property.bedrooms} bd</span>
+                        <span className="detail-separator">•</span>
+                        <span>{property.bathrooms} ba</span>
+                        <span className="detail-separator">•</span>
+                        <span>{property.livingArea?.toLocaleString()} sqft</span>
+                      </div>
+                      
+                      {property.propertyType && (
+                        <div className="result-type">{property.propertyType}</div>
+                      )}
+                      
+                      <button 
+                        className="btn-primary select-button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePropertyClick(property.zpid);
+                        }}
+                        disabled={loadingPropertyId === property.zpid}
+                      >
+                        {loadingPropertyId === property.zpid ? 'Loading...' : 'Select Property'}
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          )}
+
+          {viewMode === 'map' && (
+            <div className="map-view-container">
+              <PropertyMap
+                properties={searchResults}
+                selectedProperty={selectedProperty}
+                onPropertySelect={handleMapPropertySelect}
+                mapHeight="100%"
+              />
+            </div>
+          )}
+        </>
       )}
 
       {/* Initial State */}

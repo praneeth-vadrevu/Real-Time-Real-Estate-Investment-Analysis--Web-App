@@ -79,6 +79,16 @@ export default function PurchaseCriteriaForm({ strategy, onClose, onSave }: Purc
     }
   };
 
+  const getStrategyDescription = () => {
+    switch (strategy) {
+      case 'rental': return 'Properties you plan to buy and hold for long-term cash flow, including short-term rentals.';
+      case 'brrrr': return 'Properties you plan to buy, rehab, rent, refinance and repeat (BRRRR method).';
+      case 'flip': return 'Properties you plan to buy, rehab and flip for a profit.';
+      case 'wholesale': return 'Properties you plan to put under contract and wholesale to other investors.';
+      default: return '';
+    }
+  };
+
   const propertyTypes = [
     'Single Family',
     'Multi-Family',
@@ -125,7 +135,17 @@ export default function PurchaseCriteriaForm({ strategy, onClose, onSave }: Purc
   return (
     <div className="property-form-container">
       <div className="property-form-header">
-        <h2>Purchase Criteria - {getStrategyTitle()}</h2>
+        <div>
+          <h2>Purchase Criteria - {getStrategyTitle()}</h2>
+          <p style={{ 
+            marginTop: '0.5rem', 
+            color: '#6b7280', 
+            fontSize: '0.875rem',
+            lineHeight: '1.5'
+          }}>
+            {getStrategyDescription()}
+          </p>
+        </div>
         <button onClick={onClose} className="close-button">×</button>
       </div>
 
