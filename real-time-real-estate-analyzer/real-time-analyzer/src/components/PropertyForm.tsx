@@ -2,14 +2,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { FiDownload, FiHome } from 'react-icons/fi';
 import { useProperties } from '../context/PropertiesContext';
 import PropertySearch from './PropertySearch';
+import PropertyReportViewer from './PropertyReportViewer';
+import { mapPropertyDataToCashflowRequest, analyzeCashflow } from '../utils/cashflowApi';
 
 interface PropertyFormProps {
   strategy: 'rental' | 'brrrr' | 'flip' | 'wholesale';
   onClose: () => void;
   selectedZpid?: string | null;
+  searchLocation?: string | null;
 }
 
-interface PropertyData {
+export interface PropertyData {
   // Basic Information
   zpid?: string;
   
@@ -82,15 +85,15 @@ interface PropertyData {
   parkingFeatures?: string;
 }
 
-export default function PropertyForm({ strategy, onClose, selectedZpid }: PropertyFormProps) {
+export default function PropertyForm({ strategy, onClose, selectedZpid, searchLocation }: PropertyFormProps) {
   const { addProperty, properties } = useProperties();
   const [inputMethod, setInputMethod] = useState<'select' | 'import' | 'manual' | 'search'>(selectedZpid ? 'manual' : 'select');
   const [isLoadingProperty, setIsLoadingProperty] = useState(false);
   const [propertyCoordinates, setPropertyCoordinates] = useState<{ lat?: number; lon?: number }>({});
   // Track which fields were auto-filled from Zillow API
   const [autoFilledFields, setAutoFilledFields] = useState<Set<keyof PropertyData>>(new Set());
-  // Track if validation has been attempted (when analyze button is clicked)
   const [validationAttempted, setValidationAttempted] = useState(false);
+  const [showReport, setShowReport] = useState(false);
   const [formData, setFormData] = useState<PropertyData>({
     // Property Info
     address: '',
@@ -191,19 +194,16 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
 
       const property = await response.json();
       
-      // Debug: Log the raw address from API
-      console.log('Raw address from API:', property.address);
+      console.log('Full property object from API:', JSON.stringify(property, null, 2));
+      console.log('Property address:', property.address);
       console.log('Property coordinates:', { lat: property.lat, lon: property.lon });
       
-      // Parse address into components
-      // First, check if API provides separate city, state, zipCode fields
       let streetAddress = '';
-      let city = property.city || property.cityName || '';
-      let state = property.state || property.stateCode || '';
-      let zipCode = property.zipCode || property.zipcode || property.postalCode || property.postcode || '';
+      let city = '';
+      let state = '';
+      let zipCode = '';
 
-      // If separate fields not available, parse from address string
-      if (property.address && (!city || !state || !zipCode)) {
+      if (property.address) {
         const addressParts = property.address.split(',').map((part: string) => part.trim());
         console.log('Address parts after split:', addressParts);
         
@@ -280,6 +280,41 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
         streetAddress = property.address;
       }
       
+      // If we have searchLocation (zipcode/city from search), use it to fill missing fields
+      if (searchLocation) {
+        console.log('Using searchLocation to fill missing fields:', searchLocation);
+        const locationStr = searchLocation.trim();
+        
+        // Check if it's a zipcode (5 digits)
+        const zipMatch = locationStr.match(/^(\d{5})$/);
+        if (zipMatch) {
+          zipCode = zipMatch[1];
+          console.log('Extracted zipcode from searchLocation:', zipCode);
+        }
+        
+        // Check if it's "City, State" format
+        if (locationStr.includes(',')) {
+          const parts = locationStr.split(',').map(p => p.trim());
+          if (parts.length >= 2) {
+            if (!city) city = parts[0];
+            const statePart = parts[1];
+            // Check if state part has zipcode
+            const stateZipMatch = statePart.match(/([A-Z]{2})\s+(\d{5})/);
+            if (stateZipMatch) {
+              if (!state) state = stateZipMatch[1];
+              if (!zipCode) zipCode = stateZipMatch[2];
+            } else if (statePart.length === 2 && /^[A-Z]{2}$/.test(statePart)) {
+              if (!state) state = statePart;
+            }
+          }
+        } else if (!zipMatch) {
+          // Single value that's not a zipcode - treat as city
+          if (!city) city = locationStr;
+        }
+        
+        console.log('After using searchLocation:', { city, state, zipCode });
+      }
+      
       // Debug: Log parsed address components
       console.log('Parsed address components:', { streetAddress, city, state, zipCode });
       console.log('API property object:', property);
@@ -305,29 +340,27 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
         }
       }
 
-      // If we have coordinates but missing city/state/zip, try reverse geocoding
-      if (lat && lon && (!city || !state || !zipCode) && typeof google !== 'undefined' && google.maps && google.maps.Geocoder) {
+      if (lat && lon && typeof google !== 'undefined' && google.maps && google.maps.Geocoder) {
         try {
-          console.log('Attempting reverse geocoding for city, state, zip...');
+          console.log('Attempting reverse geocoding for city, state, zip using coordinates:', { lat, lon });
           const geocoder = new google.maps.Geocoder();
           const result = await new Promise<{ city: string; state: string; zipCode: string } | null>((resolve) => {
             geocoder.geocode({ location: { lat, lng: lon } }, (results, status) => {
               if (status === 'OK' && results && results[0]) {
-                let foundCity = city;
-                let foundState = state;
-                let foundZipCode = zipCode;
+                let foundCity = '';
+                let foundState = '';
+                let foundZipCode = '';
                 
-                // Parse address components
                 for (const component of results[0].address_components) {
                   const types = component.types;
-                  if (types.includes('locality') || types.includes('sublocality') || types.includes('sublocality_level_1')) {
-                    if (!foundCity) foundCity = component.long_name;
+                  if ((types.includes('locality') || types.includes('sublocality') || types.includes('sublocality_level_1') || types.includes('neighborhood')) && !foundCity) {
+                    foundCity = component.long_name;
                   }
-                  if (types.includes('administrative_area_level_1')) {
-                    if (!foundState) foundState = component.short_name;
+                  if (types.includes('administrative_area_level_1') && !foundState) {
+                    foundState = component.short_name;
                   }
-                  if (types.includes('postal_code')) {
-                    if (!foundZipCode) foundZipCode = component.long_name.substring(0, 5);
+                  if (types.includes('postal_code') && !foundZipCode) {
+                    foundZipCode = component.long_name.substring(0, 5);
                   }
                 }
                 
@@ -341,20 +374,56 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
           });
           
           if (result) {
-            if (!city && result.city) city = result.city;
-            if (!state && result.state) state = result.state;
-            if (!zipCode && result.zipCode) zipCode = result.zipCode;
+            if (result.city) city = result.city;
+            if (result.state) state = result.state;
+            if (result.zipCode) zipCode = result.zipCode;
             console.log('Updated address from reverse geocoding:', { city, state, zipCode });
           }
         } catch (error) {
           console.warn('Reverse geocoding error:', error);
+        }
+      } else if (zipCode && (!city || !state) && typeof google !== 'undefined' && google.maps && google.maps.Geocoder) {
+        try {
+          console.log('Attempting geocoding by zipcode:', zipCode);
+          const geocoder = new google.maps.Geocoder();
+          const result = await new Promise<{ city: string; state: string } | null>((resolve) => {
+            geocoder.geocode({ address: zipCode }, (results, status) => {
+              if (status === 'OK' && results && results[0]) {
+                let foundCity = '';
+                let foundState = '';
+                
+                for (const component of results[0].address_components) {
+                  const types = component.types;
+                  if ((types.includes('locality') || types.includes('sublocality') || types.includes('sublocality_level_1')) && !foundCity) {
+                    foundCity = component.long_name;
+                  }
+                  if (types.includes('administrative_area_level_1') && !foundState) {
+                    foundState = component.short_name;
+                  }
+                }
+                
+                console.log('Geocoding by zipcode result:', { foundCity, foundState });
+                resolve({ city: foundCity, state: foundState });
+              } else {
+                console.log('Geocoding by zipcode failed:', status);
+                resolve(null);
+              }
+            });
+          });
+          
+          if (result) {
+            if (result.city && !city) city = result.city;
+            if (result.state && !state) state = result.state;
+            console.log('Updated city/state from zipcode geocoding:', { city, state });
+          }
+        } catch (error) {
+          console.warn('Geocoding by zipcode error:', error);
         }
       }
       
       // Track which fields were auto-filled from API
       const filledFields = new Set<keyof PropertyData>();
       
-      // Helper to check if value exists and add to filledFields
       const setIfAvailable = (field: keyof PropertyData, value: any, defaultValue: any = '') => {
         if (value !== null && value !== undefined && value !== '') {
           filledFields.add(field);
@@ -363,11 +432,9 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
         return defaultValue;
       };
       
-      // Map API response to form data, tracking which fields were filled
       const newFormData: PropertyData = {
         zpid: setIfAvailable('zpid', property.zpid),
         
-        // Property Info
         address: setIfAvailable('address', streetAddress),
         city: setIfAvailable('city', city),
         state: setIfAvailable('state', state),
@@ -443,6 +510,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
       // Set form data instead of directly adding to properties
       // This allows user to review and edit before submitting
       setFormData(newFormData);
+      console.log('Form data city:', newFormData.city, 'state:', newFormData.state, 'zipCode:', newFormData.zipCode);
       setAutoFilledFields(filledFields);
       setInputMethod('manual');
       setIsLoadingProperty(false);
@@ -470,6 +538,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
     }
   }, [selectedZpid, handlePropertySelect]); // Removed inputMethod from dependencies to avoid race conditions
 
+
   const handleInputChange = (field: keyof PropertyData, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Remove from auto-filled fields if user manually edits
@@ -488,6 +557,11 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
     // Check if field is empty (no value from API or user)
     const value = formData[field];
     
+    // Check for null or undefined first
+    if (value === null || value === undefined) {
+      return true;
+    }
+    
     // Fields that can have 0 as a valid value
     const fieldsThatCanBeZero = ['vacancyRate', 'numberOfUnits', 'annualAppreciationRate', 
       'repairs', 'lendersFee', 'brokerFee', 'inspectionsOrEngineerReport', 'appraisals', 
@@ -495,13 +569,25 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
       'waterSewer', 'management', 'advertising', 'pestControl', 'security', 'evictions', 
       'advertisingCostPerVacancy', 'managementRate'];
     
-    if (typeof value === 'number' && value === 0 && fieldsThatCanBeZero.includes(field)) {
-      return false; // 0 is valid for these fields
+    // For number fields
+    if (typeof value === 'number') {
+      if (value === 0 && fieldsThatCanBeZero.includes(field)) {
+        return false; // 0 is valid for these fields
+      }
+      return value === 0; // 0 is invalid for other number fields
     }
     
-    // Check if field is truly empty
-    return value === '' || value === null || value === undefined || 
-           (typeof value === 'number' && value === 0);
+    // For string fields, check if they're empty strings or whitespace
+    if (typeof value === 'string') {
+      return value.trim() === '';
+    }
+    
+    // For empty string literal type
+    if (value === '') {
+      return true;
+    }
+    
+    return false;
   };
   
   const handleSaveProperty = async () => {
@@ -630,33 +716,42 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
       }
     }
     
-    // Save property to context
-    addProperty({
-      zpid: formData.zpid,
-      strategy: strategy,
-      address: formData.address,
-      city: formData.city,
-      state: formData.state,
-      zipCode: formData.zipCode,
-      price: typeof formData.offerPrice === 'number' ? formData.offerPrice : undefined,
-      purchasePrice: typeof formData.realPurchasePrice === 'number' ? formData.realPurchasePrice : 
-                     (typeof formData.offerPrice === 'number' ? formData.offerPrice : undefined),
-      cashFlow: undefined, // Will be calculated later
-      capRate: undefined, // Will be calculated later
-      coc: undefined, // Will be calculated later
-      image: undefined, // Will be set from API if available
-      propertyType: formData.propertyType,
-      bedrooms: formData.bedrooms,
-      lat: lat,
-      lon: lon,
-      bathrooms: formData.bathrooms,
-      livingArea: formData.livingArea,
-      isShortlisted: false,
-    });
-    
-    console.log('Form submitted:', { strategy, data: formData });
-    alert(`${getStrategyTitle()} has been added to your dashboard!`);
-    onClose();
+    try {
+      const request = mapPropertyDataToCashflowRequest(formData);
+      const analysisResult = await analyzeCashflow(request);
+      
+      const calculatedCashFlow = analysisResult.summary.monthlyProfitY1;
+      const calculatedCapRate = analysisResult.summary.capRatePPY1;
+      const calculatedCoc = analysisResult.summary.cashOnCashY1;
+      
+      addProperty({
+        zpid: formData.zpid,
+        strategy: strategy,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode,
+        price: typeof formData.offerPrice === 'number' ? formData.offerPrice : undefined,
+        purchasePrice: typeof formData.realPurchasePrice === 'number' ? formData.realPurchasePrice : 
+                       (typeof formData.offerPrice === 'number' ? formData.offerPrice : undefined),
+        cashFlow: calculatedCashFlow,
+        capRate: calculatedCapRate,
+        coc: calculatedCoc,
+        image: undefined,
+        propertyType: formData.propertyType,
+        bedrooms: formData.bedrooms,
+        lat: lat,
+        lon: lon,
+        bathrooms: formData.bathrooms,
+        livingArea: formData.livingArea,
+        isShortlisted: false,
+      });
+      
+      setShowReport(true);
+    } catch (error: any) {
+      console.error('Error analyzing cashflow:', error);
+      alert(error.message || 'Failed to analyze property. Please make sure the backend server is running on port 8080.');
+    }
   };
 
   // Show loading state while fetching property data
@@ -778,44 +873,28 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
                 type="text"
                 value={formData.address}
                 onChange={(e) => handleInputChange('address', e.target.value)}
-                placeholder="123 Main Street, City, State ZIP"
                 className={isFieldMissingData('address') ? 'field-missing-data' : ''}
                 required
               />
             </div>
-            <div className={`form-group ${isFieldMissingData('city') || isFieldMissingData('state') ? 'field-missing-data' : ''}`}>
-              <label>City, State</label>
+            <div className={`form-group ${isFieldMissingData('city') ? 'field-missing-data' : ''}`}>
+              <label>City</label>
               <input
                 type="text"
-                value={formData.city && formData.state ? `${formData.city}, ${formData.state}` : (formData.city || formData.state || '')}
-                onChange={(e) => {
-                  const value = e.target.value.trim();
-                  // Parse "City, State" format
-                  if (value.includes(',')) {
-                    const parts = value.split(',').map(p => p.trim());
-                    const city = parts[0] || '';
-                    const state = parts[1] || '';
-                    setFormData(prev => ({ ...prev, city, state }));
-                    // Remove from auto-filled fields if user manually edits
-                    setAutoFilledFields(prev => {
-                      const newSet = new Set(prev);
-                      newSet.delete('city');
-                      newSet.delete('state');
-                      return newSet;
-                    });
-                  } else {
-                    // If no comma, treat as city only
-                    setFormData(prev => ({ ...prev, city: value, state: '' }));
-                    setAutoFilledFields(prev => {
-                      const newSet = new Set(prev);
-                      newSet.delete('city');
-                      newSet.delete('state');
-                      return newSet;
-                    });
-                  }
-                }}
-                placeholder="Boston, MA"
-                className={isFieldMissingData('city') || isFieldMissingData('state') ? 'field-missing-data' : ''}
+                value={formData.city}
+                onChange={(e) => handleInputChange('city', e.target.value)}
+                className={isFieldMissingData('city') ? 'field-missing-data' : ''}
+                required
+              />
+            </div>
+            <div className={`form-group ${isFieldMissingData('state') ? 'field-missing-data' : ''}`}>
+              <label>State</label>
+              <input
+                type="text"
+                value={formData.state}
+                onChange={(e) => handleInputChange('state', e.target.value.toUpperCase())}
+                maxLength={2}
+                className={isFieldMissingData('state') ? 'field-missing-data' : ''}
                 required
               />
             </div>
@@ -1227,6 +1306,16 @@ export default function PropertyForm({ strategy, onClose, selectedZpid }: Proper
           </button>
         </div>
       </form>
+
+      {showReport && (
+        <PropertyReportViewer
+          formData={formData}
+          onClose={() => {
+            setShowReport(false);
+            onClose();
+          }}
+        />
+      )}
     </div>
   );
 }

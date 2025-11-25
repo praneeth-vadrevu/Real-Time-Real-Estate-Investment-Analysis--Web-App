@@ -7,7 +7,7 @@ import { useProperties } from '../context/PropertiesContext';
 interface SearchPageProps {
   searchType: 'properties' | 'lenders';
   onClose?: () => void;
-  onPropertySelect?: (zpid: string, strategy?: 'rental' | 'brrrr' | 'flip' | 'wholesale') => void;
+  onPropertySelect?: (zpid: string, strategy?: 'rental' | 'brrrr' | 'flip' | 'wholesale', searchLocation?: string) => void;
 }
 
 interface PropertyResult {
@@ -127,6 +127,11 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
       setPopupProperty(property);
       setShowPopup(true);
       setSelectedProperty(zpid);
+    }
+    
+    // Pass the search query (zipcode/location) to the parent
+    if (onPropertySelect) {
+      onPropertySelect(zpid, 'rental', searchQuery);
     }
   };
 

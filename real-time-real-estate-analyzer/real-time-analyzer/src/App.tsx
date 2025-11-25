@@ -37,6 +37,7 @@ function AppContent() {
   const [showPropertyForm, setShowPropertyForm] = useState(false);
   const [propertyFormStrategy, setPropertyFormStrategy] = useState<'rental' | 'brrrr' | 'flip' | 'wholesale'>('rental');
   const [selectedPropertyZpid, setSelectedPropertyZpid] = useState<string | null>(null);
+  const [searchLocation, setSearchLocation] = useState<string | null>(null);
 
   const handleNavigate = (page: string) => {
     setActivePage(page);
@@ -201,9 +202,11 @@ function AppContent() {
         <PropertyForm
           strategy={propertyFormStrategy}
           selectedZpid={selectedPropertyZpid}
+          searchLocation={searchLocation}
           onClose={() => {
             setShowPropertyForm(false);
             setSelectedPropertyZpid(null);
+            setSearchLocation(null);
             setActiveView('dashboard');
             // Set the active section to match the strategy
             const sectionMap: { [key: string]: string } = {
@@ -228,10 +231,11 @@ function AppContent() {
         <SearchPage 
           searchType="properties" 
           onClose={() => setActiveView('dashboard')}
-          onPropertySelect={(zpid, strategy = 'rental') => {
+          onPropertySelect={(zpid, strategy = 'rental', location) => {
             // Open PropertyForm with the selected property
             setPropertyFormStrategy(strategy);
             setSelectedPropertyZpid(zpid);
+            setSearchLocation(location || null);
             setShowPropertyForm(true);
           }}
         />
