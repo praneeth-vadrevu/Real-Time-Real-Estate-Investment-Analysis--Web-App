@@ -32,6 +32,16 @@ export async function generatePropertyReport(formData: PropertyData): Promise<st
   const s = result.summary;
   const address = `${formData.address || 'N/A'}, ${formData.city || 'N/A'}, ${formData.state || 'N/A'} ${formData.zipCode || ''}`;
 
+  // Calculate requested metrics
+  const offerPrice = request.offerPrice || 0;
+  const cashRequiredToCloseAfterFinancing = offerPrice * 0.8;
+  const effectiveGrossIncome = s.egiY1 || 0;
+  const totalExpenses = s.totalExpensesY1 || 0;
+  const netOperatingIncome = s.noiY1 || 0;
+  const totalCashRequired = cashRequiredToCloseAfterFinancing;
+  const cashflowPerUnitPerMonth = s.cashflowPerUnitPerMonthY1;
+  const expenseToIncomeRatio = effectiveGrossIncome > 0 ? totalExpenses / effectiveGrossIncome : null;
+
   let html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -197,35 +207,73 @@ export async function generatePropertyReport(formData: PropertyData): Promise<st
       ${formData.numberOfUnits ? `<p><strong>Number of Units:</strong> ${formData.numberOfUnits}</p>` : ''}
     </div>
 
+    <div class="section">
+      <h3>Key Financial Metrics</h3>
+      <table class="detail-table">
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+        </tr>
+        <tr>
+          <td><strong>Cash Required to Close (After Financing)</strong></td>
+          <td><strong>${formatCurrency(cashRequiredToCloseAfterFinancing)}</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Effective Gross Income</strong></td>
+          <td><strong>${formatCurrency(effectiveGrossIncome)}</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Total Expenses</strong></td>
+          <td><strong>${formatCurrency(totalExpenses)}</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Net Operating Income (NOI)</strong></td>
+          <td><strong>${formatCurrency(netOperatingIncome)}</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Total Cash Required</strong></td>
+          <td><strong>${formatCurrency(totalCashRequired)}</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Cashflow per Unit per Month</strong></td>
+          <td><strong>${formatCurrency(cashflowPerUnitPerMonth)}</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Expense to Income Ratio</strong></td>
+          <td><strong>${expenseToIncomeRatio !== null ? formatPercentage(expenseToIncomeRatio) : 'N/A'}</strong></td>
+        </tr>
+      </table>
+    </div>
+
     <div class="metrics-grid">
-      <div class="metric-card ${(s.monthlyProfitY1 || 0) >= 0 ? 'positive' : 'negative'}">
-        <div class="metric-label">Monthly Cash Flow</div>
-        <div class="metric-value">${formatCurrency(s.monthlyProfitY1)}</div>
+      <div class="metric-card positive">
+        <div class="metric-label">Cash Required to Close (After Financing)</div>
+        <div class="metric-value">${formatCurrency(cashRequiredToCloseAfterFinancing)}</div>
       </div>
       <div class="metric-card positive">
-        <div class="metric-label">Cap Rate (Purchase Price)</div>
-        <div class="metric-value">${formatPercentage(s.capRatePPY1)}</div>
+        <div class="metric-label">Effective Gross Income</div>
+        <div class="metric-value">${formatCurrency(effectiveGrossIncome)}</div>
+      </div>
+      <div class="metric-card ${totalExpenses > 0 ? 'positive' : 'negative'}">
+        <div class="metric-label">Total Expenses</div>
+        <div class="metric-value">${formatCurrency(totalExpenses)}</div>
+      </div>
+      <div class="metric-card ${netOperatingIncome >= 0 ? 'positive' : 'negative'}">
+        <div class="metric-label">Net Operating Income (NOI)</div>
+        <div class="metric-value">${formatCurrency(netOperatingIncome)}</div>
       </div>
       <div class="metric-card positive">
-        <div class="metric-label">Cash-on-Cash Return</div>
-        <div class="metric-value">${formatPercentage(s.cashOnCashY1)}</div>
+        <div class="metric-label">Total Cash Required</div>
+        <div class="metric-value">${formatCurrency(totalCashRequired)}</div>
+      </div>
+      <div class="metric-card ${(cashflowPerUnitPerMonth || 0) >= 0 ? 'positive' : 'negative'}">
+        <div class="metric-label">Cashflow per Unit per Month</div>
+        <div class="metric-value">${formatCurrency(cashflowPerUnitPerMonth)}</div>
       </div>
       <div class="metric-card positive">
-        <div class="metric-label">DSCR</div>
-        <div class="metric-value">${formatNumber(s.dscrY1)}</div>
+        <div class="metric-label">Expense to Income Ratio</div>
+        <div class="metric-value">${expenseToIncomeRatio !== null ? formatPercentage(expenseToIncomeRatio) : 'N/A'}</div>
       </div>
-      ${s.irr ? `
-      <div class="metric-card positive">
-        <div class="metric-label">IRR (${request.holdYears || 10} years)</div>
-        <div class="metric-value">${formatPercentage(s.irr)}</div>
-      </div>
-      ` : ''}
-      ${s.equityMultiple ? `
-      <div class="metric-card positive">
-        <div class="metric-label">Equity Multiple</div>
-        <div class="metric-value">${formatNumber(s.equityMultiple)}x</div>
-      </div>
-      ` : ''}
     </div>
 
     <div class="section">
