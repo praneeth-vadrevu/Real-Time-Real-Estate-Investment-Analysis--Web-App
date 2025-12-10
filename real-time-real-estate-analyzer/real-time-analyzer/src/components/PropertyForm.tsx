@@ -177,16 +177,29 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
         return;
       }
 
-      // Call backend API to fetch property details from both Zillow and RealtyinUS APIs
-      const response = await fetch(`http://localhost:8080/api/properties/${zpid}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // Try both ports - 8081 (integration guide) and 8080 (actual backend config)
+      const ports = [8081, 8080];
+      let response: Response | null = null;
       
-      if (!response.ok) {
-        if (response.status === 0 || response.status === 503 || response.status === 502) {
+      for (const port of ports) {
+        try {
+          response = await fetch(`http://localhost:${port}/api/properties/${zpid}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          
+          if (response.ok) {
+            break; // Success, exit loop
+          }
+        } catch (err: any) {
+          continue; // Try next port
+        }
+      }
+      
+      if (!response || !response.ok) {
+        if (!response || response.status === 0 || response.status === 503 || response.status === 502) {
           throw new Error('BACKEND_NOT_RUNNING');
         }
         throw new Error(`Failed to fetch property data: ${response.status} ${response.statusText}`);
@@ -194,102 +207,85 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
 
       const property = await response.json();
       
+      console.log('=== FULL API RESPONSE ===');
       console.log('Full property object from API:', JSON.stringify(property, null, 2));
+      console.log('=== FIELD ANALYSIS ===');
+      console.log('Available fields in API response:', Object.keys(property));
       console.log('Property address:', property.address);
+      console.log('Property streetAddress:', property.streetAddress, '(available:', !!property.streetAddress, ')');
+      console.log('Property city:', property.city, '(available:', !!property.city, ')');
+      console.log('Property state:', property.state, '(available:', !!property.state, ')');
+      console.log('Property zip:', property.zip, property.postalCode, property.zipCode, '(available:', !!(property.zip || property.postalCode || property.zipCode), ')');
+      console.log('Property county:', property.county, '(available:', !!property.county, ')');
+      console.log('Property countyFIPS:', property.countyFIPS, '(available:', !!property.countyFIPS, ')');
+      console.log('Property listPrice:', property.listPrice, '(available:', !!property.listPrice, ')');
+      console.log('Property price:', property.price, '(available:', !!property.price, ')');
+      console.log('Property propertyId:', property.propertyId, '(available:', !!property.propertyId, ')');
+      console.log('Property zpid:', property.zpid, '(available:', !!property.zpid, ')');
       console.log('Property coordinates:', { lat: property.lat, lon: property.lon });
       
-      let streetAddress = '';
-      let city = '';
-      let state = '';
-      let zipCode = '';
+      // PRIORITY: Use city, state, zip directly from API response (as per API_DATA_POINTS.md)
+      // Backend now provides: city, state, zip, streetAddress, county, countyFIPS
+      // These fields are extracted from the raw JSON and should be used directly
+      let city = property.city || '';
+      let state = property.state || '';
+      let zipCode = property.zip || property.zipcode || property.zipCode || property.postalCode || '';
+      let streetAddress = property.streetAddress || '';
 
-      if (property.address) {
+      // Use full address if streetAddress is not available
+      if (!streetAddress && property.address) {
+        streetAddress = property.address;
+      }
+
+      // Only parse from address if API fields are missing (fallback)
+      if ((!city || !state || !zipCode) && property.address) {
+        console.log('Some location fields missing from API, attempting to parse from address as fallback');
         const addressParts = property.address.split(',').map((part: string) => part.trim());
-        console.log('Address parts after split:', addressParts);
         
         if (addressParts.length >= 3) {
           // Format: "Street, City, State ZIP"
-          streetAddress = addressParts[0];
+          if (!streetAddress) streetAddress = addressParts[0];
           if (!city) city = addressParts[1];
           
           // Parse "State ZIP" - state is usually 2 letters, ZIP is 5 digits
           const lastPart = addressParts[2];
-          console.log('Trying to parse state/ZIP from:', lastPart);
           const stateZipMatch = lastPart.match(/([A-Z]{2})\s+(\d{5}(?:-\d{4})?)/);
           
           if (stateZipMatch) {
             if (!state) state = stateZipMatch[1];
-            if (!zipCode) zipCode = stateZipMatch[2].substring(0, 5); // Take first 5 digits
-            console.log('Regex matched! State:', state, 'ZIP:', zipCode);
-          } else {
-            console.log('Regex did not match, using fallback');
-            // Fallback: split by space and take last as ZIP, second to last as state
-            const parts = lastPart.split(/\s+/).filter(p => p.length > 0);
-            console.log('Fallback parts:', parts);
-            if (parts.length >= 2) {
-              const lastPart = parts[parts.length - 1];
-              const zipMatch = lastPart.match(/(\d{5})/);
-              if (zipMatch && !zipCode) zipCode = zipMatch[1];
-              if (!state && parts.length >= 2) {
-                const stateCandidate = parts[parts.length - 2];
-                if (stateCandidate.length === 2 && /^[A-Z]{2}$/.test(stateCandidate)) {
-                  state = stateCandidate;
-                }
-              }
-              console.log('Fallback result - State:', state, 'ZIP:', zipCode);
-            }
+            if (!zipCode) zipCode = stateZipMatch[2].substring(0, 5);
           }
         } else if (addressParts.length === 2) {
           // Format: "Street, City State ZIP"
-          streetAddress = addressParts[0];
+          if (!streetAddress) streetAddress = addressParts[0];
           const cityStatePart = addressParts[1];
-          console.log('Trying 2-part format. City/State/ZIP part:', cityStatePart);
           
           // Try to extract city, state, and ZIP
           const match = cityStatePart.match(/^(.+?)\s+([A-Z]{2})\s+(\d{5}(?:-\d{4})?)$/);
           if (match) {
             if (!city) city = match[1].trim();
             if (!state) state = match[2];
-            if (!zipCode) zipCode = match[3].substring(0, 5); // Take first 5 digits
-            console.log('2-part regex matched! City:', city, 'State:', state, 'ZIP:', zipCode);
+            if (!zipCode) zipCode = match[3].substring(0, 5);
           } else {
-            // Try to extract just city if state/zip pattern doesn't match
-            const cityMatch = cityStatePart.match(/^(.+?)(?:\s+[A-Z]{2}\s+\d{5})?$/);
-            if (cityMatch && !city) {
-              city = cityMatch[1].trim();
-            }
             // Try to extract state and zip separately
             const stateZipMatch = cityStatePart.match(/([A-Z]{2})\s+(\d{5})/);
             if (stateZipMatch) {
               if (!state) state = stateZipMatch[1];
               if (!zipCode) zipCode = stateZipMatch[2];
             }
-            console.log('2-part regex did not match, partial extraction');
           }
-        } else {
-          // Single string - use as is, but try to extract state/zip if present
-          streetAddress = property.address;
-          const stateZipMatch = property.address.match(/([A-Z]{2})\s+(\d{5})/);
-          if (stateZipMatch) {
-            if (!state) state = stateZipMatch[1];
-            if (!zipCode) zipCode = stateZipMatch[2];
-          }
-          console.log('Single string address, attempted parsing');
         }
-      } else if (property.address && !streetAddress) {
-        streetAddress = property.address;
       }
       
       // If we have searchLocation (zipcode/city from search), use it to fill missing fields
-      if (searchLocation) {
+      if (searchLocation && (!city || !state || !zipCode)) {
         console.log('Using searchLocation to fill missing fields:', searchLocation);
         const locationStr = searchLocation.trim();
         
         // Check if it's a zipcode (5 digits)
         const zipMatch = locationStr.match(/^(\d{5})$/);
-        if (zipMatch) {
+        if (zipMatch && !zipCode) {
           zipCode = zipMatch[1];
-          console.log('Extracted zipcode from searchLocation:', zipCode);
         }
         
         // Check if it's "City, State" format
@@ -298,25 +294,32 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
           if (parts.length >= 2) {
             if (!city) city = parts[0];
             const statePart = parts[1];
-            // Check if state part has zipcode
             const stateZipMatch = statePart.match(/([A-Z]{2})\s+(\d{5})/);
             if (stateZipMatch) {
               if (!state) state = stateZipMatch[1];
               if (!zipCode) zipCode = stateZipMatch[2];
-            } else if (statePart.length === 2 && /^[A-Z]{2}$/.test(statePart)) {
-              if (!state) state = statePart;
+            } else if (statePart.length === 2 && /^[A-Z]{2}$/.test(statePart) && !state) {
+              state = statePart;
             }
           }
-        } else if (!zipMatch) {
+        } else if (!zipMatch && !city) {
           // Single value that's not a zipcode - treat as city
-          if (!city) city = locationStr;
+          city = locationStr;
         }
-        
-        console.log('After using searchLocation:', { city, state, zipCode });
       }
       
-      // Debug: Log parsed address components
-      console.log('Parsed address components:', { streetAddress, city, state, zipCode });
+      // Debug: Log final address components
+      console.log('Final address components (prioritizing API fields):', { 
+        streetAddress, 
+        city: city || '(missing)', 
+        state: state || '(missing)', 
+        zipCode: zipCode || '(missing)',
+        source: {
+          city: property.city ? 'API' : 'parsed',
+          state: property.state ? 'API' : 'parsed',
+          zip: (property.zip || property.zipcode) ? 'API' : 'parsed'
+        }
+      });
       console.log('API property object:', property);
       
       // Parse coordinates from API if available
@@ -432,22 +435,27 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
         return defaultValue;
       };
       
+      // Backend uses: propertyId, address, city, state, zip, listPrice
+      const propertyId = property.propertyId || property.zpid || property.id || '';
+      const listPrice = property.listPrice || property.price || property.unformattedPrice || 0;
+      
       const newFormData: PropertyData = {
-        zpid: setIfAvailable('zpid', property.zpid),
+        zpid: setIfAvailable('zpid', propertyId),
         
-        address: setIfAvailable('address', streetAddress),
+        // Use streetAddress if available, otherwise use full address
+        address: setIfAvailable('address', streetAddress || property.address || ''),
         city: setIfAvailable('city', city),
         state: setIfAvailable('state', state),
         zipCode: setIfAvailable('zipCode', zipCode),
-        fairMarketValue: setIfAvailable('fairMarketValue', property.zestimate || property.price, ''),
+        fairMarketValue: setIfAvailable('fairMarketValue', property.zestimate || listPrice, ''),
         vacancyRate: 5, // Default (not from API)
         managementRate: 10, // Default (not from API)
         advertisingCostPerVacancy: 0, // Default (not from API)
         numberOfUnits: 1, // Default (not from API)
         annualAppreciationRate: 3, // Default (not from API)
         
-        // Purchase Info
-        offerPrice: setIfAvailable('offerPrice', property.price, ''),
+        // Purchase Info - Backend uses listPrice
+        offerPrice: setIfAvailable('offerPrice', listPrice, ''),
         repairs: 0, // Default (not from API)
         lendersFee: 0, // Default (not from API)
         brokerFee: 0, // Default (not from API)
@@ -456,17 +464,17 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
         misc: 0, // Default (not from API)
         transferTax: 0, // Default (not from API)
         legal: 0, // Default (not from API)
-        realPurchasePrice: setIfAvailable('realPurchasePrice', property.price, ''),
+        realPurchasePrice: setIfAvailable('realPurchasePrice', listPrice, ''),
         
-        // Financing (Monthly) - Not available from API
-        firstMtgPrincipleBorrowed: '',
-        firstMtgInterestRate: '',
-        firstMtgAmortizationPeriod: '',
-        firstMtgTotalPrinciple: '',
-        firstMtgTotalMonthlyPayment: '',
-        secondMtgInterestRate: '',
-        secondMtgAmortizationPeriod: '',
-        cashRequiredToClose: '',
+        // Financing (Monthly) - Not available from API (all fields must be user entered)
+        firstMtgPrincipleBorrowed: '', // User entered - cannot be fetched from API
+        firstMtgInterestRate: '', // User entered - cannot be fetched from API (market rates available but not actual loan rate)
+        firstMtgAmortizationPeriod: '', // User entered - cannot be fetched from API
+        firstMtgTotalPrinciple: '', // User entered - cannot be fetched from API
+        firstMtgTotalMonthlyPayment: '', // User entered - cannot be fetched from API
+        secondMtgInterestRate: '', // User entered - cannot be fetched from API
+        secondMtgAmortizationPeriod: '', // User entered - cannot be fetched from API
+        cashRequiredToClose: '', // User entered - cannot be fetched from API
         
         // Income (Annual) - Can estimate from API
         grossRents: setIfAvailable('grossRents', property.rentEstimate ? property.rentEstimate * 12 : null, ''),
@@ -499,7 +507,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
         heating: property.heating?.join(', '),
         cooling: property.cooling?.join(', '),
         parkingFeatures: property.parkingFeatures?.join(', '),
-        arv: (strategy === 'brrrr' || strategy === 'flip') ? (property.zestimate || property.price) : undefined,
+        arv: (strategy === 'brrrr' || strategy === 'flip') ? (property.zestimate || listPrice) : undefined,
         rehabBudget: (strategy === 'brrrr' || strategy === 'flip') ? 0 : undefined,
       };
       
@@ -524,7 +532,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
         alert(`Failed to fetch property data: ${error.message || 'Unknown error'}\n\nPlease make sure the backend server is running and has access to the property APIs.`);
       }
     }
-  }, [properties, strategy]);
+  }, [properties, strategy, searchLocation]);
 
   // Load property data when selectedZpid is provided
   useEffect(() => {
@@ -536,7 +544,8 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
       // Load the property data
       handlePropertySelect(selectedZpid);
     }
-  }, [selectedZpid, handlePropertySelect]); // Removed inputMethod from dependencies to avoid race conditions
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedZpid, handlePropertySelect]); // inputMethod intentionally excluded to avoid race conditions
 
 
   const handleInputChange = (field: keyof PropertyData, value: string | number) => {
@@ -1104,7 +1113,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
                 step="0.01"
                 value={formData.firstMtgInterestRate}
                 onChange={(e) => handleInputChange('firstMtgInterestRate', parseFloat(e.target.value) || '')}
-                placeholder="7.00"
+                placeholder=""
               />
             </div>
             <div className="form-group">
@@ -1113,7 +1122,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
                 type="number"
                 value={formData.firstMtgAmortizationPeriod}
                 onChange={(e) => handleInputChange('firstMtgAmortizationPeriod', parseFloat(e.target.value) || '')}
-                placeholder="30"
+                placeholder=""
               />
             </div>
             <div className="form-group">
@@ -1122,7 +1131,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
                 type="number"
                 value={formData.firstMtgTotalPrinciple}
                 onChange={(e) => handleInputChange('firstMtgTotalPrinciple', parseFloat(e.target.value) || '')}
-                placeholder="0"
+                placeholder=""
               />
             </div>
             <div className="form-group">
@@ -1131,7 +1140,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
                 type="number"
                 value={formData.firstMtgTotalMonthlyPayment}
                 onChange={(e) => handleInputChange('firstMtgTotalMonthlyPayment', parseFloat(e.target.value) || '')}
-                placeholder="0"
+                placeholder=""
               />
             </div>
             <div className="form-group">
@@ -1141,7 +1150,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
                 step="0.01"
                 value={formData.secondMtgInterestRate}
                 onChange={(e) => handleInputChange('secondMtgInterestRate', parseFloat(e.target.value) || '')}
-                placeholder="12.00"
+                placeholder=""
               />
             </div>
             <div className="form-group">
@@ -1150,7 +1159,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
                 type="number"
                 value={formData.secondMtgAmortizationPeriod}
                 onChange={(e) => handleInputChange('secondMtgAmortizationPeriod', parseFloat(e.target.value) || '')}
-                placeholder="9999"
+                placeholder=""
               />
             </div>
             <div className="form-group">
@@ -1159,7 +1168,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
                 type="number"
                 value={formData.cashRequiredToClose}
                 onChange={(e) => handleInputChange('cashRequiredToClose', parseFloat(e.target.value) || '')}
-                placeholder="0"
+                placeholder=""
               />
             </div>
           </div>

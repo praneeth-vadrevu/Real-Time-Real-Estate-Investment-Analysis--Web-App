@@ -205,6 +205,7 @@ export async function generatePropertyReport(formData: PropertyData): Promise<st
       ${formData.bathrooms ? `<p><strong>Bathrooms:</strong> ${formData.bathrooms}</p>` : ''}
       ${formData.livingArea ? `<p><strong>Living Area:</strong> ${formData.livingArea.toLocaleString()} sqft</p>` : ''}
       ${formData.numberOfUnits ? `<p><strong>Number of Units:</strong> ${formData.numberOfUnits}</p>` : ''}
+      ${formData.rentEstimate ? `<p><strong>Monthly Rent Estimate (Zillow):</strong> ${formatCurrency(formData.rentEstimate)}</p>` : ''}
     </div>
 
     <div class="section">
@@ -242,6 +243,16 @@ export async function generatePropertyReport(formData: PropertyData): Promise<st
           <td><strong>Expense to Income Ratio</strong></td>
           <td><strong>${expenseToIncomeRatio !== null ? formatPercentage(expenseToIncomeRatio) : 'N/A'}</strong></td>
         </tr>
+        ${formData.rentEstimate ? `
+        <tr>
+          <td><strong>Monthly Rent Estimate (Zillow API)</strong></td>
+          <td><strong>${formatCurrency(formData.rentEstimate)}</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Annual Rent Estimate (Zillow API)</strong></td>
+          <td><strong>${formatCurrency(formData.rentEstimate * 12)}</strong></td>
+        </tr>
+        ` : ''}
       </table>
     </div>
 

@@ -1141,6 +1141,7 @@ html, body, #root {
   width: calc(100% + 4rem);
   position: relative;
   margin-top: 1rem;
+  margin-bottom: 2rem;
   margin-left: -2rem;
   margin-right: -2rem;
 }
@@ -1402,10 +1403,29 @@ html, body, #root {
   color: #6b7280;
 }
 
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  width: 100%;
+}
+
 .empty-state-icon {
   width: 5rem;
   height: 5rem;
-  margin: 0 auto 1.5rem;
+  margin: 0;
   color: #d1d5db;
 }
 
@@ -1723,5 +1743,76 @@ html, body, #root {
 
   .auth-features {
     gap: 1.5rem;
+  }
+}
+
+/* Footer Styles */
+.app-footer {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  padding: 2rem 1.5rem;
+  margin-top: auto;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-section {
+  width: 100%;
+}
+
+.footer-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.75rem 0;
+}
+
+.developers-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.9375rem;
+  color: #6b7280;
+}
+
+.developer-name {
+  display: inline;
+}
+
+.developer-separator {
+  color: #9ca3af;
+}
+
+.footer-copyright {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* Responsive Footer */
+@media (max-width: 640px) {
+  .app-footer {
+    padding: 1.5rem 1rem;
+  }
+
+  .developers-list {
+    font-size: 0.875rem;
+  }
+
+  .footer-title {
+    font-size: 0.75rem;
   }
 }

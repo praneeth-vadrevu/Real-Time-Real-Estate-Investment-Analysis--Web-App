@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropertySearch from './PropertySearch';
 import PropertyMap from './PropertyMap';
 import PropertyPopup from './PropertyPopup';
 import { useProperties } from '../context/PropertiesContext';
@@ -12,7 +11,16 @@ interface SearchPageProps {
 
 interface PropertyResult {
   zpid: string;
+  propertyId?: string; // Backend field name
   address: string;
+  streetAddress?: string; // Backend field name
+  city?: string;
+  state?: string;
+  zip?: string; // Backend field name
+  zipCode?: string;
+  postalCode?: string;
+  county?: string; // Backend field name
+  countyFIPS?: string; // Backend field name
   price: number;
   bedrooms: number;
   bathrooms: number;
@@ -61,34 +69,94 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
 
     try {
       if (searchType === 'properties') {
-        // Call backend API for property search
-        const response = await fetch(
-          `http://localhost:8080/api/properties/search?location=${encodeURIComponent(searchText)}&status=for_sale&page=1`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+        // Backend expects: GET /api/properties/search?location=...&status=...&page=...
+        const searchTextTrimmed = searchText.trim();
+        
+        // Build query parameters - backend uses 'location' parameter
+        const queryParams = new URLSearchParams({
+          location: searchTextTrimmed,
+          status: 'for_sale',
+          page: '1'
+        });
+        
+        // Try both ports - 8080 (actual backend config) and 8081 (integration guide)
+        const ports = [8080, 8081];
+        let response: Response | null = null;
+        let lastError: Error | null = null;
+        
+        for (const port of ports) {
+          try {
+            console.log(`Attempting to fetch from port ${port}...`);
+            const url = `http://localhost:${port}/api/properties/search?${queryParams.toString()}`;
+            console.log(`Fetching from: ${url}`);
+            
+            response = await fetch(url, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              signal: AbortSignal.timeout(10000), // 10 second timeout
+            });
+            
+            console.log(`Response from port ${port}:`, response.status, response.statusText);
+            
+            if (response.ok) {
+              break; // Success, exit loop
+            } else {
+              // If we get a 404, the endpoint might not exist on this port
+              if (response.status === 404) {
+                console.log(`Port ${port} returned 404, trying next port...`);
+                continue;
+              }
+              // For other errors, try to get error message
+              const errorText = await response.text().catch(() => '');
+              console.error(`Port ${port} error:`, response.status, errorText);
+              lastError = new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
+            }
+          } catch (err: any) {
+            console.error(`Port ${port} fetch error:`, err);
+            lastError = err;
+            // Continue to next port
+            continue;
           }
-        );
-
-        if (!response.ok) {
-          if (response.status === 0 || response.status === 503 || response.status === 502) {
+        }
+        
+        if (!response || !response.ok) {
+          if (!response) {
             throw new Error('BACKEND_NOT_RUNNING');
           }
-          throw new Error(`Failed to fetch properties: ${response.status} ${response.statusText}`);
+          if (response.status === 0 || response.status === 503 || response.status === 502 || response.status === 500) {
+            throw new Error('BACKEND_NOT_RUNNING');
+          }
+          const errorText = await response.text().catch(() => '');
+          throw new Error(`Failed to fetch properties: ${response.status} ${response.statusText}. ${errorText}`);
         }
 
-        const data = await response.json();
+        let data;
+        try {
+          data = await response.json();
+        } catch (jsonError) {
+          console.error('Failed to parse JSON response:', jsonError);
+          throw new Error('Invalid response format from server');
+        }
         
         // Handle different response formats
         let properties = Array.isArray(data) ? data : (data.properties || data.results || []);
         
         // Map properties to ensure they have the correct structure
+        // Backend now provides: propertyId, address, streetAddress, city, state, zip, county, countyFIPS, listPrice
         properties = properties.map((prop: any) => ({
-          zpid: prop.zpid || prop.id || '',
-          address: prop.address || '',
-          price: prop.price || prop.unformattedPrice || 0,
+          zpid: prop.propertyId || prop.zpid || prop.id || '',
+          address: prop.address || prop.streetAddress || '',
+          streetAddress: prop.streetAddress || '',
+          city: prop.city || '',
+          state: prop.state || prop.stateCode || '',
+          zip: prop.zip || '',
+          zipCode: prop.zip || prop.zipCode || prop.postalCode || '',
+          postalCode: prop.zip || prop.postalCode || prop.zipCode || '',
+          county: prop.county || '',
+          countyFIPS: prop.countyFIPS || '',
+          price: prop.listPrice || prop.price || prop.unformattedPrice || 0,
           bedrooms: prop.bedrooms || prop.beds || 0,
           bathrooms: prop.bathrooms || prop.baths || 0,
           livingArea: prop.livingArea || prop.sqft || prop.area || 0,
@@ -97,6 +165,8 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
           status: prop.status || prop.listingStatus || '',
           lat: prop.lat || prop.latitude || null,
           lon: prop.lon || prop.lng || prop.longitude || null,
+          // Store backend field names for reference
+          propertyId: prop.propertyId || prop.zpid || prop.id || '',
         })).filter((prop: any) => prop.zpid); // Filter out invalid properties
 
         setSearchResults(properties);
@@ -110,8 +180,32 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
       }
     } catch (err: any) {
       console.error('Search error:', err);
-      if (err.message === 'BACKEND_NOT_RUNNING' || err.message?.includes('Failed to fetch') || err.name === 'TypeError') {
-        setError('Backend server is not running. Please start the backend server on port 8080. Check the console for instructions.');
+      console.error('Error details:', {
+        message: err.message,
+        name: err.name,
+        stack: err.stack,
+      });
+      
+      // Check for various error types
+      if (
+        err.message === 'BACKEND_NOT_RUNNING' ||
+        err.message?.includes('Failed to fetch') ||
+        err.name === 'TypeError' ||
+        err.name === 'NetworkError' ||
+        err.name === 'AbortError' ||
+        err.message?.includes('network') ||
+        err.message?.includes('CORS')
+      ) {
+        setError(
+          'Backend server is not running or not accessible.\n\n' +
+          'Please:\n' +
+          '1. Start the backend server on port 8080\n' +
+          '2. Check if the server is running: http://localhost:8080\n' +
+          '3. Verify CORS is enabled in the backend\n' +
+          '4. Check the browser console for detailed error messages'
+        );
+      } else if (err.message?.includes('timeout')) {
+        setError('Request timed out. The backend server may be slow or unresponsive.');
       } else {
         setError(err.message || 'Failed to search. Please check the console for details.');
       }
@@ -129,9 +223,19 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
       setSelectedProperty(zpid);
     }
     
-    // Pass the search query (zipcode/location) to the parent
+    // Pass the property's location data (city, state, zipCode) to the parent
+    // If property has city/state/zipCode, use that; otherwise fall back to searchQuery
+    let locationData = searchQuery;
+    if (property && (property.city || property.state || property.zipCode || property.postalCode)) {
+      const parts: string[] = [];
+      if (property.city) parts.push(property.city);
+      if (property.state) parts.push(property.state);
+      if (property.zipCode || property.postalCode) parts.push(property.zipCode || property.postalCode || '');
+      locationData = parts.join(', ');
+    }
+    
     if (onPropertySelect) {
-      onPropertySelect(zpid, 'rental', searchQuery);
+      onPropertySelect(zpid, 'rental', locationData);
     }
   };
 
@@ -267,166 +371,107 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
           </div>
         </div>
 
-        {/* View Mode Toggle - List View and Map View buttons */}
+        {/* Results Header */}
         {searchType === 'properties' && searchResults.length > 0 && (
           <div style={{ 
             marginTop: '2rem', 
-            display: 'flex', 
-            gap: '0.5rem', 
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap'
+            marginBottom: '1rem'
           }}>
             <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '600', color: '#111827' }}>
               Found {searchResults.length} {searchResults.length === 1 ? 'property' : 'properties'}
             </h2>
-            <div style={{ 
-              display: 'flex', 
-              gap: '0.25rem', 
-              backgroundColor: '#f3f4f6', 
-              padding: '0.25rem', 
-              borderRadius: '0.5rem',
-              boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
-            }}>
-              <button
-                onClick={() => setViewMode('list')}
-                style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.375rem',
-                  border: 'none',
-                  backgroundColor: viewMode === 'list' ? '#3b82f6' : 'transparent',
-                  color: viewMode === 'list' ? 'white' : '#374151',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: viewMode === 'list' ? '600' : '500',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  if (viewMode !== 'list') {
-                    e.currentTarget.style.backgroundColor = '#e5e7eb';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (viewMode !== 'list') {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                  }
-                }}
-              >
-                List View
-              </button>
-              <button
-                onClick={() => setViewMode('map')}
-                style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.375rem',
-                  border: 'none',
-                  backgroundColor: viewMode === 'map' ? '#3b82f6' : 'transparent',
-                  color: viewMode === 'map' ? 'white' : '#374151',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: viewMode === 'map' ? '600' : '500',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  if (viewMode !== 'map') {
-                    e.currentTarget.style.backgroundColor = '#e5e7eb';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (viewMode !== 'map') {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                  }
-                }}
-              >
-                Map View
-              </button>
-            </div>
           </div>
         )}
 
-        {/* Search Results - List and Map */}
-        <div style={{ marginTop: '1.5rem' }}>
-          {/* Property List */}
-          {searchResults.length > 0 && viewMode === 'list' && (
-            <div className="property-cards">
-              <div className="results-grid">
-                {searchResults.map((property) => (
-                  <div 
-                    key={property.zpid} 
-                    className="result-card"
-                    style={{ 
-                      cursor: 'pointer',
-                      border: selectedProperty === property.zpid ? '2px solid #3b82f6' : '1px solid #e5e7eb',
-                      position: 'relative',
-                    }}
-                    onClick={() => handlePropertySelect(property.zpid)}
-                  >
-                    {/* Add indicator if already in My Properties */}
-                    {properties.find(p => p.zpid === property.zpid) && (
-                      <div style={{
-                        position: 'absolute',
-                        top: '0.5rem',
-                        right: '0.5rem',
-                        backgroundColor: '#10b981',
-                        color: 'white',
-                        padding: '0.25rem 0.5rem',
-                        borderRadius: '0.25rem',
-                        fontSize: '0.75rem',
-                        fontWeight: 600,
-                        zIndex: 10,
-                      }}>
-                        ✓ Added
-                      </div>
-                    )}
-                    {property.imgSrc && (
-                      <div className="result-card-image">
-                        <img src={property.imgSrc} alt={property.address} />
-                        {property.status && (
-                          <span className="result-status-badge">{property.status}</span>
+        {/* Search Results - List and Map Side by Side */}
+        {searchResults.length > 0 && (
+          <div style={{ 
+            marginTop: '1.5rem',
+            display: 'flex',
+            gap: '1.5rem',
+            height: 'calc(100vh - 350px)',
+            minHeight: '600px',
+          }}>
+            {/* Property List - Left Half */}
+            <div style={{
+              flex: '1',
+              minWidth: 0,
+              overflowY: 'auto',
+              paddingRight: '0.5rem',
+            }}>
+              <div className="property-cards">
+                <div className="results-grid" style={{ gridTemplateColumns: '1fr' }}>
+                  {searchResults.map((property) => (
+                    <div 
+                      key={property.zpid} 
+                      className="result-card"
+                      style={{ 
+                        cursor: 'pointer',
+                        border: selectedProperty === property.zpid ? '2px solid #3b82f6' : '1px solid #e5e7eb',
+                        position: 'relative',
+                        marginBottom: '1rem',
+                      }}
+                      onClick={() => handlePropertySelect(property.zpid)}
+                    >
+                      {/* Add indicator if already in My Properties */}
+                      {properties.find(p => p.zpid === property.zpid) && (
+                        <div style={{
+                          position: 'absolute',
+                          top: '0.5rem',
+                          right: '0.5rem',
+                          backgroundColor: '#10b981',
+                          color: 'white',
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '0.25rem',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          zIndex: 10,
+                        }}>
+                          ✓ Added
+                        </div>
+                      )}
+                      {property.imgSrc && (
+                        <div className="result-card-image">
+                          <img src={property.imgSrc} alt={property.address} />
+                          {property.status && (
+                            <span className="result-status-badge">{property.status}</span>
+                          )}
+                        </div>
+                      )}
+                      
+                      <div className="result-card-content">
+                        <div className="result-price">{formatPrice(property.price)}</div>
+                        <div className="result-address">{property.address}</div>
+                        
+                        <div className="result-details">
+                          <span>{property.bedrooms} bd</span>
+                          <span className="detail-separator">•</span>
+                          <span>{property.bathrooms} ba</span>
+                          <span className="detail-separator">•</span>
+                          <span>{property.livingArea?.toLocaleString()} sqft</span>
+                        </div>
+                        
+                        {property.propertyType && (
+                          <div className="result-type">{property.propertyType}</div>
                         )}
                       </div>
-                    )}
-                    
-                    <div className="result-card-content">
-                      <div className="result-price">{formatPrice(property.price)}</div>
-                      <div className="result-address">{property.address}</div>
-                      
-                      <div className="result-details">
-                        <span>{property.bedrooms} bd</span>
-                        <span className="detail-separator">•</span>
-                        <span>{property.bathrooms} ba</span>
-                        <span className="detail-separator">•</span>
-                        <span>{property.livingArea?.toLocaleString()} sqft</span>
-                      </div>
-                      
-                      {property.propertyType && (
-                        <div className="result-type">{property.propertyType}</div>
-                      )}
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          )}
 
-          {/* Map View - Show when map view is selected */}
-          {searchType === 'properties' && viewMode === 'map' && (
-            <div 
-              key={`map-${searchResults.length}-${viewMode}`}
-              style={{ 
-                marginTop: searchResults.length > 0 ? '0' : '2rem',
-                height: 'calc(100vh - 300px)',
-                minHeight: '500px',
-                width: '100%',
-                border: '2px solid #3b82f6',
-                borderRadius: '0.5rem',
-                overflow: 'hidden',
-                backgroundColor: '#f9fafb',
-                position: 'relative',
-                display: 'block',
-                visibility: 'visible',
-              }}
-            >
+            {/* Map View - Right Half */}
+            <div style={{
+              flex: '1',
+              minWidth: 0,
+              height: '100%',
+              border: '2px solid #3b82f6',
+              borderRadius: '0.5rem',
+              overflow: 'hidden',
+              backgroundColor: '#f9fafb',
+              position: 'relative',
+            }}>
               <PropertyMap
                 properties={searchResults}
                 selectedProperty={selectedProperty}
@@ -434,11 +479,11 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
                 mapHeight="100%"
               />
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* Empty State - Only show when no results and in list view */}
-        {!isSearching && searchResults.length === 0 && !error && viewMode === 'list' && (
+        {/* Empty State - Only show when no results */}
+        {!isSearching && searchResults.length === 0 && !error && (
           <div className="search-empty-state" style={{ marginTop: '3rem' }}>
             <svg className="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

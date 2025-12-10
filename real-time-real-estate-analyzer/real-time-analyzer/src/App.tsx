@@ -10,6 +10,7 @@ import SearchPage from './components/SearchPage';
 import PurchaseCriteriaForm from './components/PurchaseCriteriaForm';
 import PropertyForm from './components/PropertyForm';
 import AuthPage from './components/AuthPage';
+import Footer from './components/Footer';
 import './App.css';
 
 // Google OAuth Client ID - Get from environment variable or use placeholder
@@ -139,13 +140,20 @@ function AppContent() {
     return (
       <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
         <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '100vh',
-          backgroundColor: '#f8fafc'
+          minHeight: '100vh',
+          backgroundColor: '#f8fafc',
+          display: 'flex',
+          flexDirection: 'column'
         }}>
-          <div className="spinner"></div>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            flex: 1
+          }}>
+            <div className="spinner"></div>
+          </div>
+          <Footer />
         </div>
       </GoogleOAuthProvider>
     );
@@ -158,17 +166,23 @@ function AppContent() {
     // The AuthPage component will handle showing appropriate options
     if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === "" || GOOGLE_CLIENT_ID.includes('your-client-id')) {
       // Show auth page without Google OAuth - guest access only
-      return (
-        <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1 }}>
           <AuthPage onAuthSuccess={handleAuthSuccess} />
         </div>
-      );
+        <Footer />
+      </div>
+    );
     }
 
     return (
       <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-        <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
-          <AuthPage onAuthSuccess={handleAuthSuccess} />
+        <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1 }}>
+            <AuthPage onAuthSuccess={handleAuthSuccess} />
+          </div>
+          <Footer />
         </div>
       </GoogleOAuthProvider>
     );
@@ -252,12 +266,12 @@ function AppContent() {
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', display: 'flex', flexDirection: 'column' }}>
         <Navbar onNavigate={handleNavigate} activePage={activePage} />
         
         {/* Main Layout */}
         {activeView !== 'search-properties' && activeView !== 'search-lenders' && (
-          <div style={{ display: 'flex', height: 'calc(100vh - 4rem)' }}>
+          <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
             {/* Sidebar */}
             <Sidebar 
               activeSection={activeSection} 
@@ -267,13 +281,15 @@ function AppContent() {
             />
             
             {/* Main Content */}
-            {renderContent()}
+            <div style={{ flex: 1, overflow: 'auto' }}>
+              {renderContent()}
+            </div>
           </div>
         )}
 
         {/* Full-width content for search pages */}
         {(activeView === 'search-properties' || activeView === 'search-lenders') && (
-          <div style={{ height: 'calc(100vh - 4rem)' }}>
+          <div style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
             {renderContent()}
           </div>
         )}
@@ -282,6 +298,9 @@ function AppContent() {
         <div className="floating-notification">
           2
         </div>
+
+        {/* Footer */}
+        <Footer />
       </div>
     </GoogleOAuthProvider>
   );
