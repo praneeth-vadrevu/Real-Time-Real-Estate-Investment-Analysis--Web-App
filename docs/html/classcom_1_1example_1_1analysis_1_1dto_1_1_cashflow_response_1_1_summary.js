@@ -1,0 +1,28 @@
+var classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary =
+[
+    [ "annualDebtServiceY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a9e04481df2a8d8950f4e7a024d228b28", null ],
+    [ "appreciationROIY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#aafda092dd1267c4a679c5732c3e0022a", null ],
+    [ "avgRentPerUnitY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#aba3a7586106fa0a84135e50f86c681ea", null ],
+    [ "capRateFMVY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a9e943b9d5f67913ca0df7a42694c01b6", null ],
+    [ "capRatePPY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a98bc40c107ec169d8d57f51585257b26", null ],
+    [ "cashflowPerUnitPerMonthY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#af3085ad3e28c5df8a5268d800b40d0b8", null ],
+    [ "cashOnCashY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a2e0cfe2bdaac106f6ae48a7018ec94e7", null ],
+    [ "cashToClose", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a879fa286ac33a68e42db85ae31d6f10d", null ],
+    [ "dscrY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#ad4a812028d56e0c54a65965e3ba9d138", null ],
+    [ "egiY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#acba445752633c904948fa99066303f46", null ],
+    [ "equityMultiple", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a151c30c91632dc580975ffbd8d04a7d3", null ],
+    [ "equityROIY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#acdea23fa6da128265e43b6af78129425", null ],
+    [ "forcedAppreciationROIY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a9eacc01044314304835158576fdc648c", null ],
+    [ "grmY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a365c3774f81f0a0d4f067ce0bad70b54", null ],
+    [ "irr", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a2cc6a5dcbcdae6d7ef284ae4ec5d852c", null ],
+    [ "ltppPP", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a958796242f4edac3380744981c5c4afd", null ],
+    [ "ltvFMV", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#ab783128ca9c0d9066d250ad65cae686d", null ],
+    [ "monthlyProfitY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a28b51240cc0af967a2adab837efb3dba", null ],
+    [ "noiY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a4d23a68d2f136a127d6b3917a8275212", null ],
+    [ "rpp", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#acdf86cbccafc31a70bb0b7d6f2345f54", null ],
+    [ "saleProceedsNet", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#ac632b266bdbf066f2c81e925fee21d90", null ],
+    [ "totalExpensesY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a4b548842720e4078f2bd22dc12614f06", null ],
+    [ "totalIncomeY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a236c88d0658b1d057ce5ce2de151fb17", null ],
+    [ "totalROIY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a739250ba0038b7fb927aefdd00c93998", null ],
+    [ "vacancyLossY1", "classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a5b868efab7af3fd8bbdb4dbfb081ce85", null ]
+];

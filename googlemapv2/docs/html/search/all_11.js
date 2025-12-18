@@ -1,0 +1,18 @@
+var searchData=
+[
+  ['testbasicincomeandnoi_0',['testBasicIncomeAndNOI',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#a6b37eca3975057354b7a353be8ec176a',1,'com::example::analysis::service::CashflowServiceTest']]],
+  ['testcaprates_1',['testCapRates',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#a7eb581fd8e5c590eee6f9138181014b9',1,'com::example::analysis::service::CashflowServiceTest']]],
+  ['testcashoncashandroi_2',['testCashOnCashAndROI',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#ae43a24ba0f34083ccd5df5f1f5557b6b',1,'com::example::analysis::service::CashflowServiceTest']]],
+  ['testcompletescenario_3',['testCompleteScenario',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#add429acdf8390f1e6426d067b23e28be',1,'com::example::analysis::service::CashflowServiceTest']]],
+  ['testdebtserviceanddscr_4',['testDebtServiceAndDSCR',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#a066a806e66512b27299aeda71e57ab10',1,'com::example::analysis::service::CashflowServiceTest']]],
+  ['testinterestonlyperiod_5',['testInterestOnlyPeriod',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#a1f89717dc39cea697e240f80b11816d8',1,'com::example::analysis::service::CashflowServiceTest']]],
+  ['testmultiyearprojection_6',['testMultiYearProjection',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#a961878afcc7d6b9343831c2e6b064ec0',1,'com::example::analysis::service::CashflowServiceTest']]],
+  ['text_7',['text',['../classcom_1_1example_1_1map_1_1geo_1_1_geo_controller.html#aea29a46aad6143330fadcde2865f815f',1,'com::example::map::geo::GeoController']]],
+  ['totalexpenses_8',['totalExpenses',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_year_row.html#a61d63cd90a04ec35465244b5cf8f1dca',1,'com::example::analysis::dto::CashflowResponse::YearRow']]],
+  ['totalexpensesy1_9',['totalExpensesY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a4b548842720e4078f2bd22dc12614f06',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['totalincome_10',['totalIncome',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_year_row.html#a037e81aeca490a918d15c5d76ce1cb19',1,'com::example::analysis::dto::CashflowResponse::YearRow']]],
+  ['totalincomey1_11',['totalIncomeY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a236c88d0658b1d057ce5ce2de151fb17',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['totalroiy1_12',['totalROIY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a739250ba0038b7fb927aefdd00c93998',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['transfertax_13',['transferTax',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a49f3db9431d687617a5a464351d4875d',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['trash_14',['trash',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a5a771eb83ebd0c0d72e79a18853fac58',1,'com::example::analysis::dto::CashflowRequest']]]
+];

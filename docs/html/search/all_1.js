@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['accounting_0',['accounting',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a5dc99c3144b9e3796f400b3ff7fa10ef',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['activepage_1',['activePage',['../_navbar_8tsx.html#ad34ea080ff553ad3ba498f4cd23c089a',1,'Navbar.tsx']]],
+  ['addproperty_2',['addProperty',['../_properties_context_8tsx.html#a202ddeee7cc67bd0c1bd1779ac50b232',1,'PropertiesContext.tsx']]],
+  ['address_3',['address',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#ae474c581e87a39e9f44b8fc450d1ded0',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['advertising_4',['advertising',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a36bf032feb38bb0a71212f202abde20b',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['analyze_5',['analyze',['../classcom_1_1example_1_1analysis_1_1controller_1_1_cashflow_controller.html#af41d28b8effab8a845019a8f1b56acc2',1,'com.example.analysis.controller.CashflowController.analyze()'],['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service.html#a37b6d6812a060c756dbfd3b1591e026f',1,'com.example.analysis.service.CashflowService.analyze()']]],
+  ['annualappreciation_6',['annualAppreciation',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a9670c31a5442b0ddc3f4f921833e2564',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['annualdebtservicey1_7',['annualDebtServiceY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a9e04481df2a8d8950f4e7a024d228b28',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['app_8',['App',['../_app_8tsx.html#ae0d191b66cbd429e8c16cc4a4b87a81c',1,'App:&#160;App.tsx'],['../index_8tsx.html#ae00ecbae69e5fdd2da4bce4c56bde9b8',1,'App:&#160;index.tsx']]],
+  ['app_2etsx_9',['App.tsx',['../_app_8tsx.html',1,'']]],
+  ['appcontent_10',['AppContent',['../_app_8tsx.html#a5c4cc114cd4e848ffc57d8511f4b12df',1,'App.tsx']]],
+  ['application_11',['Application',['../classcom_1_1example_1_1map_1_1_application.html',1,'com::example::map']]],
+  ['application_2ejava_12',['Application.java',['../_application_8java.html',1,'']]],
+  ['appraisals_13',['appraisals',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a58419930f7c9b0d5d159b2acc891969f',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['appreciationroiy1_14',['appreciationROIY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#aafda092dd1267c4a679c5732c3e0022a',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['approxequal_15',['approxEqual',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#a9a08d80fc9a1332adb1cf85d03df93a3',1,'com.example.analysis.service.CashflowServiceTest.approxEqual(Double a, Double b)'],['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#a4371e7b4e90dc6742e465f1f0425d354',1,'com.example.analysis.service.CashflowServiceTest.approxEqual(Double a, Double b, double tolerance)']]],
+  ['associationfees_16',['associationFees',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a77313b3b49ea226c4930ee506609dd4d',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['authcontext_17',['AuthContext',['../_auth_context_8tsx.html#a27345d9fb97d91cdd1519c3a4ae7e8c9',1,'AuthContext.tsx']]],
+  ['authcontext_2etsx_18',['AuthContext.tsx',['../_auth_context_8tsx.html',1,'']]],
+  ['authpage_19',['AuthPage',['../_app_8tsx.html#a9dd5a062cbeb1825fee7734204ee757b',1,'AuthPage:&#160;App.tsx'],['../_auth_page_8tsx.html#a67490f458345e3c052e6069f6dc89e36',1,'AuthPage({ onAuthSuccess }:AuthPageProps):&#160;AuthPage.tsx']]],
+  ['authpage_2etsx_20',['AuthPage.tsx',['../_auth_page_8tsx.html',1,'']]],
+  ['authprovider_21',['AuthProvider',['../_auth_context_8tsx.html#a3ee36253df57b78be625cd44405e6bdb',1,'AuthContext.tsx']]],
+  ['avgrentperunity1_22',['avgRentPerUnitY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#aba3a7586106fa0a84135e50f86c681ea',1,'com::example::analysis::dto::CashflowResponse::Summary']]]
+];

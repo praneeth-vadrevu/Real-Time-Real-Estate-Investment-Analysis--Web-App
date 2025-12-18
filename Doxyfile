@@ -1,0 +1,84 @@
+# Doxyfile - Configuration file for Doxygen documentation generator
+# Real-Time Real Estate Investment Analysis Web Application
+
+#---------------------------------------------------------------------------
+# Project Information
+#---------------------------------------------------------------------------
+PROJECT_NAME           = "Real-Time Real Estate Investment Analysis"
+PROJECT_NUMBER         = "1.0.0"
+PROJECT_BRIEF          = "A comprehensive full-stack web application for real estate investment analysis"
+PROJECT_LOGO           = 
+OUTPUT_DIRECTORY       = ./docs
+
+#---------------------------------------------------------------------------
+# Build Settings
+#---------------------------------------------------------------------------
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+RECURSIVE              = YES
+
+#---------------------------------------------------------------------------
+# Input Settings
+#---------------------------------------------------------------------------
+INPUT                  = ./googlemapv2/src/main/java \
+                         ./cashflow-calculator \
+                         ./zillow\ api \
+                         ./real-time-real-estate-analyzer/real-time-analyzer/src
+INPUT_ENCODING         = UTF-8
+FILE_PATTERNS          = *.java *.tsx *.ts *.js
+EXCLUDE_PATTERNS       = */node_modules/* */target/* */.git/* */build/* *.test.* *.spec.*
+
+#---------------------------------------------------------------------------
+# Source Browsing
+#---------------------------------------------------------------------------
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+STRIP_CODE_COMMENTS    = YES
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+
+#---------------------------------------------------------------------------
+# Output Formats
+#---------------------------------------------------------------------------
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_XML           = NO
+GENERATE_RTF           = NO
+
+#---------------------------------------------------------------------------
+# HTML Output Settings
+#---------------------------------------------------------------------------
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+HTML_COLORSTYLE        = AUTO_LIGHT
+HTML_TIMESTAMP         = YES
+HTML_DYNAMIC_MENUS     = YES
+HTML_DYNAMIC_SECTIONS  = YES
+GENERATE_TREEVIEW      = YES
+TREEVIEW_WIDTH         = 250
+
+#---------------------------------------------------------------------------
+# Diagram Settings
+#---------------------------------------------------------------------------
+HAVE_DOT               = NO
+CLASS_DIAGRAMS         = YES
+COLLABORATION_GRAPH    = NO
+INCLUDE_GRAPH          = NO
+INCLUDED_BY_GRAPH      = NO
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+
+#---------------------------------------------------------------------------
+# Preprocessing
+#---------------------------------------------------------------------------
+ENABLE_PREPROCESSING   = YES
+JAVADOC_AUTOBRIEF      = YES
+QT_AUTOBRIEF           = YES
+
+#---------------------------------------------------------------------------
+# Language Settings
+#---------------------------------------------------------------------------
+OUTPUT_LANGUAGE        = English
+EXTENSION_MAPPING      = tsx=Javascript ts=Javascript

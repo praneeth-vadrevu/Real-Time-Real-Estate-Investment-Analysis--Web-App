@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Real Estate Backend Service Documentation</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Real Estate Backend Service Documentation</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#real-time-real-estate-backend-service"
+id="toc-real-time-real-estate-backend-service">Real-Time Real Estate
+Backend Service</a>
+<ul>
+<li><a href="#table-of-contents" id="toc-table-of-contents">📋 Table of
+Contents</a></li>
+<li><a href="#overview" id="toc-overview">🎯 Overview</a>
+<ul>
+<li><a href="#technology-stack" id="toc-technology-stack">Technology
+Stack</a></li>
+</ul></li>
+<li><a href="#features" id="toc-features">✨ Features</a>
+<ul>
+<li><a href="#property-services" id="toc-property-services">🏠 Property
+Services</a></li>
+<li><a href="#geolocation-services" id="toc-geolocation-services">🗺️
+Geolocation Services</a></li>
+<li><a href="#investment-analysis" id="toc-investment-analysis">💰
+Investment Analysis</a></li>
+</ul></li>
+<li><a href="#architecture" id="toc-architecture">🏗️
+Architecture</a></li>
+<li><a href="#quick-start" id="toc-quick-start">🚀 Quick Start</a>
+<ul>
+<li><a href="#prerequisites"
+id="toc-prerequisites">Prerequisites</a></li>
+<li><a href="#installation" id="toc-installation">Installation</a></li>
+<li><a href="#using-batch-scripts-windows"
+id="toc-using-batch-scripts-windows">Using Batch Scripts
+(Windows)</a></li>
+</ul></li>
+<li><a href="#api-documentation" id="toc-api-documentation">📚 API
+Documentation</a>
+<ul>
+<li><a href="#base-url" id="toc-base-url">Base URL</a></li>
+<li><a href="#endpoints-overview" id="toc-endpoints-overview">Endpoints
+Overview</a></li>
+<li><a href="#detailed-api-reference"
+id="toc-detailed-api-reference">Detailed API Reference</a></li>
+</ul></li>
+<li><a href="#configuration" id="toc-configuration">⚙️ Configuration</a>
+<ul>
+<li><a href="#application-configuration-application.yml"
+id="toc-application-configuration-application.yml">Application
+Configuration (<code>application.yml</code>)</a></li>
+<li><a href="#environment-variables"
+id="toc-environment-variables">Environment Variables</a></li>
+</ul></li>
+<li><a href="#project-structure" id="toc-project-structure">📁 Project
+Structure</a></li>
+<li><a href="#related-documentation" id="toc-related-documentation">📖
+Related Documentation</a></li>
+<li><a href="#troubleshooting" id="toc-troubleshooting">🔧
+Troubleshooting</a>
+<ul>
+<li><a href="#common-issues" id="toc-common-issues">Common
+Issues</a></li>
+</ul></li>
+<li><a href="#license" id="toc-license">📄 License</a></li>
+<li><a href="#contributors" id="toc-contributors">👥
+Contributors</a></li>
+<li><a href="#support" id="toc-support">📞 Support</a></li>
+</ul></li>
+<li><a href="#user-guide---real-estate-backend-service"
+id="toc-user-guide---real-estate-backend-service">User Guide - Real
+Estate Backend Service</a>
+<ul>
+<li><a href="#table-of-contents-1" id="toc-table-of-contents-1">📋 Table
+of Contents</a></li>
+<li><a href="#introduction" id="toc-introduction">1. Introduction</a>
+<ul>
+<li><a href="#what-is-this-application"
+id="toc-what-is-this-application">What is this application?</a></li>
+<li><a href="#who-should-use-this-guide"
+id="toc-who-should-use-this-guide">Who should use this guide?</a></li>
+</ul></li>
+<li><a href="#system-requirements" id="toc-system-requirements">2.
+System Requirements</a>
+<ul>
+<li><a href="#minimum-requirements"
+id="toc-minimum-requirements">Minimum Requirements</a></li>
+<li><a href="#required-accounts" id="toc-required-accounts">Required
+Accounts</a></li>
+</ul></li>
+<li><a href="#installation-guide" id="toc-installation-guide">3.
+Installation Guide</a>
+<ul>
+<li><a href="#step-1-install-java-17"
+id="toc-step-1-install-java-17">Step 1: Install Java 17</a></li>
+<li><a href="#step-2-install-maven" id="toc-step-2-install-maven">Step
+2: Install Maven</a></li>
+<li><a href="#step-3-get-rapidapi-key"
+id="toc-step-3-get-rapidapi-key">Step 3: Get RapidAPI Key</a></li>
+<li><a href="#step-4-download-the-project"
+id="toc-step-4-download-the-project">Step 4: Download the
+Project</a></li>
+</ul></li>
+<li><a href="#configuration-1" id="toc-configuration-1">4.
+Configuration</a>
+<ul>
+<li><a href="#setting-up-environment-variables"
+id="toc-setting-up-environment-variables">Setting Up Environment
+Variables</a></li>
+<li><a href="#configuration-file"
+id="toc-configuration-file">Configuration File</a></li>
+<li><a href="#changing-the-server-port"
+id="toc-changing-the-server-port">Changing the Server Port</a></li>
+</ul></li>
+<li><a href="#starting-the-server" id="toc-starting-the-server">5.
+Starting the Server</a>
+<ul>
+<li><a href="#method-1-using-maven-recommended"
+id="toc-method-1-using-maven-recommended">Method 1: Using Maven
+(Recommended)</a></li>
+<li><a href="#method-2-using-batch-scripts-windows"
+id="toc-method-2-using-batch-scripts-windows">Method 2: Using Batch
+Scripts (Windows)</a></li>
+<li><a href="#method-3-using-jar-file"
+id="toc-method-3-using-jar-file">Method 3: Using JAR File</a></li>
+<li><a href="#verifying-the-server-is-running"
+id="toc-verifying-the-server-is-running">Verifying the Server is
+Running</a></li>
+</ul></li>
+<li><a href="#using-the-api" id="toc-using-the-api">6. Using the API</a>
+<ul>
+<li><a href="#property-search-1" id="toc-property-search-1">Property
+Search</a></li>
+<li><a href="#get-property-details" id="toc-get-property-details">Get
+Property Details</a></li>
+<li><a href="#investment-cashflow-analysis"
+id="toc-investment-cashflow-analysis">Investment Cashflow
+Analysis</a></li>
+<li><a href="#geolocation-search"
+id="toc-geolocation-search">Geolocation Search</a></li>
+</ul></li>
+<li><a href="#troubleshooting-1" id="toc-troubleshooting-1">7.
+Troubleshooting</a>
+<ul>
+<li><a href="#issue-port-8080-already-in-use"
+id="toc-issue-port-8080-already-in-use">Issue: “Port 8080 already in
+use”</a></li>
+<li><a href="#issue-rapidapi_key-not-found"
+id="toc-issue-rapidapi_key-not-found">Issue: “RAPIDAPI_KEY not
+found”</a></li>
+<li><a href="#issue-connection-refused-errors"
+id="toc-issue-connection-refused-errors">Issue: “Connection refused”
+errors</a></li>
+<li><a href="#issue-401-unauthorized-from-api"
+id="toc-issue-401-unauthorized-from-api">Issue: “401 Unauthorized” from
+API</a></li>
+<li><a href="#issue-cors-error-in-browser"
+id="toc-issue-cors-error-in-browser">Issue: “CORS error” in
+browser</a></li>
+</ul></li>
+<li><a href="#faq" id="toc-faq">8. FAQ</a>
+<ul>
+<li><a href="#q-how-do-i-change-the-server-port"
+id="toc-q-how-do-i-change-the-server-port">Q: How do I change the server
+port?</a></li>
+<li><a href="#q-how-many-api-calls-can-i-make"
+id="toc-q-how-many-api-calls-can-i-make">Q: How many API calls can I
+make?</a></li>
+<li><a href="#q-can-i-run-this-on-a-remote-server"
+id="toc-q-can-i-run-this-on-a-remote-server">Q: Can I run this on a
+remote server?</a></li>
+<li><a href="#q-how-do-i-update-the-application"
+id="toc-q-how-do-i-update-the-application">Q: How do I update the
+application?</a></li>
+<li><a href="#q-is-my-api-key-secure" id="toc-q-is-my-api-key-secure">Q:
+Is my API key secure?</a></li>
+<li><a href="#q-how-do-i-view-server-logs"
+id="toc-q-how-do-i-view-server-logs">Q: How do I view server
+logs?</a></li>
+</ul></li>
+<li><a href="#getting-help" id="toc-getting-help">📞 Getting
+Help</a></li>
+<li><a href="#document-history" id="toc-document-history">📄 Document
+History</a></li>
+</ul></li>
+<li><a href="#developer-guide---real-estate-backend-service"
+id="toc-developer-guide---real-estate-backend-service">Developer Guide -
+Real Estate Backend Service</a>
+<ul>
+<li><a href="#table-of-contents-2" id="toc-table-of-contents-2">📋 Table
+of Contents</a></li>
+<li><a href="#architecture-overview" id="toc-architecture-overview">1.
+Architecture Overview</a>
+<ul>
+<li><a href="#system-architecture" id="toc-system-architecture">System
+Architecture</a></li>
+<li><a href="#design-patterns-used" id="toc-design-patterns-used">Design
+Patterns Used</a></li>
+</ul></li>
+<li><a href="#development-environment-setup"
+id="toc-development-environment-setup">2. Development Environment
+Setup</a>
+<ul>
+<li><a href="#prerequisites-1"
+id="toc-prerequisites-1">Prerequisites</a></li>
+<li><a href="#ide-setup" id="toc-ide-setup">IDE Setup</a></li>
+<li><a href="#environment-configuration"
+id="toc-environment-configuration">Environment Configuration</a></li>
+<li><a href="#running-in-development-mode"
+id="toc-running-in-development-mode">Running in Development
+Mode</a></li>
+</ul></li>
+<li><a href="#code-structure" id="toc-code-structure">3. Code
+Structure</a>
+<ul>
+<li><a href="#package-organization"
+id="toc-package-organization">Package Organization</a></li>
+<li><a href="#naming-conventions" id="toc-naming-conventions">Naming
+Conventions</a></li>
+</ul></li>
+<li><a href="#api-reference" id="toc-api-reference">4. API Reference</a>
+<ul>
+<li><a href="#rest-endpoints-summary"
+id="toc-rest-endpoints-summary">REST Endpoints Summary</a></li>
+</ul></li>
+<li><a href="#core-components" id="toc-core-components">5. Core
+Components</a>
+<ul>
+<li><a href="#application-entry-point"
+id="toc-application-entry-point">5.1 Application Entry Point</a></li>
+<li><a href="#zillow-service" id="toc-zillow-service">5.2 Zillow
+Service</a></li>
+<li><a href="#cashflow-service" id="toc-cashflow-service">5.3 Cashflow
+Service</a></li>
+</ul></li>
+<li><a href="#data-models" id="toc-data-models">6. Data Models</a>
+<ul>
+<li><a href="#cashflowrequest-input-dto"
+id="toc-cashflowrequest-input-dto">6.1 CashflowRequest (Input
+DTO)</a></li>
+<li><a href="#cashflowresponse-output-dto"
+id="toc-cashflowresponse-output-dto">6.2 CashflowResponse (Output
+DTO)</a></li>
+<li><a href="#enrichedproperty" id="toc-enrichedproperty">6.3
+EnrichedProperty</a></li>
+</ul></li>
+<li><a href="#business-logic" id="toc-business-logic">7. Business
+Logic</a>
+<ul>
+<li><a href="#cashflow-calculation-algorithm"
+id="toc-cashflow-calculation-algorithm">7.1 Cashflow Calculation
+Algorithm</a></li>
+<li><a href="#irr-calculation-newton-raphson"
+id="toc-irr-calculation-newton-raphson">7.2 IRR Calculation
+(Newton-Raphson)</a></li>
+</ul></li>
+<li><a href="#testing" id="toc-testing">8. Testing</a>
+<ul>
+<li><a href="#running-tests" id="toc-running-tests">Running
+Tests</a></li>
+<li><a href="#test-structure" id="toc-test-structure">Test
+Structure</a></li>
+<li><a href="#writing-tests" id="toc-writing-tests">Writing
+Tests</a></li>
+</ul></li>
+<li><a href="#code-style-guidelines" id="toc-code-style-guidelines">9.
+Code Style Guidelines</a>
+<ul>
+<li><a href="#java-style" id="toc-java-style">Java Style</a></li>
+<li><a href="#formatting-rules" id="toc-formatting-rules">Formatting
+Rules</a></li>
+</ul></li>
+<li><a href="#contributing" id="toc-contributing">10. Contributing</a>
+<ul>
+<li><a href="#git-workflow" id="toc-git-workflow">Git Workflow</a></li>
+<li><a href="#commit-message-format"
+id="toc-commit-message-format">Commit Message Format</a></li>
+</ul></li>
+<li><a href="#generating-documentation"
+id="toc-generating-documentation">11. Generating Documentation</a>
+<ul>
+<li><a href="#using-doxygen-optional"
+id="toc-using-doxygen-optional">Using Doxygen (Optional)</a></li>
+<li><a href="#using-pandoc-for-pdf-export"
+id="toc-using-pandoc-for-pdf-export">Using Pandoc for PDF
+Export</a></li>
+</ul></li>
+<li><a href="#document-history-1" id="toc-document-history-1">📄
+Document History</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="real-time-real-estate-backend-service">Real-Time Real Estate
+Backend Service</h1>
+<p><a href="https://openjdk.org/"><img
+src="https://img.shields.io/badge/Java-17-orange.svg" alt="Java" /></a>
+<a href="https://spring.io/projects/spring-boot"><img
+src="https://img.shields.io/badge/Spring%20Boot-3.2.0-green.svg"
+alt="Spring Boot" /></a> <a href="https://maven.apache.org/"><img
+src="https://img.shields.io/badge/Maven-3.8+-blue.svg"
+alt="Maven" /></a> <a href="LICENSE"><img
+src="https://img.shields.io/badge/License-MIT-yellow.svg"
+alt="License" /></a></p>
+<p>A comprehensive Spring Boot backend service for real estate
+investment analysis. This service provides RESTful APIs for property
+search, geolocation services, and investment cashflow analysis.</p>
+<hr />
+<h2 id="table-of-contents">📋 Table of Contents</h2>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#api-documentation">API Documentation</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#project-structure">Project Structure</a></li>
+<li><a href="#related-documentation">Related Documentation</a></li>
+</ul>
+<hr />
+<h2 id="overview">🎯 Overview</h2>
+<p>This backend service is part of the <strong>Real-Time Real Estate
+Investment Analysis Web Application</strong>. It serves as the central
+API gateway that:</p>
+<ol type="1">
+<li><strong>Integrates with Zillow API</strong> - Fetches property data,
+estimates, and market information</li>
+<li><strong>Provides Geolocation Services</strong> - Uses Google API for
+geocoding and place search</li>
+<li><strong>Performs Investment Analysis</strong> - Calculates cashflow
+projections and investment metrics</li>
+</ol>
+<h3 id="technology-stack">Technology Stack</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Technology</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime</td>
+<td>Java</td>
+<td>17</td>
+</tr>
+<tr>
+<td>Framework</td>
+<td>Spring Boot</td>
+<td>3.2.0</td>
+</tr>
+<tr>
+<td>Build Tool</td>
+<td>Maven</td>
+<td>3.8+</td>
+</tr>
+<tr>
+<td>JSON Processing</td>
+<td>Jackson</td>
+<td>2.15.x</td>
+</tr>
+<tr>
+<td>HTTP Client</td>
+<td>Java HttpClient</td>
+<td>JDK 17</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="features">✨ Features</h2>
+<h3 id="property-services">🏠 Property Services</h3>
+<ul>
+<li>Extended property search by location</li>
+<li>Property details retrieval by ZPID</li>
+<li>Zestimate and rent estimates</li>
+<li>Property comparables (comps)</li>
+<li>Price and tax history</li>
+<li>3D tours and floor plans</li>
+</ul>
+<h3 id="geolocation-services">🗺️ Geolocation Services</h3>
+<ul>
+<li>Text-based place search</li>
+<li>Coordinate-based radius search</li>
+<li>Address geocoding</li>
+</ul>
+<h3 id="investment-analysis">💰 Investment Analysis</h3>
+<ul>
+<li>Net Operating Income (NOI) calculation</li>
+<li>Cap Rate analysis (Purchase Price &amp; FMV)</li>
+<li>Debt Service Coverage Ratio (DSCR)</li>
+<li>Cash-on-Cash Return</li>
+<li>Internal Rate of Return (IRR)</li>
+<li>Multi-year cashflow projections</li>
+<li>Equity Multiple calculation</li>
+</ul>
+<hr />
+<h2 id="architecture">🏗️ Architecture</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                        Frontend (React)                          │
+└─────────────────────────────┬───────────────────────────────────┘
+                              │ HTTP/REST
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Spring Boot Backend                           │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
+│  │   Property  │  │     Geo     │  │      Cashflow           │  │
+│  │  Controller │  │  Controller │  │      Controller         │  │
+│  └──────┬──────┘  └──────┬──────┘  └───────────┬─────────────┘  │
+│         │                │                      │                │
+│  ┌──────▼──────┐  ┌──────▼──────┐  ┌───────────▼─────────────┐  │
+│  │   Zillow    │  │ GoogleApi31 │  │      Cashflow           │  │
+│  │   Service   │  │   Service   │  │       Service           │  │
+│  └──────┬──────┘  └──────┬──────┘  └─────────────────────────┘  │
+└─────────┼────────────────┼──────────────────────────────────────┘
+          │                │
+          ▼                ▼
+    ┌──────────┐    ┌──────────────┐
+    │  Zillow  │    │  Google API  │
+    │   API    │    │      31      │
+    │(RapidAPI)│    │  (RapidAPI)  │
+    └──────────┘    └──────────────┘</code></pre>
+<hr />
+<h2 id="quick-start">🚀 Quick Start</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li><strong>Java 17</strong> or higher (<a
+href="https://adoptium.net/">Download</a>)</li>
+<li><strong>Maven 3.8+</strong> (<a
+href="https://maven.apache.org/download.cgi">Download</a>)</li>
+<li><strong>RapidAPI Key</strong> for Zillow and Google API access</li>
+</ul>
+<h3 id="installation">Installation</h3>
+<ol type="1">
+<li><p><strong>Clone the repository</strong></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/praneeth-vadrevu/Real-Time-Real-Estate-Investment-Analysis--Web-App.git</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> Real-Time-Real-Estate-Investment-Analysis--Web-App/googlemapv2</span></code></pre></div></li>
+<li><p><strong>Set environment variables</strong></p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows (PowerShell)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">$env</span><span class="ex">:RAPIDAPI_KEY</span> = <span class="st">&quot;your-rapidapi-key-here&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Linux/macOS</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RAPIDAPI_KEY</span><span class="op">=</span><span class="st">&quot;your-rapidapi-key-here&quot;</span></span></code></pre></div></li>
+<li><p><strong>Build the project</strong></p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> clean install</span></code></pre></div></li>
+<li><p><strong>Run the application</strong></p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> spring-boot:run</span></code></pre></div></li>
+<li><p><strong>Verify the server is running</strong></p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> http://localhost:8080/api/geo/text<span class="pp">?</span>text=test</span></code></pre></div></li>
+</ol>
+<h3 id="using-batch-scripts-windows">Using Batch Scripts (Windows)</h3>
+<pre class="batch"><code># Compile the project
+compile.bat
+
+# Start the backend server
+start-backend.bat</code></pre>
+<hr />
+<h2 id="api-documentation">📚 API Documentation</h2>
+<h3 id="base-url">Base URL</h3>
+<pre><code>http://localhost:8080</code></pre>
+<h3 id="endpoints-overview">Endpoints Overview</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/properties/search</code></td>
+<td>Search properties by location</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/properties/{zpid}</code></td>
+<td>Get property details</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/analysis/cashflow</code></td>
+<td>Analyze investment cashflow</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/geo/text</code></td>
+<td>Text-based place search</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/geo/circle</code></td>
+<td>Radius-based search</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/geo/raw</code></td>
+<td>Raw geo query</td>
+</tr>
+</tbody>
+</table>
+<h3 id="detailed-api-reference">Detailed API Reference</h3>
+<h4 id="property-search">1. Property Search</h4>
+<pre class="http"><code>GET /api/properties/search?location={location}&amp;status={status}&amp;page={page}</code></pre>
+<p><strong>Parameters:</strong> | Name | Type | Required | Description |
+|——|——|———-|————-| | <code>location</code> | string | Yes | City, state,
+or ZIP code | | <code>status</code> | string | No |
+<code>for_sale</code>, <code>for_rent</code>, <code>sold</code> | |
+<code>page</code> | integer | No | Page number (default: 1) |</p>
+<p><strong>Example:</strong></p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;http://localhost:8080/api/properties/search?location=Santa%20Monica,%20CA&amp;status=for_sale&quot;</span></span></code></pre></div>
+<h4 id="property-details">2. Property Details</h4>
+<pre class="http"><code>GET /api/properties/{zpid}</code></pre>
+<p><strong>Example:</strong></p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;http://localhost:8080/api/properties/20479916&quot;</span></span></code></pre></div>
+<p><strong>Response:</strong></p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zpid&quot;</span><span class="fu">:</span> <span class="st">&quot;20479916&quot;</span><span class="fu">,</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="st">&quot;123 Main St, Santa Monica, CA 90401&quot;</span><span class="fu">,</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;price&quot;</span><span class="fu">:</span> <span class="dv">1500000</span><span class="fu">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;bedrooms&quot;</span><span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;bathrooms&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;livingArea&quot;</span><span class="fu">:</span> <span class="dv">1800</span><span class="fu">,</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;yearBuilt&quot;</span><span class="fu">:</span> <span class="dv">1985</span><span class="fu">,</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zestimate&quot;</span><span class="fu">:</span> <span class="dv">1450000</span><span class="fu">,</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;rentEstimate&quot;</span><span class="fu">:</span> <span class="dv">5500</span><span class="fu">,</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;annualTax&quot;</span><span class="fu">:</span> <span class="dv">15000</span><span class="fu">,</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;hoaMonthly&quot;</span><span class="fu">:</span> <span class="dv">350</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h4 id="cashflow-analysis">3. Cashflow Analysis</h4>
+<pre class="http"><code>POST /api/analysis/cashflow
+Content-Type: application/json</code></pre>
+<p><strong>Request Body:</strong></p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;offerPrice&quot;</span><span class="fu">:</span> <span class="dv">500000</span><span class="fu">,</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;fmv&quot;</span><span class="fu">:</span> <span class="dv">550000</span><span class="fu">,</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;grossRentsAnnual&quot;</span><span class="fu">:</span> <span class="dv">48000</span><span class="fu">,</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;numberOfUnits&quot;</span><span class="fu">:</span> <span class="dv">4</span><span class="fu">,</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;vacancyRate&quot;</span><span class="fu">:</span> <span class="fl">0.05</span><span class="fu">,</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;managementRate&quot;</span><span class="fu">:</span> <span class="fl">0.10</span><span class="fu">,</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;propertyTaxes&quot;</span><span class="fu">:</span> <span class="dv">6000</span><span class="fu">,</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;insurance&quot;</span><span class="fu">:</span> <span class="dv">2400</span><span class="fu">,</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;firstPrincipal&quot;</span><span class="fu">:</span> <span class="dv">400000</span><span class="fu">,</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;firstRateAnnual&quot;</span><span class="fu">:</span> <span class="fl">0.07</span><span class="fu">,</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;firstAmortYears&quot;</span><span class="fu">:</span> <span class="dv">30</span><span class="fu">,</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;holdYears&quot;</span><span class="fu">:</span> <span class="dv">10</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Response:</strong></p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;summary&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;rpp&quot;</span><span class="fu">:</span> <span class="dv">500000</span><span class="fu">,</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;cashToClose&quot;</span><span class="fu">:</span> <span class="dv">100000</span><span class="fu">,</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;noiY1&quot;</span><span class="fu">:</span> <span class="dv">35000</span><span class="fu">,</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;capRatePPY1&quot;</span><span class="fu">:</span> <span class="fl">0.07</span><span class="fu">,</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;dscrY1&quot;</span><span class="fu">:</span> <span class="fl">1.15</span><span class="fu">,</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;cashOnCashY1&quot;</span><span class="fu">:</span> <span class="fl">0.085</span><span class="fu">,</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;irr&quot;</span><span class="fu">:</span> <span class="fl">0.12</span><span class="fu">,</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;equityMultiple&quot;</span><span class="fu">:</span> <span class="fl">2.1</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;projection&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span> <span class="dt">&quot;year&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> <span class="dt">&quot;noi&quot;</span><span class="fu">:</span> <span class="dv">35000</span><span class="fu">,</span> <span class="dt">&quot;cashFlowBeforeTax&quot;</span><span class="fu">:</span> <span class="dv">8500</span> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span> <span class="dt">&quot;year&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span> <span class="dt">&quot;noi&quot;</span><span class="fu">:</span> <span class="dv">36050</span><span class="fu">,</span> <span class="dt">&quot;cashFlowBeforeTax&quot;</span><span class="fu">:</span> <span class="dv">9100</span> <span class="fu">}</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h4 id="geo-text-search">4. Geo Text Search</h4>
+<pre class="http"><code>GET /api/geo/text?text={text}&amp;city={city}&amp;state={state}</code></pre>
+<p><strong>Example:</strong></p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;http://localhost:8080/api/geo/text?text=white%20house&amp;city=washington&amp;state=DC&quot;</span></span></code></pre></div>
+<h4 id="geo-circle-search">5. Geo Circle Search</h4>
+<pre class="http"><code>GET /api/geo/circle?lat={lat}&amp;lon={lon}&amp;radius={radius}&amp;text={text}</code></pre>
+<p><strong>Example:</strong></p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;http://localhost:8080/api/geo/circle?lat=34.0195&amp;lon=-118.4912&amp;radius=5000&amp;text=restaurant&quot;</span></span></code></pre></div>
+<hr />
+<h2 id="configuration">⚙️ Configuration</h2>
+<h3 id="application-configuration-application.yml">Application
+Configuration (<code>application.yml</code>)</h3>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">server</span><span class="kw">:</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">8080</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">zillow</span><span class="kw">:</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rapidapi</span><span class="kw">:</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">host</span><span class="kw">:</span><span class="at"> zillow-com1.p.rapidapi.com</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">key</span><span class="kw">:</span><span class="at"> ${RAPIDAPI_KEY:your-default-key}</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="fu">googleapi31</span><span class="kw">:</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rapidapi</span><span class="kw">:</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">host</span><span class="kw">:</span><span class="at"> google-api31.p.rapidapi.com</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">key</span><span class="kw">:</span><span class="at"> ${RAPIDAPI_KEY:your-default-key}</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">endpoint</span><span class="kw">:</span><span class="at"> https://google-api31.p.rapidapi.com/map</span></span></code></pre></div>
+<h3 id="environment-variables">Environment Variables</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RAPIDAPI_KEY</code></td>
+<td>RapidAPI authentication key</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>SERVER_PORT</code></td>
+<td>Server port (default: 8080)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="project-structure">📁 Project Structure</h2>
+<pre><code>googlemapv2/
+├── src/
+│   ├── main/
+│   │   ├── java/com/example/
+│   │   │   ├── map/
+│   │   │   │   ├── Application.java          # Main entry point
+│   │   │   │   ├── config/
+│   │   │   │   │   └── CorsConfig.java       # CORS configuration
+│   │   │   │   └── geo/
+│   │   │   │       ├── GeoController.java    # Geo REST endpoints
+│   │   │   │       └── GoogleApi31Service.java
+│   │   │   ├── realestate/
+│   │   │   │   ├── controller/
+│   │   │   │   │   └── PropertyController.java
+│   │   │   │   ├── model/
+│   │   │   │   │   ├── EnrichedProperty.java
+│   │   │   │   │   └── SearchCard.java
+│   │   │   │   └── service/
+│   │   │   │       └── ZillowService.java
+│   │   │   └── analysis/
+│   │   │       ├── controller/
+│   │   │       │   └── CashflowController.java
+│   │   │       ├── dto/
+│   │   │       │   ├── CashflowRequest.java
+│   │   │       │   └── CashflowResponse.java
+│   │   │       └── service/
+│   │   │           └── CashflowService.java
+│   │   └── resources/
+│   │       └── application.yml
+│   └── test/
+│       └── java/com/example/
+├── pom.xml
+├── README.md
+├── USER_GUIDE.md
+└── DEVELOPER_GUIDE.md</code></pre>
+<hr />
+<h2 id="related-documentation">📖 Related Documentation</h2>
+<table>
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr>
+<th>Document</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="USER_GUIDE.md">USER_GUIDE.md</a></td>
+<td>End-user instructions for setup and usage</td>
+</tr>
+<tr>
+<td><a href="DEVELOPER_GUIDE.md">DEVELOPER_GUIDE.md</a></td>
+<td>Technical documentation for developers</td>
+</tr>
+<tr>
+<td><a href="test-requests.http">API Reference</a></td>
+<td>HTTP request examples</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="troubleshooting">🔧 Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<p><strong>1. Port 8080 already in use</strong></p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">netstat</span> <span class="at">-ano</span> <span class="kw">|</span> <span class="ex">findstr</span> :8080</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ex">taskkill</span> /PID <span class="op">&lt;</span>PID<span class="op">&gt;</span> /F</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Linux/macOS</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="ex">lsof</span> <span class="at">-i</span> :8080</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="bu">kill</span> <span class="at">-9</span> <span class="op">&lt;</span>PID<span class="op">&gt;</span></span></code></pre></div>
+<p><strong>2. API Key errors</strong> - Verify <code>RAPIDAPI_KEY</code>
+environment variable is set - Check RapidAPI subscription status -
+Ensure API key has access to required endpoints</p>
+<p><strong>3. CORS errors</strong> - Backend includes CORS configuration
+for <code>localhost:3000</code> - Add additional origins in
+<code>CorsConfig.java</code> if needed</p>
+<hr />
+<h2 id="license">📄 License</h2>
+<p>This project is licensed under the MIT License - see the <a
+href="../LICENSE">LICENSE</a> file for details.</p>
+<hr />
+<h2 id="contributors">👥 Contributors</h2>
+<ul>
+<li><strong>Praneeth Vadrevu</strong> - Project Owner</li>
+<li>CS 682 - Fall 2025</li>
+</ul>
+<hr />
+<h2 id="support">📞 Support</h2>
+<p>For questions or issues, please create an issue on the <a
+href="https://github.com/praneeth-vadrevu/Real-Time-Real-Estate-Investment-Analysis--Web-App/issues">GitHub
+repository</a>.</p>
+<h1 id="user-guide---real-estate-backend-service">User Guide - Real
+Estate Backend Service</h1>
+<blockquote>
+<p><strong>Version:</strong> 1.0.0<br />
+<strong>Last Updated:</strong> December 2025<br />
+<strong>Audience:</strong> End Users, System Administrators</p>
+</blockquote>
+<hr />
+<h2 id="table-of-contents-1">📋 Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-introduction">Introduction</a></li>
+<li><a href="#2-system-requirements">System Requirements</a></li>
+<li><a href="#3-installation-guide">Installation Guide</a></li>
+<li><a href="#4-configuration">Configuration</a></li>
+<li><a href="#5-starting-the-server">Starting the Server</a></li>
+<li><a href="#6-using-the-api">Using the API</a></li>
+<li><a href="#7-troubleshooting">Troubleshooting</a></li>
+<li><a href="#8-faq">FAQ</a></li>
+</ol>
+<hr />
+<h2 id="introduction">1. Introduction</h2>
+<h3 id="what-is-this-application">What is this application?</h3>
+<p>The <strong>Real Estate Backend Service</strong> is a RESTful API
+server that powers the Real-Time Real Estate Investment Analysis Web
+Application. It provides:</p>
+<ul>
+<li>🏠 <strong>Property Search</strong> - Search real estate listings
+from Zillow</li>
+<li>📍 <strong>Geolocation</strong> - Convert addresses to coordinates
+and search nearby places</li>
+<li>💰 <strong>Investment Analysis</strong> - Calculate ROI, cashflow,
+and other investment metrics</li>
+</ul>
+<h3 id="who-should-use-this-guide">Who should use this guide?</h3>
+<ul>
+<li><strong>System Administrators</strong> setting up the backend
+server</li>
+<li><strong>Developers</strong> integrating with the API</li>
+<li><strong>End Users</strong> running the application locally</li>
+</ul>
+<hr />
+<h2 id="system-requirements">2. System Requirements</h2>
+<h3 id="minimum-requirements">Minimum Requirements</h3>
+<table>
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr>
+<th>Component</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Operating System</strong></td>
+<td>Windows 10/11, macOS 10.15+, Linux (Ubuntu 20.04+)</td>
+</tr>
+<tr>
+<td><strong>Java</strong></td>
+<td>JDK 17 or higher</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td>4 GB RAM minimum</td>
+</tr>
+<tr>
+<td><strong>Disk Space</strong></td>
+<td>500 MB free space</td>
+</tr>
+<tr>
+<td><strong>Network</strong></td>
+<td>Internet connection (for API calls)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="required-accounts">Required Accounts</h3>
+<table>
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 37%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Service</th>
+<th>Purpose</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RapidAPI</strong></td>
+<td>API access for Zillow &amp; Google services</td>
+<td><a href="https://rapidapi.com/">Sign Up</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="installation-guide">3. Installation Guide</h2>
+<h3 id="step-1-install-java-17">Step 1: Install Java 17</h3>
+<h4 id="windows">Windows</h4>
+<ol type="1">
+<li><p>Download Java 17 from <a
+href="https://adoptium.net/">Adoptium</a></p></li>
+<li><p>Run the installer</p></li>
+<li><p>Verify installation:</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>java <span class="op">-</span>version</span></code></pre></div>
+<p>Expected output: <code>openjdk version "17.x.x"</code></p></li>
+</ol>
+<h4 id="macos">macOS</h4>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using Homebrew</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install openjdk@17</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add to PATH</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;export PATH=&quot;/opt/homebrew/opt/openjdk@17/bin:$PATH&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.zshrc</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.zshrc</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-version</span></span></code></pre></div>
+<h4 id="linux-ubuntudebian">Linux (Ubuntu/Debian)</h4>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install openjdk-17-jdk</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-version</span></span></code></pre></div>
+<h3 id="step-2-install-maven">Step 2: Install Maven</h3>
+<h4 id="windows-1">Windows</h4>
+<ol type="1">
+<li><p>Download Maven from <a
+href="https://maven.apache.org/download.cgi">Apache Maven</a></p></li>
+<li><p>Extract to <code>C:\Program Files\Apache\maven</code></p></li>
+<li><p>Add to System PATH:</p>
+<ul>
+<li>Open System Properties → Environment Variables</li>
+<li>Add <code>C:\Program Files\Apache\maven\bin</code> to PATH</li>
+</ul></li>
+<li><p>Verify:</p>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mvn <span class="op">-</span>version</span></code></pre></div></li>
+</ol>
+<h4 id="macoslinux">macOS/Linux</h4>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install maven</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Linux</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install maven</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> <span class="at">-version</span></span></code></pre></div>
+<h3 id="step-3-get-rapidapi-key">Step 3: Get RapidAPI Key</h3>
+<ol type="1">
+<li>Go to <a href="https://rapidapi.com/">RapidAPI</a></li>
+<li>Create an account or sign in</li>
+<li>Subscribe to these APIs:
+<ul>
+<li><a href="https://rapidapi.com/apimaker/api/zillow-com1">Zillow
+API</a></li>
+<li><a href="https://rapidapi.com/rphrp1985/api/google-api31">Google API
+31</a></li>
+</ul></li>
+<li>Copy your API key from the dashboard</li>
+</ol>
+<h3 id="step-4-download-the-project">Step 4: Download the Project</h3>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clone the repository</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/praneeth-vadrevu/Real-Time-Real-Estate-Investment-Analysis--Web-App.git</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Navigate to backend directory</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> Real-Time-Real-Estate-Investment-Analysis--Web-App/googlemapv2</span></code></pre></div>
+<hr />
+<h2 id="configuration-1">4. Configuration</h2>
+<h3 id="setting-up-environment-variables">Setting Up Environment
+Variables</h3>
+<h4 id="windows-powershell">Windows (PowerShell)</h4>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Temporary (current session only)</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="va">$env</span><span class="op">:</span><span class="va">RAPIDAPI_KEY</span> <span class="op">=</span> <span class="st">&quot;your-api-key-here&quot;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Permanent</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="op">[</span>Environment<span class="op">]::</span>SetEnvironmentVariable<span class="op">(</span><span class="st">&quot;RAPIDAPI_KEY&quot;</span><span class="op">,</span> <span class="st">&quot;your-api-key-here&quot;</span><span class="op">,</span> <span class="st">&quot;User&quot;</span><span class="op">)</span></span></code></pre></div>
+<h4 id="windows-command-prompt">Windows (Command Prompt)</h4>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode cmd"><code class="sourceCode dosbat"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="va">RAPIDAPI_KEY</span>=your-api-key-here</span></code></pre></div>
+<h4 id="macoslinux-1">macOS/Linux</h4>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Temporary</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">RAPIDAPI_KEY</span><span class="op">=</span><span class="st">&quot;your-api-key-here&quot;</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Permanent (add to ~/.bashrc or ~/.zshrc)</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;export RAPIDAPI_KEY=&quot;your-api-key-here&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span></code></pre></div>
+<h3 id="configuration-file">Configuration File</h3>
+<p>The main configuration file is located at
+<code>src/main/resources/application.yml</code>:</p>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">server</span><span class="kw">:</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">8080</span><span class="co">                    # Server port (change if needed)</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">zillow</span><span class="kw">:</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rapidapi</span><span class="kw">:</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">host</span><span class="kw">:</span><span class="at"> zillow-com1.p.rapidapi.com</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">key</span><span class="kw">:</span><span class="at"> ${RAPIDAPI_KEY}</span><span class="co">        # Uses environment variable</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="fu">googleapi31</span><span class="kw">:</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rapidapi</span><span class="kw">:</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">host</span><span class="kw">:</span><span class="at"> google-api31.p.rapidapi.com</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">key</span><span class="kw">:</span><span class="at"> ${RAPIDAPI_KEY}</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">endpoint</span><span class="kw">:</span><span class="at"> https://google-api31.p.rapidapi.com/map</span></span></code></pre></div>
+<h3 id="changing-the-server-port">Changing the Server Port</h3>
+<p>If port 8080 is in use, modify <code>application.yml</code>:</p>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">server</span><span class="kw">:</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">8081</span><span class="co">  # or any available port</span></span></code></pre></div>
+<hr />
+<h2 id="starting-the-server">5. Starting the Server</h2>
+<h3 id="method-1-using-maven-recommended">Method 1: Using Maven
+(Recommended)</h3>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Navigate to the backend directory</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> googlemapv2</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Build and run</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> spring-boot:run</span></code></pre></div>
+<h3 id="method-2-using-batch-scripts-windows">Method 2: Using Batch
+Scripts (Windows)</h3>
+<pre class="batch"><code># First time: compile the project
+compile.bat
+
+# Start the server
+start-backend.bat</code></pre>
+<h3 id="method-3-using-jar-file">Method 3: Using JAR File</h3>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the JAR</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> clean package</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the JAR</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> target/googlemapv2-1.0.0.jar</span></code></pre></div>
+<h3 id="verifying-the-server-is-running">Verifying the Server is
+Running</h3>
+<ol type="1">
+<li><p><strong>Check the console output:</strong></p>
+<pre><code>Started Application in X.XXX seconds (process running for X.XXX)</code></pre></li>
+<li><p><strong>Test the API:</strong></p>
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> http://localhost:8080/api/geo/text<span class="pp">?</span>text=test</span></code></pre></div></li>
+<li><p><strong>Open in browser:</strong> Navigate to
+<code>http://localhost:8080/api/geo/text?text=test</code></p></li>
+</ol>
+<hr />
+<h2 id="using-the-api">6. Using the API</h2>
+<h3 id="property-search-1">Property Search</h3>
+<p>Search for properties in a specific location:</p>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Search for homes for sale in Santa Monica</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;http://localhost:8080/api/properties/search?location=Santa%20Monica,%20CA&amp;status=for_sale&quot;</span></span></code></pre></div>
+<p><strong>Parameters:</strong> - <code>location</code> (required):
+City, state, or ZIP code - <code>status</code> (optional):
+<code>for_sale</code>, <code>for_rent</code>, or <code>sold</code> -
+<code>page</code> (optional): Page number for pagination</p>
+<h3 id="get-property-details">Get Property Details</h3>
+<p>Get detailed information about a specific property:</p>
+<div class="sourceCode" id="cb41"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get property by Zillow Property ID (ZPID)</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;http://localhost:8080/api/properties/20479916&quot;</span></span></code></pre></div>
+<h3 id="investment-cashflow-analysis">Investment Cashflow Analysis</h3>
+<p>Analyze the investment potential of a property:</p>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST <span class="st">&quot;http://localhost:8080/api/analysis/cashflow&quot;</span> <span class="dt">\</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&quot;Content-Type: application/json&quot;</span> <span class="dt">\</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">&#39;{</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;offerPrice&quot;: 500000,</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;fmv&quot;: 550000,</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;grossRentsAnnual&quot;: 48000,</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;numberOfUnits&quot;: 4,</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;vacancyRate&quot;: 0.05,</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;managementRate&quot;: 0.10,</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;propertyTaxes&quot;: 6000,</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;insurance&quot;: 2400,</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;firstPrincipal&quot;: 400000,</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;firstRateAnnual&quot;: 0.07,</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;firstAmortYears&quot;: 30,</span></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;holdYears&quot;: 10</span></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="st">  }&#39;</span></span></code></pre></div>
+<h3 id="geolocation-search">Geolocation Search</h3>
+<p>Search for places by text:</p>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;http://localhost:8080/api/geo/text?text=coffee&amp;city=Boston&amp;state=MA&quot;</span></span></code></pre></div>
+<p>Search within a radius:</p>
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;http://localhost:8080/api/geo/circle?lat=34.0195&amp;lon=-118.4912&amp;radius=5000&amp;text=restaurant&quot;</span></span></code></pre></div>
+<hr />
+<h2 id="troubleshooting-1">7. Troubleshooting</h2>
+<h3 id="issue-port-8080-already-in-use">Issue: “Port 8080 already in
+use”</h3>
+<p><strong>Solution:</strong></p>
+<p>Windows:</p>
+<div class="sourceCode" id="cb45"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the process using port 8080</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>netstat <span class="op">-</span>ano <span class="op">|</span> findstr <span class="op">:</span><span class="dv">8080</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Kill the process (replace &lt;PID&gt; with actual PID)</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>taskkill <span class="op">/</span>PID <span class="op">&lt;</span>PID<span class="op">&gt;</span> <span class="op">/</span>F</span></code></pre></div>
+<p>macOS/Linux:</p>
+<div class="sourceCode" id="cb46"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find and kill the process</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="ex">lsof</span> <span class="at">-i</span> :8080</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="bu">kill</span> <span class="at">-9</span> <span class="op">&lt;</span>PID<span class="op">&gt;</span></span></code></pre></div>
+<p>Or change the port in <code>application.yml</code>.</p>
+<h3 id="issue-rapidapi_key-not-found">Issue: “RAPIDAPI_KEY not
+found”</h3>
+<p><strong>Solution:</strong> 1. Verify the environment variable is set:
+<code>powershell    echo $env:RAPIDAPI_KEY  # Windows PowerShell    echo $RAPIDAPI_KEY      # Linux/macOS</code></p>
+<ol start="2" type="1">
+<li><p>If empty, set it again (see Configuration section)</p></li>
+<li><p>Restart your terminal/IDE after setting</p></li>
+</ol>
+<h3 id="issue-connection-refused-errors">Issue: “Connection refused”
+errors</h3>
+<p><strong>Solution:</strong> 1. Verify the server is running 2. Check
+if a firewall is blocking the connection 3. Ensure you’re using the
+correct port</p>
+<h3 id="issue-401-unauthorized-from-api">Issue: “401 Unauthorized” from
+API</h3>
+<p><strong>Solution:</strong> 1. Check if your RapidAPI key is valid 2.
+Verify you’re subscribed to the required APIs 3. Check if you’ve
+exceeded API rate limits</p>
+<h3 id="issue-cors-error-in-browser">Issue: “CORS error” in browser</h3>
+<p><strong>Solution:</strong> The backend allows CORS from
+<code>localhost:3000</code> by default. If your frontend runs on a
+different port, update <code>CorsConfig.java</code>.</p>
+<hr />
+<h2 id="faq">8. FAQ</h2>
+<h3 id="q-how-do-i-change-the-server-port">Q: How do I change the server
+port?</h3>
+<p>A: Edit <code>src/main/resources/application.yml</code> and change
+<code>server.port</code> to your desired port.</p>
+<h3 id="q-how-many-api-calls-can-i-make">Q: How many API calls can I
+make?</h3>
+<p>A: This depends on your RapidAPI subscription plan. Check your
+RapidAPI dashboard for limits.</p>
+<h3 id="q-can-i-run-this-on-a-remote-server">Q: Can I run this on a
+remote server?</h3>
+<p>A: Yes! Deploy the JAR file to any server with Java 17 and set the
+environment variables accordingly.</p>
+<h3 id="q-how-do-i-update-the-application">Q: How do I update the
+application?</h3>
+<p>A:</p>
+<div class="sourceCode" id="cb47"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> clean install</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> spring-boot:run</span></code></pre></div>
+<h3 id="q-is-my-api-key-secure">Q: Is my API key secure?</h3>
+<p>A: The API key is stored as an environment variable, not in the code.
+Never commit API keys to version control.</p>
+<h3 id="q-how-do-i-view-server-logs">Q: How do I view server logs?</h3>
+<p>A: Logs are printed to the console. For file logging, add this to
+<code>application.yml</code>:</p>
+<div class="sourceCode" id="cb48"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logging</span><span class="kw">:</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">file</span><span class="kw">:</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> backend.log</span></span></code></pre></div>
+<hr />
+<h2 id="getting-help">📞 Getting Help</h2>
+<ul>
+<li><strong>GitHub Issues:</strong> <a
+href="https://github.com/praneeth-vadrevu/Real-Time-Real-Estate-Investment-Analysis--Web-App/issues">Report
+a bug</a></li>
+<li><strong>Documentation:</strong> Check the <a
+href="README.md">README.md</a> for quick reference</li>
+</ul>
+<hr />
+<h2 id="document-history">📄 Document History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>Dec 2025</td>
+<td>Team</td>
+<td>Initial release</td>
+</tr>
+</tbody>
+</table>
+<h1 id="developer-guide---real-estate-backend-service">Developer Guide -
+Real Estate Backend Service</h1>
+<blockquote>
+<p><strong>Version:</strong> 1.0.0<br />
+<strong>Last Updated:</strong> December 2025<br />
+<strong>Audience:</strong> Developers, Contributors</p>
+</blockquote>
+<hr />
+<h2 id="table-of-contents-2">📋 Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-architecture-overview">Architecture Overview</a></li>
+<li><a href="#2-development-environment-setup">Development Environment
+Setup</a></li>
+<li><a href="#3-code-structure">Code Structure</a></li>
+<li><a href="#4-api-reference">API Reference</a></li>
+<li><a href="#5-core-components">Core Components</a></li>
+<li><a href="#6-data-models">Data Models</a></li>
+<li><a href="#7-business-logic">Business Logic</a></li>
+<li><a href="#8-testing">Testing</a></li>
+<li><a href="#9-code-style-guidelines">Code Style Guidelines</a></li>
+<li><a href="#10-contributing">Contributing</a></li>
+<li><a href="#11-generating-documentation">Generating
+Documentation</a></li>
+</ol>
+<hr />
+<h2 id="architecture-overview">1. Architecture Overview</h2>
+<h3 id="system-architecture">System Architecture</h3>
+<pre><code>┌──────────────────────────────────────────────────────────────────────────┐
+│                              CLIENT LAYER                                 │
+│  ┌─────────────────────────────────────────────────────────────────────┐ │
+│  │                    React Frontend (Port 3000)                        │ │
+│  │    PropertyForm.tsx │ SearchPage.tsx │ PropertyMap.tsx              │ │
+│  └─────────────────────────────────────────────────────────────────────┘ │
+└──────────────────────────────┬───────────────────────────────────────────┘
+                               │ REST API (JSON)
+                               ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│                           BACKEND LAYER (Port 8080)                       │
+│  ┌─────────────────────────────────────────────────────────────────────┐ │
+│  │                         CONTROLLER LAYER                             │ │
+│  │  PropertyController │ CashflowController │ GeoController            │ │
+│  │  /api/properties/*  │ /api/analysis/*    │ /api/geo/*               │ │
+│  └─────────────────────────────┬───────────────────────────────────────┘ │
+│                                │                                          │
+│  ┌─────────────────────────────▼───────────────────────────────────────┐ │
+│  │                          SERVICE LAYER                               │ │
+│  │  ZillowService │ CashflowService │ GoogleApi31Service               │ │
+│  │  - API calls   │ - Business logic│ - Geocoding                      │ │
+│  │  - Data parse  │ - Calculations  │ - Place search                   │ │
+│  └─────────────────────────────┬───────────────────────────────────────┘ │
+│                                │                                          │
+│  ┌─────────────────────────────▼───────────────────────────────────────┐ │
+│  │                           MODEL LAYER                                │ │
+│  │  EnrichedProperty │ SearchCard │ CashflowRequest │ CashflowResponse │ │
+│  └─────────────────────────────────────────────────────────────────────┘ │
+└──────────────────────────────────┬───────────────────────────────────────┘
+                                   │ HTTPS
+                                   ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│                          EXTERNAL SERVICES                                │
+│  ┌───────────────────────┐    ┌────────────────────────────────────────┐ │
+│  │      Zillow API       │    │           Google API 31                │ │
+│  │  (RapidAPI hosted)    │    │         (RapidAPI hosted)              │ │
+│  │                       │    │                                        │ │
+│  │  - Property search    │    │  - Place search                        │ │
+│  │  - Property details   │    │  - Geocoding                           │ │
+│  │  - Estimates          │    │  - Radius search                       │ │
+│  │  - Comps              │    │                                        │ │
+│  └───────────────────────┘    └────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────────────────────┘</code></pre>
+<h3 id="design-patterns-used">Design Patterns Used</h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MVC</strong></td>
+<td>Controller-Service-Model separation</td>
+</tr>
+<tr>
+<td><strong>DTO</strong></td>
+<td>Data Transfer Objects for API requests/responses</td>
+</tr>
+<tr>
+<td><strong>Dependency Injection</strong></td>
+<td>Spring-managed beans</td>
+</tr>
+<tr>
+<td><strong>Builder</strong></td>
+<td>For constructing complex objects</td>
+</tr>
+<tr>
+<td><strong>Strategy</strong></td>
+<td>For different calculation methods</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="development-environment-setup">2. Development Environment
+Setup</h2>
+<h3 id="prerequisites-1">Prerequisites</h3>
+<div class="sourceCode" id="cb50"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Required versions</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Java:</span>   17+</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Maven:</span>  3.8+</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Git:</span>    2.30+</span></code></pre></div>
+<h3 id="ide-setup">IDE Setup</h3>
+<h4 id="intellij-idea-recommended">IntelliJ IDEA (Recommended)</h4>
+<ol type="1">
+<li>Open IntelliJ IDEA</li>
+<li>File → Open → Select <code>googlemapv2</code> folder</li>
+<li>Wait for Maven to import dependencies</li>
+<li>Mark <code>src/main/java</code> as Sources Root</li>
+<li>Mark <code>src/test/java</code> as Test Sources Root</li>
+</ol>
+<h4 id="vs-code">VS Code</h4>
+<ol type="1">
+<li>Install extensions:
+<ul>
+<li>Extension Pack for Java</li>
+<li>Spring Boot Extension Pack</li>
+</ul></li>
+<li>Open the <code>googlemapv2</code> folder</li>
+<li>Wait for Java project recognition</li>
+</ol>
+<h3 id="environment-configuration">Environment Configuration</h3>
+<p>Create a <code>.env</code> file (do NOT commit):</p>
+<div class="sourceCode" id="cb51"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># .env (add to .gitignore)</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="va">RAPIDAPI_KEY</span><span class="op">=</span>your-api-key-here</span></code></pre></div>
+<h3 id="running-in-development-mode">Running in Development Mode</h3>
+<div class="sourceCode" id="cb52"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hot reload enabled</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> spring-boot:run <span class="at">-Dspring-boot.run.jvmArguments</span><span class="op">=</span><span class="st">&quot;-Dspring.devtools.restart.enabled=true&quot;</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Debug mode (port 5005)</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> spring-boot:run <span class="at">-Dspring-boot.run.jvmArguments</span><span class="op">=</span><span class="st">&quot;-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005&quot;</span></span></code></pre></div>
+<hr />
+<h2 id="code-structure">3. Code Structure</h2>
+<h3 id="package-organization">Package Organization</h3>
+<pre><code>src/main/java/com/example/
+├── map/                           # Application core
+│   ├── Application.java           # Spring Boot main class
+│   ├── config/
+│   │   └── CorsConfig.java        # CORS configuration
+│   └── geo/
+│       ├── GeoController.java     # Geo REST endpoints
+│       └── GoogleApi31Service.java # Google API integration
+│
+├── realestate/                    # Real estate domain
+│   ├── controller/
+│   │   └── PropertyController.java # Property REST endpoints
+│   ├── model/
+│   │   ├── EnrichedProperty.java  # Full property data model
+│   │   └── SearchCard.java        # Search result model
+│   └── service/
+│       └── ZillowService.java     # Zillow API integration
+│
+└── analysis/                      # Investment analysis
+    ├── controller/
+    │   └── CashflowController.java # Analysis REST endpoints
+    ├── dto/
+    │   ├── CashflowRequest.java   # Input DTO
+    │   └── CashflowResponse.java  # Output DTO
+    └── service/
+        └── CashflowService.java   # Cashflow calculations</code></pre>
+<h3 id="naming-conventions">Naming Conventions</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Convention</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Classes</td>
+<td>PascalCase</td>
+<td><code>CashflowService</code></td>
+</tr>
+<tr>
+<td>Methods</td>
+<td>camelCase</td>
+<td><code>analyzeProperty()</code></td>
+</tr>
+<tr>
+<td>Constants</td>
+<td>UPPER_SNAKE</td>
+<td><code>MAX_RETRY_COUNT</code></td>
+</tr>
+<tr>
+<td>Variables</td>
+<td>camelCase</td>
+<td><code>propertyPrice</code></td>
+</tr>
+<tr>
+<td>Packages</td>
+<td>lowercase</td>
+<td><code>com.example.analysis</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="api-reference">4. API Reference</h2>
+<h3 id="rest-endpoints-summary">REST Endpoints Summary</h3>
+<h4 id="property-controller-apiproperties">Property Controller
+(<code>/api/properties</code>)</h4>
+<div class="sourceCode" id="cb54"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Search properties by location</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="an">location</span><span class="co"> </span>City<span class="co">,</span> state<span class="co">,</span> or ZIP code</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">status</span><span class="co">   </span>Listing status <span class="co">(</span>for_sale<span class="co">,</span> for_rent<span class="co">,</span> sold<span class="co">)</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">page</span><span class="co">     </span>Page number for pagination</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@return</span> List of SearchCard objects</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="at">@GetMapping</span><span class="op">(</span><span class="st">&quot;/search&quot;</span><span class="op">)</span></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span>SearchCard<span class="op">&gt;</span> <span class="fu">searchProperties</span><span class="op">(</span></span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span> <span class="bu">String</span> location<span class="op">,</span></span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span><span class="op">(</span>required <span class="op">=</span> <span class="kw">false</span><span class="op">)</span> <span class="bu">String</span> status<span class="op">,</span></span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span><span class="op">(</span>defaultValue <span class="op">=</span> <span class="st">&quot;1&quot;</span><span class="op">)</span> <span class="bu">Integer</span> page</span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a><span class="op">);</span></span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Get enriched property details by ZPID</span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="an">zpid</span><span class="co"> </span>Zillow Property ID</span>
+<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@return</span> EnrichedProperty with full details</span>
+<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a><span class="at">@GetMapping</span><span class="op">(</span><span class="st">&quot;/{zpid}&quot;</span><span class="op">)</span></span>
+<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> EnrichedProperty <span class="fu">getPropertyDetails</span><span class="op">(</span><span class="at">@PathVariable</span> <span class="bu">String</span> zpid<span class="op">);</span></span></code></pre></div>
+<h4 id="cashflow-controller-apianalysis">Cashflow Controller
+(<code>/api/analysis</code>)</h4>
+<div class="sourceCode" id="cb55"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Perform cashflow analysis on a property investment</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="an">request</span><span class="co"> </span>CashflowRequest containing all input parameters</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@return</span> CashflowResponse with summary and projections</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="at">@PostMapping</span><span class="op">(</span><span class="st">&quot;/cashflow&quot;</span><span class="op">)</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> CashflowResponse <span class="fu">analyzeCashflow</span><span class="op">(</span><span class="at">@RequestBody</span> CashflowRequest request<span class="op">);</span></span></code></pre></div>
+<h4 id="geo-controller-apigeo">Geo Controller
+(<code>/api/geo</code>)</h4>
+<div class="sourceCode" id="cb56"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Text<span class="co">-</span>based place search</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="an">text</span><span class="co">     </span>Search keyword</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">place</span><span class="co">    </span>Place name</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">city</span><span class="co">     </span>City name</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">state</span><span class="co">    </span>State code</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">country</span><span class="co">  </span>Country name</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">postcode</span><span class="co"> </span>ZIP<span class="co">/</span>postal code</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@return</span> JSON response from Google API</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a><span class="at">@GetMapping</span><span class="op">(</span><span class="st">&quot;/text&quot;</span><span class="op">)</span></span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> JsonNode <span class="fu">textSearch</span><span class="op">(</span></span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span><span class="op">(</span>required <span class="op">=</span> <span class="kw">false</span><span class="op">)</span> <span class="bu">String</span> text<span class="op">,</span></span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span><span class="op">(</span>required <span class="op">=</span> <span class="kw">false</span><span class="op">)</span> <span class="bu">String</span> place<span class="op">,</span></span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span><span class="op">(</span>required <span class="op">=</span> <span class="kw">false</span><span class="op">)</span> <span class="bu">String</span> city<span class="op">,</span></span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span><span class="op">(</span>required <span class="op">=</span> <span class="kw">false</span><span class="op">)</span> <span class="bu">String</span> state<span class="op">,</span></span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span><span class="op">(</span>required <span class="op">=</span> <span class="kw">false</span><span class="op">)</span> <span class="bu">String</span> country<span class="op">,</span></span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span><span class="op">(</span>required <span class="op">=</span> <span class="kw">false</span><span class="op">)</span> <span class="bu">String</span> postcode</span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a><span class="op">);</span></span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Radius<span class="co">-</span>based search around a point</span>
+<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="an">lat</span><span class="co">    </span>Latitude of center point</span>
+<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">lon</span><span class="co">    </span>Longitude of center point</span>
+<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">radius</span><span class="co"> </span>Search radius in meters</span>
+<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">text</span><span class="co">   </span>Optional search keyword</span>
+<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@return</span> JSON response from Google API</span>
+<span id="cb56-28"><a href="#cb56-28" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb56-29"><a href="#cb56-29" aria-hidden="true" tabindex="-1"></a><span class="at">@GetMapping</span><span class="op">(</span><span class="st">&quot;/circle&quot;</span><span class="op">)</span></span>
+<span id="cb56-30"><a href="#cb56-30" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> JsonNode <span class="fu">circleSearch</span><span class="op">(</span></span>
+<span id="cb56-31"><a href="#cb56-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span> <span class="dt">double</span> lat<span class="op">,</span></span>
+<span id="cb56-32"><a href="#cb56-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span> <span class="dt">double</span> lon<span class="op">,</span></span>
+<span id="cb56-33"><a href="#cb56-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span><span class="op">(</span>defaultValue <span class="op">=</span> <span class="st">&quot;1000&quot;</span><span class="op">)</span> <span class="dt">int</span> radius<span class="op">,</span></span>
+<span id="cb56-34"><a href="#cb56-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestParam</span><span class="op">(</span>required <span class="op">=</span> <span class="kw">false</span><span class="op">)</span> <span class="bu">String</span> text</span>
+<span id="cb56-35"><a href="#cb56-35" aria-hidden="true" tabindex="-1"></a><span class="op">);</span></span></code></pre></div>
+<hr />
+<h2 id="core-components">5. Core Components</h2>
+<h3 id="application-entry-point">5.1 Application Entry Point</h3>
+<div class="sourceCode" id="cb57"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Main Spring Boot application class<span class="co">.</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Configures component scanning across all packages<span class="co">.</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="at">@SpringBootApplication</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="at">@ComponentScan</span><span class="op">(</span>basePackages <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;com.example.map&quot;</span><span class="op">,</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;com.example.realestate&quot;</span><span class="op">,</span></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;com.example.analysis&quot;</span></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="op">})</span></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Application <span class="op">{</span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>        SpringApplication<span class="op">.</span><span class="fu">run</span><span class="op">(</span>Application<span class="op">.</span><span class="fu">class</span><span class="op">,</span> args<span class="op">);</span></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="zillow-service">5.2 Zillow Service</h3>
+<p>The <code>ZillowService</code> handles all Zillow API
+interactions:</p>
+<div class="sourceCode" id="cb58"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Service for interacting with Zillow API via RapidAPI<span class="co">.</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Provides methods for property search<span class="co">,</span> details<span class="co">,</span> and enrichment<span class="co">.</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="at">@Service</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ZillowService <span class="op">{</span></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Value</span><span class="op">(</span><span class="st">&quot;${zillow.rapidapi.host}&quot;</span><span class="op">)</span></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">String</span> host<span class="op">;</span></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Value</span><span class="op">(</span><span class="st">&quot;${zillow.rapidapi.key}&quot;</span><span class="op">)</span></span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">String</span> apiKey<span class="op">;</span></span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">/**</span></span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> Search properties by location</span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a><span class="co">     * </span><span class="an">@param</span><span class="co"> </span><span class="an">location</span><span class="co"> </span>City<span class="co">,</span> state<span class="co">,</span> or ZIP code</span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">status</span><span class="co">   </span>Listing status filter</span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">page</span><span class="co">     </span>Page number</span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="an">@return</span> List of SearchCard results</span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>     <span class="co">*/</span></span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span>SearchCard<span class="op">&gt;</span> <span class="fu">searchProperties</span><span class="op">(</span><span class="bu">String</span> location<span class="op">,</span> <span class="bu">String</span> status<span class="op">,</span> <span class="bu">Integer</span> page<span class="op">);</span></span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">/**</span></span>
+<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> Get full enriched property data</span>
+<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> Aggregates data from multiple API endpoints<span class="co">:</span></span>
+<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="co">-</span> Property details</span>
+<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="co">-</span> Tax history</span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="co">-</span> Zestimate</span>
+<span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="co">-</span> Rent estimate</span>
+<span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="co">-</span> Comparables</span>
+<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="co">-</span> Images</span>
+<span id="cb58-32"><a href="#cb58-32" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> </span>
+<span id="cb58-33"><a href="#cb58-33" aria-hidden="true" tabindex="-1"></a><span class="co">     * </span><span class="an">@param</span><span class="co"> </span><span class="an">zpid</span><span class="co"> </span>Zillow Property ID</span>
+<span id="cb58-34"><a href="#cb58-34" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="an">@return</span> EnrichedProperty with all available data</span>
+<span id="cb58-35"><a href="#cb58-35" aria-hidden="true" tabindex="-1"></a>     <span class="co">*/</span></span>
+<span id="cb58-36"><a href="#cb58-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> EnrichedProperty <span class="fu">getEnrichedProperty</span><span class="op">(</span><span class="bu">String</span> zpid<span class="op">);</span></span>
+<span id="cb58-37"><a href="#cb58-37" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="cashflow-service">5.3 Cashflow Service</h3>
+<p>The core business logic for investment analysis:</p>
+<div class="sourceCode" id="cb59"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Core calculator for investment cashflow analysis<span class="co">.</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Implements Year<span class="co">-1</span> KPIs and multi<span class="co">-</span>year projections<span class="co">.</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> </span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Features<span class="co">:</span></span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="co">-</span> NOI <span class="co">(</span>Net Operating Income<span class="co">)</span> calculation</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="co">-</span> Debt service with optional interest<span class="co">-</span>only periods</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="co">-</span> Cap rate analysis</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="co">-</span> Cash<span class="co">-</span>on<span class="co">-</span>cash returns</span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="co">-</span> IRR calculation using Newton<span class="co">-</span>Raphson method</span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="co">-</span> Multi<span class="co">-</span>year projections with growth rates</span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> CashflowService <span class="op">{</span></span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">/**</span></span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> Main analysis method</span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a><span class="co">     * </span><span class="an">@param</span><span class="co"> </span><span class="an">request</span><span class="co"> </span>Input parameters for analysis</span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="an">@return</span> Complete analysis with summary and projections</span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>     <span class="co">*/</span></span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> CashflowResponse <span class="fu">analyze</span><span class="op">(</span>CashflowRequest request<span class="op">);</span></span>
+<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h2 id="data-models">6. Data Models</h2>
+<h3 id="cashflowrequest-input-dto">6.1 CashflowRequest (Input DTO)</h3>
+<div class="sourceCode" id="cb60"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Input DTO for investment cashflow analysis<span class="co">.</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> All monetary values in same currency <span class="co">(</span>USD<span class="co">).</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Percentage fields as decimals <span class="co">(</span>e<span class="co">.</span>g<span class="co">.,</span> <span class="co">0.05</span> for <span class="co">5%).</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> CashflowRequest <span class="op">{</span></span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === IDENTIFICATION ===</span></span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> address<span class="op">;</span>              <span class="co">// Property address</span></span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> city<span class="op">;</span>                 <span class="co">// City</span></span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> state<span class="op">;</span>                <span class="co">// State code</span></span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> zip<span class="op">;</span>                  <span class="co">// ZIP code</span></span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === VALUATION ===</span></span>
+<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> fmv<span class="op">;</span>                  <span class="co">// Fair Market Value</span></span>
+<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> offerPrice<span class="op">;</span>           <span class="co">// Purchase price</span></span>
+<span id="cb60-17"><a href="#cb60-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> annualAppreciation<span class="op">;</span>   <span class="co">// Annual appreciation rate (0.03 = 3%)</span></span>
+<span id="cb60-18"><a href="#cb60-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-19"><a href="#cb60-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === INCOME (Annual) ===</span></span>
+<span id="cb60-20"><a href="#cb60-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> grossRentsAnnual<span class="op">;</span>     <span class="co">// Total annual rent</span></span>
+<span id="cb60-21"><a href="#cb60-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Integer</span> numberOfUnits<span class="op">;</span>       <span class="co">// Number of units</span></span>
+<span id="cb60-22"><a href="#cb60-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> parkingAnnual<span class="op">;</span>        <span class="co">// Parking income</span></span>
+<span id="cb60-23"><a href="#cb60-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> storageAnnual<span class="op">;</span>        <span class="co">// Storage income</span></span>
+<span id="cb60-24"><a href="#cb60-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> laundryVendingAnnual<span class="op">;</span> <span class="co">// Laundry/vending income</span></span>
+<span id="cb60-25"><a href="#cb60-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> otherIncomeAnnual<span class="op">;</span>    <span class="co">// Other income</span></span>
+<span id="cb60-26"><a href="#cb60-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-27"><a href="#cb60-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === VACANCY &amp; MANAGEMENT (Rates) ===</span></span>
+<span id="cb60-28"><a href="#cb60-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> vacancyRate<span class="op">;</span>          <span class="co">// Vacancy rate (0.05 = 5%)</span></span>
+<span id="cb60-29"><a href="#cb60-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> managementRate<span class="op">;</span>       <span class="co">// Management fee rate</span></span>
+<span id="cb60-30"><a href="#cb60-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> repairsRate<span class="op">;</span>          <span class="co">// Repairs rate (applied to gross rent)</span></span>
+<span id="cb60-31"><a href="#cb60-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-32"><a href="#cb60-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === OPERATING EXPENSES (Annual flat amounts) ===</span></span>
+<span id="cb60-33"><a href="#cb60-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> propertyTaxes<span class="op">;</span>        <span class="co">// Annual property tax</span></span>
+<span id="cb60-34"><a href="#cb60-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> insurance<span class="op">;</span>            <span class="co">// Annual insurance</span></span>
+<span id="cb60-35"><a href="#cb60-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> electricity<span class="op">;</span>          <span class="co">// Annual electricity</span></span>
+<span id="cb60-36"><a href="#cb60-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> gas<span class="op">;</span>                  <span class="co">// Annual gas</span></span>
+<span id="cb60-37"><a href="#cb60-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> waterSewer<span class="op">;</span>           <span class="co">// Annual water/sewer</span></span>
+<span id="cb60-38"><a href="#cb60-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> cable<span class="op">;</span>                <span class="co">// Annual cable/internet</span></span>
+<span id="cb60-39"><a href="#cb60-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> caretaking<span class="op">;</span>           <span class="co">// Caretaking costs</span></span>
+<span id="cb60-40"><a href="#cb60-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> advertising<span class="op">;</span>          <span class="co">// Advertising costs</span></span>
+<span id="cb60-41"><a href="#cb60-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> associationFees<span class="op">;</span>      <span class="co">// HOA fees</span></span>
+<span id="cb60-42"><a href="#cb60-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> pest<span class="op">;</span>                 <span class="co">// Pest control</span></span>
+<span id="cb60-43"><a href="#cb60-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> security<span class="op">;</span>             <span class="co">// Security costs</span></span>
+<span id="cb60-44"><a href="#cb60-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> trash<span class="op">;</span>                <span class="co">// Trash removal</span></span>
+<span id="cb60-45"><a href="#cb60-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> misc<span class="op">;</span>                 <span class="co">// Miscellaneous</span></span>
+<span id="cb60-46"><a href="#cb60-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> commonAreaMaintenance<span class="op">;</span><span class="co">// CAM fees</span></span>
+<span id="cb60-47"><a href="#cb60-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> capitalImprovements<span class="op">;</span>  <span class="co">// CapEx reserve</span></span>
+<span id="cb60-48"><a href="#cb60-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> accounting<span class="op">;</span>           <span class="co">// Accounting fees</span></span>
+<span id="cb60-49"><a href="#cb60-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> legal<span class="op">;</span>                <span class="co">// Legal fees</span></span>
+<span id="cb60-50"><a href="#cb60-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> badDebts<span class="op">;</span>             <span class="co">// Bad debt allowance</span></span>
+<span id="cb60-51"><a href="#cb60-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> evictions<span class="op">;</span>            <span class="co">// Eviction costs</span></span>
+<span id="cb60-52"><a href="#cb60-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> otherExpenses<span class="op">;</span>        <span class="co">// Other expenses</span></span>
+<span id="cb60-53"><a href="#cb60-53" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-54"><a href="#cb60-54" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === FINANCING - Primary Loan ===</span></span>
+<span id="cb60-55"><a href="#cb60-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> firstPrincipal<span class="op">;</span>       <span class="co">// Loan amount</span></span>
+<span id="cb60-56"><a href="#cb60-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> firstRateAnnual<span class="op">;</span>      <span class="co">// APR (0.07 = 7%)</span></span>
+<span id="cb60-57"><a href="#cb60-57" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Integer</span> firstAmortYears<span class="op">;</span>     <span class="co">// Amortization term</span></span>
+<span id="cb60-58"><a href="#cb60-58" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Integer</span> firstInterestOnlyYears<span class="op">;</span> <span class="co">// Interest-only years</span></span>
+<span id="cb60-59"><a href="#cb60-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-60"><a href="#cb60-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === FINANCING - Secondary Loan ===</span></span>
+<span id="cb60-61"><a href="#cb60-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> secondPrincipal<span class="op">;</span>      <span class="co">// 2nd loan amount</span></span>
+<span id="cb60-62"><a href="#cb60-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> secondRateAnnual<span class="op">;</span>     <span class="co">// 2nd loan APR</span></span>
+<span id="cb60-63"><a href="#cb60-63" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Integer</span> secondAmortYears<span class="op">;</span>    <span class="co">// 2nd loan term</span></span>
+<span id="cb60-64"><a href="#cb60-64" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-65"><a href="#cb60-65" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === OTHER FINANCING ===</span></span>
+<span id="cb60-66"><a href="#cb60-66" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> otherMonthlyFinancingCosts<span class="op">;</span> <span class="co">// Other monthly costs</span></span>
+<span id="cb60-67"><a href="#cb60-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-68"><a href="#cb60-68" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === CLOSING COSTS ===</span></span>
+<span id="cb60-69"><a href="#cb60-69" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> repairs<span class="op">;</span>              <span class="co">// Initial repairs</span></span>
+<span id="cb60-70"><a href="#cb60-70" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> repairsContingency<span class="op">;</span>   <span class="co">// Repair contingency</span></span>
+<span id="cb60-71"><a href="#cb60-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> lenderFee<span class="op">;</span>            <span class="co">// Lender fees</span></span>
+<span id="cb60-72"><a href="#cb60-72" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> brokerFee<span class="op">;</span>            <span class="co">// Broker fees</span></span>
+<span id="cb60-73"><a href="#cb60-73" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> environmentals<span class="op">;</span>       <span class="co">// Environmental reports</span></span>
+<span id="cb60-74"><a href="#cb60-74" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> inspections<span class="op">;</span>          <span class="co">// Inspection costs</span></span>
+<span id="cb60-75"><a href="#cb60-75" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> appraisals<span class="op">;</span>           <span class="co">// Appraisal costs</span></span>
+<span id="cb60-76"><a href="#cb60-76" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> transferTax<span class="op">;</span>          <span class="co">// Transfer tax</span></span>
+<span id="cb60-77"><a href="#cb60-77" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> legalClose<span class="op">;</span>           <span class="co">// Legal (closing)</span></span>
+<span id="cb60-78"><a href="#cb60-78" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> otherClosingCosts<span class="op">;</span>    <span class="co">// Other closing costs</span></span>
+<span id="cb60-79"><a href="#cb60-79" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-80"><a href="#cb60-80" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === PROJECTION SETTINGS ===</span></span>
+<span id="cb60-81"><a href="#cb60-81" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Integer</span> holdYears<span class="op">;</span>           <span class="co">// Holding period</span></span>
+<span id="cb60-82"><a href="#cb60-82" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> rentGrowth<span class="op">;</span>           <span class="co">// Annual rent growth</span></span>
+<span id="cb60-83"><a href="#cb60-83" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> expenseGrowth<span class="op">;</span>        <span class="co">// Annual expense growth</span></span>
+<span id="cb60-84"><a href="#cb60-84" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> exitCostRate<span class="op">;</span>         <span class="co">// Selling cost rate</span></span>
+<span id="cb60-85"><a href="#cb60-85" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-86"><a href="#cb60-86" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === OPTIONS ===</span></span>
+<span id="cb60-87"><a href="#cb60-87" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> managementBase<span class="op">;</span>       <span class="co">// &quot;EGI&quot; or &quot;GROSS_RENTS&quot;</span></span>
+<span id="cb60-88"><a href="#cb60-88" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="cashflowresponse-output-dto">6.2 CashflowResponse (Output
+DTO)</h3>
+<div class="sourceCode" id="cb61"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Output DTO for cashflow analysis results<span class="co">.</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> CashflowResponse <span class="op">{</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Summary summary<span class="op">;</span>             <span class="co">// Key metrics</span></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span>YearRow<span class="op">&gt;</span> projection<span class="op">;</span>    <span class="co">// Year-by-year data</span></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">/**</span></span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> Summary metrics for the investment</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>     <span class="co">*/</span></span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="kw">class</span> Summary <span class="op">{</span></span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">// === PRICING ===</span></span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> rpp<span class="op">;</span>              <span class="co">// Real Purchase Price</span></span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> cashToClose<span class="op">;</span>      <span class="co">// Cash required at closing</span></span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">// === YEAR-1 INCOME/EXPENSE ===</span></span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> totalIncomeY1<span class="op">;</span>    <span class="co">// Total income</span></span>
+<span id="cb61-19"><a href="#cb61-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> vacancyLossY1<span class="op">;</span>    <span class="co">// Vacancy loss</span></span>
+<span id="cb61-20"><a href="#cb61-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> egiY1<span class="op">;</span>            <span class="co">// Effective Gross Income</span></span>
+<span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> totalExpensesY1<span class="op">;</span>  <span class="co">// Total expenses</span></span>
+<span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> noiY1<span class="op">;</span>            <span class="co">// Net Operating Income</span></span>
+<span id="cb61-23"><a href="#cb61-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">// === DEBT METRICS ===</span></span>
+<span id="cb61-25"><a href="#cb61-25" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> annualDebtServiceY1<span class="op">;</span> <span class="co">// Annual debt payment</span></span>
+<span id="cb61-26"><a href="#cb61-26" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> dscrY1<span class="op">;</span>           <span class="co">// Debt Service Coverage Ratio</span></span>
+<span id="cb61-27"><a href="#cb61-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb61-28"><a href="#cb61-28" aria-hidden="true" tabindex="-1"></a>        <span class="co">// === PROFITABILITY ===</span></span>
+<span id="cb61-29"><a href="#cb61-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> capRatePPY1<span class="op">;</span>      <span class="co">// Cap rate (Purchase Price)</span></span>
+<span id="cb61-30"><a href="#cb61-30" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> capRateFMVY1<span class="op">;</span>     <span class="co">// Cap rate (FMV)</span></span>
+<span id="cb61-31"><a href="#cb61-31" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> grmY1<span class="op">;</span>            <span class="co">// Gross Rent Multiplier</span></span>
+<span id="cb61-32"><a href="#cb61-32" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> avgRentPerUnitY1<span class="op">;</span> <span class="co">// Average rent per unit</span></span>
+<span id="cb61-33"><a href="#cb61-33" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> monthlyProfitY1<span class="op">;</span>  <span class="co">// Monthly profit</span></span>
+<span id="cb61-34"><a href="#cb61-34" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> cashflowPerUnitPerMonthY1<span class="op">;</span> <span class="co">// CF per unit/month</span></span>
+<span id="cb61-35"><a href="#cb61-35" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb61-36"><a href="#cb61-36" aria-hidden="true" tabindex="-1"></a>        <span class="co">// === LEVERAGE ===</span></span>
+<span id="cb61-37"><a href="#cb61-37" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> ltvFMV<span class="op">;</span>           <span class="co">// Loan-to-Value (FMV)</span></span>
+<span id="cb61-38"><a href="#cb61-38" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> ltppPP<span class="op">;</span>           <span class="co">// Loan-to-Price (PP)</span></span>
+<span id="cb61-39"><a href="#cb61-39" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb61-40"><a href="#cb61-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// === RETURNS ===</span></span>
+<span id="cb61-41"><a href="#cb61-41" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> cashOnCashY1<span class="op">;</span>     <span class="co">// Cash-on-Cash Return</span></span>
+<span id="cb61-42"><a href="#cb61-42" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> equityROIY1<span class="op">;</span>      <span class="co">// Equity ROI</span></span>
+<span id="cb61-43"><a href="#cb61-43" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> appreciationROIY1<span class="op">;</span><span class="co">// Appreciation ROI</span></span>
+<span id="cb61-44"><a href="#cb61-44" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> totalROIY1<span class="op">;</span>       <span class="co">// Total ROI</span></span>
+<span id="cb61-45"><a href="#cb61-45" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> forcedAppreciationROIY1<span class="op">;</span> <span class="co">// Forced appreciation</span></span>
+<span id="cb61-46"><a href="#cb61-46" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb61-47"><a href="#cb61-47" aria-hidden="true" tabindex="-1"></a>        <span class="co">// === MULTI-YEAR ===</span></span>
+<span id="cb61-48"><a href="#cb61-48" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> irr<span class="op">;</span>              <span class="co">// Internal Rate of Return</span></span>
+<span id="cb61-49"><a href="#cb61-49" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> equityMultiple<span class="op">;</span>   <span class="co">// Equity Multiple</span></span>
+<span id="cb61-50"><a href="#cb61-50" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> saleProceedsNet<span class="op">;</span>  <span class="co">// Net proceeds at exit</span></span>
+<span id="cb61-51"><a href="#cb61-51" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb61-52"><a href="#cb61-52" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-53"><a href="#cb61-53" aria-hidden="true" tabindex="-1"></a>    <span class="co">/**</span></span>
+<span id="cb61-54"><a href="#cb61-54" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> Yearly projection data</span>
+<span id="cb61-55"><a href="#cb61-55" aria-hidden="true" tabindex="-1"></a>     <span class="co">*/</span></span>
+<span id="cb61-56"><a href="#cb61-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="kw">class</span> YearRow <span class="op">{</span></span>
+<span id="cb61-57"><a href="#cb61-57" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">int</span> year<span class="op">;</span>                <span class="co">// Year number</span></span>
+<span id="cb61-58"><a href="#cb61-58" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> totalIncome<span class="op">;</span>      <span class="co">// Total income</span></span>
+<span id="cb61-59"><a href="#cb61-59" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> vacancyLoss<span class="op">;</span>      <span class="co">// Vacancy loss</span></span>
+<span id="cb61-60"><a href="#cb61-60" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> egi<span class="op">;</span>              <span class="co">// Effective Gross Income</span></span>
+<span id="cb61-61"><a href="#cb61-61" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> management<span class="op">;</span>       <span class="co">// Management expense</span></span>
+<span id="cb61-62"><a href="#cb61-62" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> repairsRateBased<span class="op">;</span> <span class="co">// Repairs expense</span></span>
+<span id="cb61-63"><a href="#cb61-63" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> totalExpenses<span class="op">;</span>    <span class="co">// Total expenses</span></span>
+<span id="cb61-64"><a href="#cb61-64" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> noi<span class="op">;</span>              <span class="co">// Net Operating Income</span></span>
+<span id="cb61-65"><a href="#cb61-65" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> debtService<span class="op">;</span>      <span class="co">// Debt service</span></span>
+<span id="cb61-66"><a href="#cb61-66" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> cashFlowBeforeTax<span class="op">;</span><span class="co">// Cash flow before tax</span></span>
+<span id="cb61-67"><a href="#cb61-67" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> endingBalanceFirst<span class="op">;</span>  <span class="co">// 1st loan balance</span></span>
+<span id="cb61-68"><a href="#cb61-68" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> endingBalanceSecond<span class="op">;</span> <span class="co">// 2nd loan balance</span></span>
+<span id="cb61-69"><a href="#cb61-69" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">Double</span> propertyValue<span class="op">;</span>    <span class="co">// Property value</span></span>
+<span id="cb61-70"><a href="#cb61-70" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb61-71"><a href="#cb61-71" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="enrichedproperty">6.3 EnrichedProperty</h3>
+<div class="sourceCode" id="cb62"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Comprehensive property data model<span class="co">.</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Aggregates data from multiple Zillow API endpoints<span class="co">.</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> EnrichedProperty <span class="op">{</span></span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === IDENTIFICATION ===</span></span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> zpid<span class="op">;</span>                 <span class="co">// Zillow Property ID</span></span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> address<span class="op">;</span>              <span class="co">// Full address</span></span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> status<span class="op">;</span>               <span class="co">// Listing status</span></span>
+<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> propertyType<span class="op">;</span>         <span class="co">// Property type</span></span>
+<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === BASIC INFO ===</span></span>
+<span id="cb62-14"><a href="#cb62-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> price<span class="op">;</span>                <span class="co">// List price</span></span>
+<span id="cb62-15"><a href="#cb62-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> bedrooms<span class="op">;</span>             <span class="co">// Number of bedrooms</span></span>
+<span id="cb62-16"><a href="#cb62-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> bathrooms<span class="op">;</span>            <span class="co">// Number of bathrooms</span></span>
+<span id="cb62-17"><a href="#cb62-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> livingArea<span class="op">;</span>           <span class="co">// Living area (sqft)</span></span>
+<span id="cb62-18"><a href="#cb62-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> lotAreaValue<span class="op">;</span>         <span class="co">// Lot size</span></span>
+<span id="cb62-19"><a href="#cb62-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Integer</span> yearBuilt<span class="op">;</span>           <span class="co">// Year built</span></span>
+<span id="cb62-20"><a href="#cb62-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb62-21"><a href="#cb62-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === LOCATION ===</span></span>
+<span id="cb62-22"><a href="#cb62-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> lat<span class="op">;</span>                  <span class="co">// Latitude</span></span>
+<span id="cb62-23"><a href="#cb62-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> lon<span class="op">;</span>                  <span class="co">// Longitude</span></span>
+<span id="cb62-24"><a href="#cb62-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb62-25"><a href="#cb62-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === ESTIMATES ===</span></span>
+<span id="cb62-26"><a href="#cb62-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> zestimate<span class="op">;</span>            <span class="co">// Zillow estimate</span></span>
+<span id="cb62-27"><a href="#cb62-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> rentEstimate<span class="op">;</span>         <span class="co">// Rent Zestimate</span></span>
+<span id="cb62-28"><a href="#cb62-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb62-29"><a href="#cb62-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === COSTS ===</span></span>
+<span id="cb62-30"><a href="#cb62-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> hoaMonthly<span class="op">;</span>           <span class="co">// Monthly HOA</span></span>
+<span id="cb62-31"><a href="#cb62-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> annualTax<span class="op">;</span>            <span class="co">// Annual property tax</span></span>
+<span id="cb62-32"><a href="#cb62-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb62-33"><a href="#cb62-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === MEDIA ===</span></span>
+<span id="cb62-34"><a href="#cb62-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> imgSrc<span class="op">;</span>               <span class="co">// Primary image URL</span></span>
+<span id="cb62-35"><a href="#cb62-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> photoUrls<span class="op">;</span>      <span class="co">// All photo URLs</span></span>
+<span id="cb62-36"><a href="#cb62-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> tour3dUrls<span class="op">;</span>     <span class="co">// 3D tour URLs</span></span>
+<span id="cb62-37"><a href="#cb62-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> floorPlanUrls<span class="op">;</span>  <span class="co">// Floor plan URLs</span></span>
+<span id="cb62-38"><a href="#cb62-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb62-39"><a href="#cb62-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === FEATURES ===</span></span>
+<span id="cb62-40"><a href="#cb62-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> heating<span class="op">;</span>        <span class="co">// Heating types</span></span>
+<span id="cb62-41"><a href="#cb62-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> cooling<span class="op">;</span>        <span class="co">// Cooling types</span></span>
+<span id="cb62-42"><a href="#cb62-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> parkingFeatures<span class="op">;</span><span class="co">// Parking features</span></span>
+<span id="cb62-43"><a href="#cb62-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb62-44"><a href="#cb62-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === COMPARABLES ===</span></span>
+<span id="cb62-45"><a href="#cb62-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Integer</span> compsCount<span class="op">;</span>          <span class="co">// Number of comps</span></span>
+<span id="cb62-46"><a href="#cb62-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> compsMedianSoldPrice<span class="op">;</span> <span class="co">// Median comp price</span></span>
+<span id="cb62-47"><a href="#cb62-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> compsMedianPpsf<span class="op">;</span>      <span class="co">// Median price per sqft</span></span>
+<span id="cb62-48"><a href="#cb62-48" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb62-49"><a href="#cb62-49" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === DERIVED ===</span></span>
+<span id="cb62-50"><a href="#cb62-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> pricePerSqft<span class="op">;</span>         <span class="co">// Price per sqft</span></span>
+<span id="cb62-51"><a href="#cb62-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Double</span> lotToBuildingRatio<span class="op">;</span>   <span class="co">// Lot to building ratio</span></span>
+<span id="cb62-52"><a href="#cb62-52" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb62-53"><a href="#cb62-53" aria-hidden="true" tabindex="-1"></a>    <span class="co">// === LINKS ===</span></span>
+<span id="cb62-54"><a href="#cb62-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> zillowWebUrl<span class="op">;</span>         <span class="co">// Zillow listing URL</span></span>
+<span id="cb62-55"><a href="#cb62-55" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h2 id="business-logic">7. Business Logic</h2>
+<h3 id="cashflow-calculation-algorithm">7.1 Cashflow Calculation
+Algorithm</h3>
+<div class="sourceCode" id="cb63"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> STEP <span class="co">1:</span> Calculate Year<span class="co">-1</span> Income Stack</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> totalIncomeY1 <span class="op">=</span> grossRents <span class="op">+</span> parking <span class="op">+</span> storage <span class="op">+</span> laundry <span class="op">+</span> otherIncome<span class="op">;</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> vacancyLossY1 <span class="op">=</span> totalIncomeY1 <span class="op">*</span> vacancyRate <span class="op">*</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> egiY1 <span class="op">=</span> totalIncomeY1 <span class="op">+</span> vacancyLossY1<span class="op">;</span>  <span class="co">// Effective Gross Income</span></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> STEP <span class="co">2:</span> Calculate Year<span class="co">-1</span> Expenses</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> managementY1 <span class="op">=</span> managementRate <span class="op">*</span> managementBase<span class="op">;</span>  <span class="co">// Based on EGI or Gross Rents</span></span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> repairsY1 <span class="op">=</span> repairsRate <span class="op">*</span> grossRents<span class="op">;</span></span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> totalExpensesY1 <span class="op">=</span> managementY1 <span class="op">+</span> repairsY1 <span class="op">+</span> sumOfAllOtherExpenses<span class="op">;</span></span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> noiY1 <span class="op">=</span> egiY1 <span class="op">-</span> totalExpensesY1<span class="op">;</span>  <span class="co">// Net Operating Income</span></span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> STEP <span class="co">3:</span> Calculate Debt Service</span>
+<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb63-19"><a href="#cb63-19" aria-hidden="true" tabindex="-1"></a><span class="co">// Using amortization formula: M = P * [r(1+r)^n] / [(1+r)^n - 1]</span></span>
+<span id="cb63-20"><a href="#cb63-20" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> annualDebtService <span class="op">=</span> firstLoanPayment <span class="op">+</span> secondLoanPayment <span class="op">+</span> otherFinancing<span class="op">;</span></span>
+<span id="cb63-21"><a href="#cb63-21" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> dscrY1 <span class="op">=</span> noiY1 <span class="op">/</span> annualDebtService<span class="op">;</span>  <span class="co">// Debt Service Coverage Ratio</span></span>
+<span id="cb63-22"><a href="#cb63-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-23"><a href="#cb63-23" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb63-24"><a href="#cb63-24" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> STEP <span class="co">4:</span> Calculate Returns</span>
+<span id="cb63-25"><a href="#cb63-25" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb63-26"><a href="#cb63-26" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> rpp <span class="op">=</span> offerPrice <span class="op">+</span> allClosingCosts<span class="op">;</span>  <span class="co">// Real Purchase Price</span></span>
+<span id="cb63-27"><a href="#cb63-27" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> cashToClose <span class="op">=</span> rpp <span class="op">-</span> firstPrincipal <span class="op">-</span> secondPrincipal<span class="op">;</span></span>
+<span id="cb63-28"><a href="#cb63-28" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> capRateY1 <span class="op">=</span> noiY1 <span class="op">/</span> offerPrice<span class="op">;</span></span>
+<span id="cb63-29"><a href="#cb63-29" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> cashOnCashY1 <span class="op">=</span> <span class="op">(</span>noiY1 <span class="op">-</span> annualDebtService<span class="op">)</span> <span class="op">/</span> cashToClose<span class="op">;</span></span>
+<span id="cb63-30"><a href="#cb63-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-31"><a href="#cb63-31" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb63-32"><a href="#cb63-32" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> STEP <span class="co">5:</span> Multi<span class="co">-</span>Year Projection</span>
+<span id="cb63-33"><a href="#cb63-33" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb63-34"><a href="#cb63-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> year <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> year <span class="op">&lt;=</span> holdYears<span class="op">;</span> year<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb63-35"><a href="#cb63-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Grow income by rentGrowth rate</span></span>
+<span id="cb63-36"><a href="#cb63-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Grow expenses by expenseGrowth rate</span></span>
+<span id="cb63-37"><a href="#cb63-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Calculate debt service (accounting for interest-only periods)</span></span>
+<span id="cb63-38"><a href="#cb63-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Track loan balances</span></span>
+<span id="cb63-39"><a href="#cb63-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Track property appreciation</span></span>
+<span id="cb63-40"><a href="#cb63-40" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb63-41"><a href="#cb63-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-42"><a href="#cb63-42" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb63-43"><a href="#cb63-43" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> STEP <span class="co">6:</span> Calculate Exit Metrics</span>
+<span id="cb63-44"><a href="#cb63-44" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb63-45"><a href="#cb63-45" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> salePrice <span class="op">=</span> offerPrice <span class="op">*</span> <span class="fu">pow</span><span class="op">(</span><span class="dv">1</span> <span class="op">+</span> appreciation<span class="op">,</span> holdYears<span class="op">);</span></span>
+<span id="cb63-46"><a href="#cb63-46" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> saleCosts <span class="op">=</span> salePrice <span class="op">*</span> exitCostRate<span class="op">;</span></span>
+<span id="cb63-47"><a href="#cb63-47" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> netSaleProceeds <span class="op">=</span> salePrice <span class="op">-</span> saleCosts <span class="op">-</span> remainingLoanBalance<span class="op">;</span></span>
+<span id="cb63-48"><a href="#cb63-48" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> irr <span class="op">=</span> <span class="fu">calculateIRR</span><span class="op">(</span>cashflows<span class="op">);</span>  <span class="co">// Newton-Raphson method</span></span>
+<span id="cb63-49"><a href="#cb63-49" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> equityMultiple <span class="op">=</span> totalDistributions <span class="op">/</span> initialInvestment<span class="op">;</span></span></code></pre></div>
+<h3 id="irr-calculation-newton-raphson">7.2 IRR Calculation
+(Newton-Raphson)</h3>
+<div class="sourceCode" id="cb64"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Calculate Internal Rate of Return using Newton<span class="co">-</span>Raphson iteration<span class="co">.</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> </span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> NPV formula<span class="co">:</span> <span class="co">Σ(</span>CFt <span class="co">/</span> <span class="co">(1+</span>r<span class="co">)^</span>t<span class="co">)</span> <span class="co">=</span> <span class="co">0</span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> </span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">cashflows</span><span class="co"> </span>List of cash flows <span class="co">(</span>index <span class="co">0</span> <span class="co">=</span> initial investment<span class="co">,</span> negative<span class="co">)</span></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@param</span><span class="co"> </span><span class="an">guess</span><span class="co"> </span>Initial guess for IRR</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@return</span> IRR as decimal <span class="co">(</span>null if not converged<span class="co">)</span></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="dt">static</span> <span class="bu">Double</span> <span class="fu">irr</span><span class="op">(</span><span class="bu">List</span><span class="op">&lt;</span><span class="bu">Double</span><span class="op">&gt;</span> cashflows<span class="op">,</span> <span class="dt">double</span> guess<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> x <span class="op">=</span> guess<span class="op">;</span></span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">50</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span>  <span class="co">// Max 50 iterations</span></span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">double</span> f <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> df <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> t <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> t <span class="op">&lt;</span> cashflows<span class="op">.</span><span class="fu">size</span><span class="op">();</span> t<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a>            <span class="dt">double</span> ct <span class="op">=</span> cashflows<span class="op">.</span><span class="fu">get</span><span class="op">(</span>t<span class="op">);</span></span>
+<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a>            <span class="dt">double</span> d <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span><span class="op">(</span><span class="dv">1</span> <span class="op">+</span> x<span class="op">,</span> t<span class="op">);</span></span>
+<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a>            f <span class="op">+=</span> ct <span class="op">/</span> d<span class="op">;</span>                              <span class="co">// NPV</span></span>
+<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>t <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> df <span class="op">+=</span> <span class="op">-</span>t <span class="op">*</span> ct <span class="op">/</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span><span class="op">(</span><span class="dv">1</span> <span class="op">+</span> x<span class="op">,</span> t <span class="op">+</span> <span class="dv">1</span><span class="op">);</span>  <span class="co">// Derivative</span></span>
+<span id="cb64-19"><a href="#cb64-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb64-20"><a href="#cb64-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">double</span> x1 <span class="op">=</span> x <span class="op">-</span> f <span class="op">/</span> df<span class="op">;</span>  <span class="co">// Newton-Raphson step</span></span>
+<span id="cb64-21"><a href="#cb64-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span><span class="op">(</span>x1 <span class="op">-</span> x<span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1e-7</span><span class="op">)</span> <span class="cf">return</span> x1<span class="op">;</span>  <span class="co">// Converged</span></span>
+<span id="cb64-22"><a href="#cb64-22" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> x1<span class="op">;</span></span>
+<span id="cb64-23"><a href="#cb64-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb64-24"><a href="#cb64-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span>  <span class="co">// Did not converge</span></span>
+<span id="cb64-25"><a href="#cb64-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h2 id="testing">8. Testing</h2>
+<h3 id="running-tests">Running Tests</h3>
+<div class="sourceCode" id="cb65"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run all tests</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> test</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Run specific test class</span></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> test <span class="at">-Dtest</span><span class="op">=</span>CashflowServiceTest</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Run with coverage report</span></span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> test jacoco:report</span></code></pre></div>
+<h3 id="test-structure">Test Structure</h3>
+<pre><code>src/test/java/com/example/
+├── analysis/
+│   └── service/
+│       └── CashflowServiceTest.java    # Unit tests for cashflow
+├── realestate/
+│   └── service/
+│       └── ZillowServiceTest.java      # Integration tests for Zillow
+└── map/
+    └── geo/
+        └── GeoControllerTest.java      # API endpoint tests</code></pre>
+<h3 id="writing-tests">Writing Tests</h3>
+<div class="sourceCode" id="cb67"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Example test for CashflowService</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="at">@Test</span></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">testBasicCashflowCalculation</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>    CashflowRequest request <span class="op">=</span> <span class="kw">new</span> <span class="fu">CashflowRequest</span><span class="op">();</span></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>    request<span class="op">.</span><span class="fu">offerPrice</span> <span class="op">=</span> <span class="fl">500000.0</span><span class="op">;</span></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>    request<span class="op">.</span><span class="fu">grossRentsAnnual</span> <span class="op">=</span> <span class="fl">48000.0</span><span class="op">;</span></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>    request<span class="op">.</span><span class="fu">vacancyRate</span> <span class="op">=</span> <span class="fl">0.05</span><span class="op">;</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>    request<span class="op">.</span><span class="fu">propertyTaxes</span> <span class="op">=</span> <span class="fl">6000.0</span><span class="op">;</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>    request<span class="op">.</span><span class="fu">insurance</span> <span class="op">=</span> <span class="fl">2400.0</span><span class="op">;</span></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>    request<span class="op">.</span><span class="fu">firstPrincipal</span> <span class="op">=</span> <span class="fl">400000.0</span><span class="op">;</span></span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>    request<span class="op">.</span><span class="fu">firstRateAnnual</span> <span class="op">=</span> <span class="fl">0.07</span><span class="op">;</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>    request<span class="op">.</span><span class="fu">firstAmortYears</span> <span class="op">=</span> <span class="dv">30</span><span class="op">;</span></span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>    request<span class="op">.</span><span class="fu">holdYears</span> <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>    CashflowService service <span class="op">=</span> <span class="kw">new</span> <span class="fu">CashflowService</span><span class="op">();</span></span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a>    CashflowResponse response <span class="op">=</span> service<span class="op">.</span><span class="fu">analyze</span><span class="op">(</span>request<span class="op">);</span></span>
+<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assertNotNull</span><span class="op">(</span>response<span class="op">.</span><span class="fu">summary</span><span class="op">);</span></span>
+<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assertTrue</span><span class="op">(</span>response<span class="op">.</span><span class="fu">summary</span><span class="op">.</span><span class="fu">noiY1</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assertTrue</span><span class="op">(</span>response<span class="op">.</span><span class="fu">summary</span><span class="op">.</span><span class="fu">dscrY1</span> <span class="op">&gt;</span> <span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb67-23"><a href="#cb67-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assertEquals</span><span class="op">(</span><span class="dv">10</span><span class="op">,</span> response<span class="op">.</span><span class="fu">projection</span><span class="op">.</span><span class="fu">size</span><span class="op">());</span></span>
+<span id="cb67-24"><a href="#cb67-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h2 id="code-style-guidelines">9. Code Style Guidelines</h2>
+<h3 id="java-style">Java Style</h3>
+<div class="sourceCode" id="cb68"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Class<span class="co">-</span>level Javadoc explaining purpose</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ExampleService <span class="op">{</span></span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Constants at top</span></span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">static</span> <span class="dt">final</span> <span class="dt">int</span> MAX_RETRIES <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Instance variables</span></span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> HttpClient httpClient<span class="op">;</span></span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">/**</span></span>
+<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> Constructor with dependency injection</span>
+<span id="cb68-14"><a href="#cb68-14" aria-hidden="true" tabindex="-1"></a>     <span class="co">*/</span></span>
+<span id="cb68-15"><a href="#cb68-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">ExampleService</span><span class="op">(</span>HttpClient httpClient<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb68-16"><a href="#cb68-16" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">httpClient</span> <span class="op">=</span> httpClient<span class="op">;</span></span>
+<span id="cb68-17"><a href="#cb68-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb68-18"><a href="#cb68-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb68-19"><a href="#cb68-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">/**</span></span>
+<span id="cb68-20"><a href="#cb68-20" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> Method<span class="co">-</span>level Javadoc for public methods</span>
+<span id="cb68-21"><a href="#cb68-21" aria-hidden="true" tabindex="-1"></a><span class="co">     * </span><span class="an">@param</span><span class="co"> </span><span class="an">param</span><span class="co"> </span>Description of parameter</span>
+<span id="cb68-22"><a href="#cb68-22" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="an">@return</span> Description of return value</span>
+<span id="cb68-23"><a href="#cb68-23" aria-hidden="true" tabindex="-1"></a>     <span class="co">*</span> <span class="an">@throws</span><span class="co"> </span><span class="an">ExceptionType</span><span class="co"> </span>When this exception is thrown</span>
+<span id="cb68-24"><a href="#cb68-24" aria-hidden="true" tabindex="-1"></a>     <span class="co">*/</span></span>
+<span id="cb68-25"><a href="#cb68-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Result</span> <span class="fu">doSomething</span><span class="op">(</span><span class="bu">String</span> param<span class="op">)</span> <span class="kw">throws</span> SomeException <span class="op">{</span></span>
+<span id="cb68-26"><a href="#cb68-26" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Implementation</span></span>
+<span id="cb68-27"><a href="#cb68-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb68-28"><a href="#cb68-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb68-29"><a href="#cb68-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Private helper methods at bottom</span></span>
+<span id="cb68-30"><a href="#cb68-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">void</span> <span class="fu">helperMethod</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb68-31"><a href="#cb68-31" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ...</span></span>
+<span id="cb68-32"><a href="#cb68-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb68-33"><a href="#cb68-33" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="formatting-rules">Formatting Rules</h3>
+<ul>
+<li><strong>Indentation:</strong> 2 spaces (no tabs)</li>
+<li><strong>Line length:</strong> Max 120 characters</li>
+<li><strong>Braces:</strong> K&amp;R style (opening brace on same
+line)</li>
+<li><strong>Imports:</strong> Organized, no wildcards</li>
+</ul>
+<hr />
+<h2 id="contributing">10. Contributing</h2>
+<h3 id="git-workflow">Git Workflow</h3>
+<div class="sourceCode" id="cb69"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Create feature branch</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> feature/your-feature-name</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Make changes and commit</span></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;feat: add new feature description&quot;</span></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Push and create PR</span></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin feature/your-feature-name</span></code></pre></div>
+<h3 id="commit-message-format">Commit Message Format</h3>
+<pre><code>&lt;type&gt;: &lt;description&gt;
+
+[optional body]
+
+[optional footer]</code></pre>
+<p>Types: <code>feat</code>, <code>fix</code>, <code>docs</code>,
+<code>style</code>, <code>refactor</code>, <code>test</code>,
+<code>chore</code></p>
+<hr />
+<h2 id="generating-documentation">11. Generating Documentation</h2>
+<h3 id="using-doxygen-optional">Using Doxygen (Optional)</h3>
+<ol type="1">
+<li><p>Install Doxygen:</p>
+<div class="sourceCode" id="cb71"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows (Chocolatey)</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="ex">choco</span> install doxygen.install</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install doxygen</span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Linux</span></span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install doxygen</span></code></pre></div></li>
+<li><p>Create <code>Doxyfile</code>:</p>
+<div class="sourceCode" id="cb72"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="ex">doxygen</span> <span class="at">-g</span></span></code></pre></div></li>
+<li><p>Configure <code>Doxyfile</code>:</p>
+<pre><code>PROJECT_NAME = &quot;Real Estate Backend&quot;
+INPUT = src/main/java
+RECURSIVE = YES
+EXTRACT_ALL = YES
+GENERATE_HTML = YES
+GENERATE_LATEX = NO
+JAVADOC_AUTOBRIEF = YES</code></pre></li>
+<li><p>Generate documentation:</p>
+<div class="sourceCode" id="cb74"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="ex">doxygen</span> Doxyfile</span></code></pre></div></li>
+</ol>
+<h3 id="using-pandoc-for-pdf-export">Using Pandoc for PDF Export</h3>
+<ol type="1">
+<li><p>Install Pandoc:</p>
+<div class="sourceCode" id="cb75"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="ex">choco</span> install pandoc</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS</span></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install pandoc</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Linux</span></span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install pandoc texlive-latex-base</span></code></pre></div></li>
+<li><p>Export to PDF:</p>
+<div class="sourceCode" id="cb76"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pandoc</span> README.md USER_GUIDE.md DEVELOPER_GUIDE.md <span class="at">-o</span> documentation.pdf <span class="dt">\</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--toc</span> <span class="dt">\</span></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--toc-depth</span><span class="op">=</span>3 <span class="dt">\</span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-V</span> geometry:margin=1in <span class="dt">\</span></span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-V</span> fontsize=11pt</span></code></pre></div></li>
+</ol>
+<hr />
+<h2 id="document-history-1">📄 Document History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>Dec 2025</td>
+<td>Team</td>
+<td>Initial release</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
