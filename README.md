@@ -43,12 +43,11 @@ What it does:
 
 **Frontend**
 - Dashboard to manage your saved properties
-- Search by city, zip, price range
-- Cashflow calculators for different strategies
+- Search by city, zip
+- Cashflow calculators for different strategies(Rental / BRRRs, Wholesale, Flip)
 - Compare multiple properties
 - Mapbox maps with markers
 - PDF/HTML reports
-- Works on mobile
 - Google login
 
 **Backend**
