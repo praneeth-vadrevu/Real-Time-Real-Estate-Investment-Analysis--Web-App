@@ -1,22 +1,12 @@
 var searchData=
 [
-  ['saleproceedsnet_0',['saleProceedsNet',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#ac632b266bdbf066f2c81e925fee21d90',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
-  ['sampleproperty_1',['sampleProperty',['../_main_content_8tsx.html#a4aec9eec9e72dad4e460e7fc9e336ee3',1,'MainContent.tsx']]],
-  ['savedproperty_2',['SavedProperty',['../_properties_context_8tsx.html#ae3ec0ec282c9589d902c1cd942748521',1,'PropertiesContext.tsx']]],
-  ['searchlocation_3',['searchLocation',['../_search_page_8tsx.html#afa4e41de9f911b02bd4801ea3beceb3b',1,'SearchPage.tsx']]],
-  ['searchpage_4',['SearchPage',['../_app_8tsx.html#aedf0f264fcdcae93f44833d25d07a35f',1,'App.tsx']]],
-  ['secondamortyears_5',['secondAmortYears',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a07c9617ffd8c00cfc1446bde2cea06d4',1,'com::example::analysis::dto::CashflowRequest']]],
-  ['secondprincipal_6',['secondPrincipal',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#adefc725d666e3c8797c73ed496b826c1',1,'com::example::analysis::dto::CashflowRequest']]],
-  ['secondrateannual_7',['secondRateAnnual',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#ac1fd6a24526e8b64ebd51f7fe812261c',1,'com::example::analysis::dto::CashflowRequest']]],
-  ['security_8',['security',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a15274e5b29b59d77883c164314b80ce7',1,'com::example::analysis::dto::CashflowRequest']]],
-  ['selectedproperty_9',['selectedProperty',['../_property_map_8tsx.html#a44c87e9186c4cae1bbcf8aaf50e00531',1,'PropertyMap.tsx']]],
-  ['setproperties_10',['setProperties',['../_properties_context_8tsx.html#adc71fcc0187cdfb4fdef360a88d9305d',1,'PropertiesContext.tsx']]],
-  ['setshowpropertyform_11',['setShowPropertyForm',['../_main_content_8tsx.html#ac9b789aaa9900d5c3120f7a6d8add5de',1,'MainContent.tsx']]],
-  ['setuser_12',['setUser',['../_auth_context_8tsx.html#ac52545577b9a1f9ea8c52bae95b2d58b',1,'AuthContext.tsx']]],
-  ['sidebar_13',['Sidebar',['../_app_8tsx.html#aa5a3ca437f319c8f136d282c8c0a69eb',1,'Sidebar:&#160;App.tsx'],['../_sidebar_8tsx.html#aa5a3ca437f319c8f136d282c8c0a69eb',1,'Sidebar:&#160;Sidebar.tsx']]],
-  ['state_14',['state',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a1d4177c5ee18e84239284c85e22bf73a',1,'com::example::analysis::dto::CashflowRequest']]],
-  ['storageannual_15',['storageAnnual',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#ae593cd180ba674403c9c9f36084e824c',1,'com::example::analysis::dto::CashflowRequest']]],
-  ['strategy_16',['strategy',['../_search_page_8tsx.html#af626fefd1b117ecc334eb8af7bc441c8',1,'SearchPage.tsx']]],
-  ['summary_17',['summary',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response.html#ad7ced7f4ca5bdfc8c7a3f47a1f24ac33',1,'com::example::analysis::dto::CashflowResponse']]],
-  ['svc_18',['svc',['../classcom_1_1example_1_1map_1_1geo_1_1_geo_controller.html#a28db4fe226e8c3f8dbd1ae2b9802541a',1,'com.example.map.geo.GeoController.svc'],['../classcom_1_1example_1_1analysis_1_1controller_1_1_cashflow_controller.html#a09498c80510e0815f25d0555acb945e6',1,'com.example.analysis.controller.CashflowController.svc']]]
+  ['toggleshortlist_0',['toggleShortlist',['../_dashboard_8tsx.html#ab664685a62788c130b942af1d4ab3bbd',1,'toggleShortlist:&#160;Dashboard.tsx'],['../_properties_context_8tsx.html#ab664685a62788c130b942af1d4ab3bbd',1,'toggleShortlist:&#160;PropertiesContext.tsx']]],
+  ['totalexpenses_1',['totalExpenses',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_year_row.html#afdbabf37d33b5edec14317384eef7369',1,'com::example::analysis::dto::CashflowResponse::YearRow']]],
+  ['totalexpensesy1_2',['totalExpensesY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a4ee0740c18ee7f45c31ebb26b2d3ec64',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['totalincome_3',['totalIncome',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_year_row.html#add56a0bb1ef11aabfe7b4067a4aa8991',1,'com::example::analysis::dto::CashflowResponse::YearRow']]],
+  ['totalincomey1_4',['totalIncomeY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a8189667a0800b6ae3081602768539641',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['totalroiy1_5',['totalROIY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a9aacce6bc3e906180c7a5384c79edc78',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['tour3durls_6',['tour3dUrls',['../classcom_1_1example_1_1realestate_1_1model_1_1_enriched_property.html#ae5c867558a33ca6171ff31be8f94eafc',1,'com::example::realestate::model::EnrichedProperty']]],
+  ['transfertax_7',['transferTax',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a29a611cb5a5189e7a755c7031697c803',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['trash_8',['trash',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#aabc01bc198cf4f45c3af5e08a634b287',1,'com::example::analysis::dto::CashflowRequest']]]
 ];

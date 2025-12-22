@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['toggleshortlist_0',['toggleShortlist',['../_dashboard_8tsx.html#ab664685a62788c130b942af1d4ab3bbd',1,'toggleShortlist:&#160;Dashboard.tsx'],['../_properties_context_8tsx.html#ab664685a62788c130b942af1d4ab3bbd',1,'toggleShortlist:&#160;PropertiesContext.tsx']]],
-  ['totalexpenses_1',['totalExpenses',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_year_row.html#a61d63cd90a04ec35465244b5cf8f1dca',1,'com::example::analysis::dto::CashflowResponse::YearRow']]],
-  ['totalexpensesy1_2',['totalExpensesY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a4b548842720e4078f2bd22dc12614f06',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
-  ['totalincome_3',['totalIncome',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_year_row.html#a037e81aeca490a918d15c5d76ce1cb19',1,'com::example::analysis::dto::CashflowResponse::YearRow']]],
-  ['totalincomey1_4',['totalIncomeY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a236c88d0658b1d057ce5ce2de151fb17',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
-  ['totalroiy1_5',['totalROIY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response_1_1_summary.html#a739250ba0038b7fb927aefdd00c93998',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
-  ['transfertax_6',['transferTax',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a49f3db9431d687617a5a464351d4875d',1,'com::example::analysis::dto::CashflowRequest']]],
-  ['trash_7',['trash',['../classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html#a5a771eb83ebd0c0d72e79a18853fac58',1,'com::example::analysis::dto::CashflowRequest']]]
+  ['updatedat_0',['updatedAt',['../_properties_context_8tsx.html#ae2438dc591300a0912cf81097293e775',1,'PropertiesContext.tsx']]],
+  ['updateproperty_1',['updateProperty',['../_properties_context_8tsx.html#aaf8d5cd4a331a6e455a1f77836b84a8d',1,'PropertiesContext.tsx']]],
+  ['updates_2',['updates',['../_properties_context_8tsx.html#a9284f10f29eb93c227dab28d6d6b8736',1,'PropertiesContext.tsx']]],
+  ['useauth_3',['useAuth',['../_auth_context_8tsx.html#a08276290a55215e58d2ce1803ffae8bf',1,'AuthContext.tsx']]],
+  ['useproperties_4',['useProperties',['../_properties_context_8tsx.html#af35ce0ef350feec6b3ade4fb2f05eeaa',1,'PropertiesContext.tsx']]],
+  ['user_5',['User',['../_auth_context_8tsx.html#acb750528b68de289ffb8a4a831f2bb25',1,'AuthContext.tsx']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['navbar_2etsx_0',['Navbar.tsx',['../_navbar_8tsx.html',1,'']]]
+  ['maincontent_2etsx_0',['MainContent.tsx',['../_main_content_8tsx.html',1,'']]]
 ];

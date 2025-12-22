@@ -1,5 +1,9 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
+/**
+ * User information interface.
+ * Contains data from Google OAuth authentication.
+ */
 export interface User {
   name: string;
   email: string;
@@ -31,12 +35,16 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+/**
+ * Authentication context provider.
+ * Manages user authentication state and provides authentication methods.
+ */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isGuest, setIsGuest] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load user from localStorage on mount
+  // Load authentication state from localStorage on component mount
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedGuest = localStorage.getItem('isGuest');
@@ -58,6 +66,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(false);
   }, []);
 
+  /**
+   * Logs in a user with their user data.
+   * 
+   * @param userData The user information to store
+   */
   const login = (userData: User) => {
     setUser(userData);
     setIsGuest(false);
@@ -65,6 +78,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('isGuest');
   };
 
+  /**
+   * Sets the user to guest mode.
+   * Removes any authenticated user and enables guest access.
+   */
   const browseAsGuest = () => {
     setUser(null);
     setIsGuest(true);
@@ -72,6 +89,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('user');
   };
 
+  /**
+   * Logs out the current user.
+   * Clears both authenticated and guest states.
+   */
   const logout = () => {
     setUser(null);
     setIsGuest(false);

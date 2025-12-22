@@ -2,12 +2,12 @@ package com.example.analysis.dto;
 
 import java.util.List;
 
-/** Output DTO for investment cashflow analysis. */
+// Output DTO for investment cashflow analysis. 
 public class CashflowResponse {
   public Summary summary;            // One-shot key metrics
   public List<YearRow> projection;   // Year-by-year projection
 
-  /** Aggregated metrics and single-number KPIs. */
+  // Aggregated metrics and single-number KPIs. 
   public static class Summary {
     // Pricing & cash required
     public Double rpp;               // Real Purchase Price (offer + closing/rehab)
@@ -43,7 +43,7 @@ public class CashflowResponse {
     public Double saleProceedsNet;   // Net sale proceeds at exit
   }
 
-  /** One projection row per year. */
+  //One projection row per year. 
   public static class YearRow {
     public int year;
     public Double totalIncome, vacancyLoss, egi;

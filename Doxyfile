@@ -51,7 +51,7 @@ GENERATE_RTF           = NO
 # HTML Output Settings
 #---------------------------------------------------------------------------
 HTML_OUTPUT            = html
-HTML_FILE_EXTENSION    = .html
+HTML_FILE_EXTENSION    = .docs
 HTML_COLORSTYLE        = AUTO_LIGHT
 HTML_TIMESTAMP         = YES
 HTML_DYNAMIC_MENUS     = YES

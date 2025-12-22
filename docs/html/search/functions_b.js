@@ -7,5 +7,6 @@ var searchData=
   ['testdebtserviceanddscr_4',['testDebtServiceAndDSCR',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#a066a806e66512b27299aeda71e57ab10',1,'com::example::analysis::service::CashflowServiceTest']]],
   ['testinterestonlyperiod_5',['testInterestOnlyPeriod',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#a1f89717dc39cea697e240f80b11816d8',1,'com::example::analysis::service::CashflowServiceTest']]],
   ['testmultiyearprojection_6',['testMultiYearProjection',['../classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service_test.html#a961878afcc7d6b9343831c2e6b064ec0',1,'com::example::analysis::service::CashflowServiceTest']]],
-  ['text_7',['text',['../classcom_1_1example_1_1map_1_1geo_1_1_geo_controller.html#aea29a46aad6143330fadcde2865f815f',1,'com::example::map::geo::GeoController']]]
+  ['text_7',['text',['../classcom_1_1example_1_1map_1_1geo_1_1_geo_controller.html#aea29a46aad6143330fadcde2865f815f',1,'com::example::map::geo::GeoController']]],
+  ['tostring_8',['toString',['../classcom_1_1example_1_1realestate_1_1model_1_1_enriched_property.html#acc8d60c429046b1b5620855677c1f4e6',1,'com.example.realestate.model.EnrichedProperty.toString()'],['../classcom_1_1example_1_1realestate_1_1model_1_1_search_card.html#a1e747ec236ac2b9db3ef14332af3f2f4',1,'com.example.realestate.model.SearchCard.toString()']]]
 ];

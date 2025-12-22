@@ -107,11 +107,25 @@ export interface CashflowResponse {
   }>;
 }
 
+/**
+ * Maps property form data to the cashflow request format expected by the backend.
+ * Converts form values to the appropriate types and formats.
+ * 
+ * @param formData The property data from the form
+ * @returns CashflowRequest object for the API call
+ */
 export function mapPropertyDataToCashflowRequest(formData: PropertyData): CashflowRequest {
+  /**
+   * Converts a form value to a number, returning undefined if empty.
+   */
   const getValue = (value: number | ''): number | undefined => {
     return typeof value === 'number' ? value : undefined;
   };
 
+  /**
+   * Converts a percentage form value to a decimal fraction.
+   * For example, 20 becomes 0.20.
+   */
   const getPercent = (value: number | ''): number | undefined => {
     const num = getValue(value);
     return num !== undefined ? num / 100 : undefined;
@@ -181,6 +195,13 @@ export function mapPropertyDataToCashflowRequest(formData: PropertyData): Cashfl
   };
 }
 
+/**
+ * Sends a cashflow analysis request to the backend API.
+ * 
+ * @param request The cashflow request data
+ * @returns Promise resolving to the cashflow response with calculated metrics
+ * @throws Error if the backend is not running or the request fails
+ */
 export async function analyzeCashflow(request: CashflowRequest): Promise<CashflowResponse> {
   try {
     const response = await fetch('http://localhost:8080/api/analysis/cashflow', {
@@ -192,6 +213,7 @@ export async function analyzeCashflow(request: CashflowRequest): Promise<Cashflo
     });
 
     if (!response.ok) {
+      // Check for backend connection errors
       if (response.status === 0 || response.status === 503 || response.status === 502) {
         throw new Error('BACKEND_NOT_RUNNING');
       }
@@ -203,6 +225,8 @@ export async function analyzeCashflow(request: CashflowRequest): Promise<Cashflo
     return result;
   } catch (error: any) {
     console.error('Error calling cashflow API:', error);
+    
+    // Provide user-friendly error message for backend connection issues
     if (error.message === 'BACKEND_NOT_RUNNING' || error.message?.includes('Failed to fetch') || error.name === 'TypeError') {
       throw new Error('Backend server is not running. Please start the backend server on port 8080.');
     }

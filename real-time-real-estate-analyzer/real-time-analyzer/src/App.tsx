@@ -13,39 +13,50 @@ import AuthPage from './components/AuthPage';
 import Footer from './components/Footer';
 import './App.css';
 
-// Google OAuth Client ID - Get from environment variable or use placeholder
-// To set up: Create a .env file in the root directory with:
-// REACT_APP_GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+// Get Google OAuth Client ID from environment variables
+// To configure: Create a .env file with REACT_APP_GOOGLE_CLIENT_ID=your-client-id
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
 
-// Debug: Log Client ID status (remove in production)
+// Log configuration status in development mode
 if (process.env.NODE_ENV === 'development') {
   if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === "" || GOOGLE_CLIENT_ID.includes('your-client-id')) {
     console.warn('Google OAuth Client ID not configured!');
     console.warn('Please set REACT_APP_GOOGLE_CLIENT_ID in your .env file');
-    console.warn('See QUICK_OAUTH_SETUP.md for instructions');
   } else {
     console.log('Google OAuth Client ID loaded:', GOOGLE_CLIENT_ID.substring(0, 20) + '...');
   }
 }
 
+/**
+ * Main application content component.
+ * Handles routing and state management for the entire application.
+ */
 function AppContent() {
   const { isAuthenticated, isGuest, isLoading } = useAuth();
+  
+  // Navigation state
   const [activePage, setActivePage] = useState("my-properties");
   const [activeSection, setActiveSection] = useState("brrrr");
-  // Default to 'auth' - always show landing page on initial load
   const [activeView, setActiveView] = useState<string | null>('auth');
+  
+  // Property form state
   const [showPropertyForm, setShowPropertyForm] = useState(false);
   const [propertyFormStrategy, setPropertyFormStrategy] = useState<'rental' | 'brrrr' | 'flip' | 'wholesale'>('rental');
   const [selectedPropertyZpid, setSelectedPropertyZpid] = useState<string | null>(null);
   const [searchLocation, setSearchLocation] = useState<string | null>(null);
 
+  /**
+   * Handles navigation between different pages in the application.
+   * 
+   * @param page The page identifier to navigate to
+   */
   const handleNavigate = (page: string) => {
     setActivePage(page);
+    
     if (page === 'home' || page === 'my-properties' || page === 'dashboard') {
       setActiveView('dashboard');
       setActivePage('my-properties');
-      setShowPropertyForm(false); // Close property form if open
+      setShowPropertyForm(false);
     } else if (page === 'search-properties') {
       setActiveView('search-properties');
     } else if (page === 'search-lenders') {
@@ -62,11 +73,15 @@ function AppContent() {
     setActiveView(null);
   };
 
+  /**
+   * Handles clicks on sidebar items.
+   * Opens property form or criteria form based on the item clicked.
+   * 
+   * @param itemId The ID of the sidebar item that was clicked
+   */
   const handleItemClick = (itemId: string) => {
-    // Handle sidebar item clicks
     if (itemId.includes('-properties')) {
-      // Extract strategy from itemId (e.g., "rental-properties" -> "rental")
-      // Map to correct strategy names
+      // Map item IDs to strategy types
       const strategyMap: { [key: string]: 'rental' | 'brrrr' | 'flip' | 'wholesale' } = {
         'rental-properties': 'rental',
         'rentals-properties': 'rental',
@@ -77,7 +92,7 @@ function AppContent() {
       };
       const strategy = strategyMap[itemId] || 'rental';
       
-      // Extract section name for filtering
+      // Map item IDs to section names for filtering
       const sectionMap: { [key: string]: string } = {
         'rental-properties': 'rentals',
         'rentals-properties': 'rentals',
@@ -90,11 +105,11 @@ function AppContent() {
       
       setActiveSection(section);
       setPropertyFormStrategy(strategy);
-      setShowPropertyForm(true); // Open property form for adding properties of this type
+      setShowPropertyForm(true);
       setActivePage('my-properties');
     } else if (itemId.includes('-criteria')) {
-      // Extract section from itemId (e.g., "rental-criteria" -> "rental")
-      const sectionMap: { [key: string]: 'rental' | 'brrrr' | 'flip' | 'wholesale' } = {
+      // Map criteria item IDs to strategy types
+      const strategyMap: { [key: string]: 'rental' | 'brrrr' | 'flip' | 'wholesale' } = {
         'rental-criteria': 'rental',
         'rentals-criteria': 'rental',
         'brrrr-criteria': 'brrrr',
@@ -102,9 +117,10 @@ function AppContent() {
         'flips-criteria': 'flip',
         'wholesale-criteria': 'wholesale'
       };
-      const strategy = sectionMap[itemId] || 'rental';
-      // Extract section name for filtering
-      const sectionMapForSection: { [key: string]: string } = {
+      const strategy = strategyMap[itemId] || 'rental';
+      
+      // Map criteria item IDs to section names
+      const sectionMap: { [key: string]: string } = {
         'rental-criteria': 'rentals',
         'rentals-criteria': 'rentals',
         'brrrr-criteria': 'brrrr',
@@ -112,30 +128,35 @@ function AppContent() {
         'flips-criteria': 'flips',
         'wholesale-criteria': 'wholesale'
       };
-      const section = sectionMapForSection[itemId] || strategy;
+      const section = sectionMap[itemId] || strategy;
+      
       setActiveSection(section);
-      setShowPropertyForm(false); // Ensure property form is closed
+      setShowPropertyForm(false);
       setActiveView(`criteria-${strategy}`);
       setActivePage('my-properties');
     }
   };
 
+  /**
+   * Handles saving purchase criteria.
+   * 
+   * @param criteria The criteria data to save
+   */
   const handleCriteriaSave = (criteria: any) => {
     console.log('Purchase criteria saved:', criteria);
-    // You can add logic to save criteria here
     setActiveView(null);
   };
 
+  /**
+   * Handles successful authentication.
+   * Navigates to dashboard after user signs in or chooses guest mode.
+   */
   const handleAuthSuccess = () => {
-    // After successful auth (sign in or guest), show dashboard
     setActiveView('dashboard');
     setActivePage('my-properties');
   };
 
-  // Don't auto-navigate to dashboard on load - always start with auth page
-  // User must explicitly authenticate to see dashboard
-
-  // Show loading state
+  // Show loading spinner while checking authentication state
   if (isLoading) {
     return (
       <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
@@ -159,13 +180,10 @@ function AppContent() {
     );
   }
 
-  // Show auth page as landing page if explicitly set to 'auth' view
-  // This ensures the auth page is the first thing users see when they visit or restart the server
+  // Show authentication page as landing page
   if (activeView === 'auth') {
-    // If Google Client ID is not configured, still show auth page but allow guest access
-    // The AuthPage component will handle showing appropriate options
+    // If Google Client ID is not configured, show auth page with guest access only
     if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === "" || GOOGLE_CLIENT_ID.includes('your-client-id')) {
-      // Show auth page without Google OAuth - guest access only
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', display: 'flex', flexDirection: 'column' }}>
         <div style={{ flex: 1 }}>
@@ -188,14 +206,23 @@ function AppContent() {
     );
   }
 
+  /**
+   * Opens the property form for adding a new property.
+   * 
+   * @param strategy The investment strategy for the property
+   */
   const handleAddProperty = (strategy: 'rental' | 'brrrr' | 'flip' | 'wholesale') => {
     setPropertyFormStrategy(strategy);
     setShowPropertyForm(true);
   };
 
-  // Determine what content to show
+  /**
+   * Determines which content component to render based on current view state.
+   * 
+   * @returns The appropriate React component to display
+   */
   const renderContent = () => {
-    // Check for criteria view first (before property form)
+    // Show purchase criteria form if criteria view is active
     if (activeView?.startsWith('criteria-')) {
       const strategy = activeView.replace('criteria-', '') as 'rental' | 'brrrr' | 'flip' | 'wholesale';
       return (
@@ -210,7 +237,7 @@ function AppContent() {
       );
     }
 
-    // Show PropertyForm if requested
+    // Show property form if it should be displayed
     if (showPropertyForm) {
       return (
         <PropertyForm
@@ -222,7 +249,8 @@ function AppContent() {
             setSelectedPropertyZpid(null);
             setSearchLocation(null);
             setActiveView('dashboard');
-            // Set the active section to match the strategy
+            
+            // Set active section to match the strategy
             const sectionMap: { [key: string]: string } = {
               'rental': 'rentals',
               'brrrr': 'brrrr',
@@ -236,17 +264,18 @@ function AppContent() {
       );
     }
 
+    // Show dashboard as default view
     if (activeView === 'dashboard' || activeView === null) {
       return <Dashboard onAddProperty={handleAddProperty} />;
     }
 
+    // Show property search page
     if (activeView === 'search-properties') {
       return (
         <SearchPage 
           searchType="properties" 
           onClose={() => setActiveView('dashboard')}
           onPropertySelect={(zpid, strategy = 'rental', location) => {
-            // Open PropertyForm with the selected property
             setPropertyFormStrategy(strategy);
             setSelectedPropertyZpid(zpid);
             setSearchLocation(location || null);
@@ -256,11 +285,12 @@ function AppContent() {
       );
     }
     
+    // Show lender search page
     if (activeView === 'search-lenders') {
       return <SearchPage searchType="lenders" onClose={() => setActiveView('dashboard')} />;
     }
 
-    // Default: show dashboard
+    // Default to dashboard
     return <Dashboard />;
   };
 
@@ -306,6 +336,10 @@ function AppContent() {
   );
 }
 
+/**
+ * Main App component.
+ * Wraps the application with context providers for authentication and properties.
+ */
 function App() {
   return (
     <AuthProvider>

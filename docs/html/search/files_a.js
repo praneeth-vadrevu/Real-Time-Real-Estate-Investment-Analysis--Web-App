@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['searchpage_2etsx_0',['SearchPage.tsx',['../_search_page_8tsx.html',1,'']]],
-  ['setuptests_2ets_1',['setupTests.ts',['../setup_tests_8ts.html',1,'']]],
-  ['sidebar_2etsx_2',['Sidebar.tsx',['../_sidebar_8tsx.html',1,'']]]
+  ['react_2dapp_2denv_2ed_2ets_0',['react-app-env.d.ts',['../react-app-env_8d_8ts.html',1,'']]],
+  ['react_2dicons_2ed_2ets_1',['react-icons.d.ts',['../react-icons_8d_8ts.html',1,'']]],
+  ['reportgenerator_2ets_2',['reportGenerator.ts',['../report_generator_8ts.html',1,'']]],
+  ['reportwebvitals_2ets_3',['reportWebVitals.ts',['../report_web_vitals_8ts.html',1,'']]]
 ];

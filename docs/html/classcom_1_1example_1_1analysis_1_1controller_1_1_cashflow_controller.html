@@ -93,25 +93,28 @@ $(function(){initNavTree('classcom_1_1example_1_1analysis_1_1controller_1_1_cash
 </div><!--header-->
 <div class="contents">
 
-<p>REST controller exposing the cashflow analysis endpoint.  
+<p>REST controller for cashflow analysis endpoints.  
  <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af41d28b8effab8a845019a8f1b56acc2" id="r_af41d28b8effab8a845019a8f1b56acc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response.html">CashflowResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af41d28b8effab8a845019a8f1b56acc2">analyze</a> (@RequestBody <a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html">CashflowRequest</a> req)</td></tr>
+<tr class="memitem:af228e6f1fe8f67f796c2add98c8e4120" id="r_af228e6f1fe8f67f796c2add98c8e4120"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response.html">CashflowResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af228e6f1fe8f67f796c2add98c8e4120">analyze</a> (@RequestBody <a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html">CashflowRequest</a> request)</td></tr>
+<tr class="memdesc:af228e6f1fe8f67f796c2add98c8e4120"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analyzes cashflow for a property investment.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-attribs" class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a09498c80510e0815f25d0555acb945e6" id="r_a09498c80510e0815f25d0555acb945e6"><td class="memItemLeft" align="right" valign="top">final <a class="el" href="classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service.html">CashflowService</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09498c80510e0815f25d0555acb945e6">svc</a> = new <a class="el" href="classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service.html">CashflowService</a>()</td></tr>
+<tr class="memitem:a6db4686f6a4ec034cd734fd9feaea148" id="r_a6db4686f6a4ec034cd734fd9feaea148"><td class="memItemLeft" align="right" valign="top">final <a class="el" href="classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service.html">CashflowService</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6db4686f6a4ec034cd734fd9feaea148">cashflowService</a> = new <a class="el" href="classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service.html">CashflowService</a>()</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>REST controller exposing the cashflow analysis endpoint. </p>
-<p>POST /api/analysis/cashflow -&gt; returns summary KPIs and yearly projection. </p>
+<div class="textblock"><p>REST controller for cashflow analysis endpoints. </p>
+<p>Handles HTTP requests for property investment cashflow calculations. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cashflow_controller_8java_source.html#l00014">14</a> of file <a class="el" href="_cashflow_controller_8java_source.html">CashflowController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html#l00011">11</a> of file <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html">CashflowController.java</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="af41d28b8effab8a845019a8f1b56acc2" name="af41d28b8effab8a845019a8f1b56acc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af41d28b8effab8a845019a8f1b56acc2">&#9670;&#160;</a></span>analyze()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af41d28b8effab8a845019a8f1b56acc2">&#9670;&#160;</a></span>analyze() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -133,15 +136,80 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cashflow_controller_8java_source.html#l00019">19</a> of file <a class="el" href="_cashflow_controller_8java_source.html">CashflowController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html#l00016">16</a> of file <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html">CashflowController.java</a>.</p>
 
-<p class="reference">References <a class="el" href="_cashflow_controller_8java_source.html#l00019">analyze()</a>, and <a class="el" href="_cashflow_controller_8java_source.html#l00016">svc</a>.</p>
+<p class="reference">References <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html#l00016">analyze()</a>, and <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html#l00013">svc</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cashflow_controller_8java_source.html#l00019">analyze()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html#l00016">analyze()</a>, and <a class="el" href="cashflow-calculator_2_cashflow_controller_8java_source.html#l00026">analyze()</a>.</p>
+
+</div>
+</div>
+<a id="af228e6f1fe8f67f796c2add98c8e4120" name="af228e6f1fe8f67f796c2add98c8e4120"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af228e6f1fe8f67f796c2add98c8e4120">&#9670;&#160;</a></span>analyze() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response.html">CashflowResponse</a> com.example.analysis.controller.CashflowController.analyze </td>
+          <td>(</td>
+          <td class="paramtype">@RequestBody <a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html">CashflowRequest</a></td>          <td class="paramname"><span class="paramname"><em>request</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Analyzes cashflow for a property investment. </p>
+<p>Accepts property and financial parameters and returns calculated metrics.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">request</td><td>The cashflow request containing property and financial data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response.html" title="Output DTO for investment cashflow analysis.">CashflowResponse</a> with summary metrics and yearly projections </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="cashflow-calculator_2_cashflow_controller_8java_source.html#l00026">26</a> of file <a class="el" href="cashflow-calculator_2_cashflow_controller_8java_source.html">CashflowController.java</a>.</p>
+
+<p class="reference">References <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html#l00016">analyze()</a>, and <a class="el" href="cashflow-calculator_2_cashflow_controller_8java_source.html#l00016">cashflowService</a>.</p>
 
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="a6db4686f6a4ec034cd734fd9feaea148" name="a6db4686f6a4ec034cd734fd9feaea148"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6db4686f6a4ec034cd734fd9feaea148">&#9670;&#160;</a></span>cashflowService</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final <a class="el" href="classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service.html">CashflowService</a> com.example.analysis.controller.CashflowController.cashflowService = new <a class="el" href="classcom_1_1example_1_1analysis_1_1service_1_1_cashflow_service.html">CashflowService</a>()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cashflow-calculator_2_cashflow_controller_8java_source.html#l00016">16</a> of file <a class="el" href="cashflow-calculator_2_cashflow_controller_8java_source.html">CashflowController.java</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="cashflow-calculator_2_cashflow_controller_8java_source.html#l00026">analyze()</a>.</p>
+
+</div>
+</div>
 <a id="a09498c80510e0815f25d0555acb945e6" name="a09498c80510e0815f25d0555acb945e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a09498c80510e0815f25d0555acb945e6">&#9670;&#160;</a></span>svc</h2>
 
@@ -162,14 +230,15 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cashflow_controller_8java_source.html#l00016">16</a> of file <a class="el" href="_cashflow_controller_8java_source.html">CashflowController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html#l00013">13</a> of file <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html">CashflowController.java</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cashflow_controller_8java_source.html#l00019">analyze()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html#l00016">analyze()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>cashflow-calculator/<a class="el" href="_cashflow_controller_8java_source.html">CashflowController.java</a></li>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>googlemapv2/src/main/java/com/example/analysis/controller/<a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2_cashflow_controller_8java_source.html">CashflowController.java</a></li>
+<li>cashflow-calculator/<a class="el" href="cashflow-calculator_2_cashflow_controller_8java_source.html">CashflowController.java</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

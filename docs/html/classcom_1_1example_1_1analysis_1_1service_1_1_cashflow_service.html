@@ -99,11 +99,13 @@ $(function(){initNavTree('classcom_1_1example_1_1analysis_1_1service_1_1_cashflo
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:Amort" id="r_Amort"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>Amort</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Amortization helper class for calculating mortgage payments and balances. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a37b6d6812a060c756dbfd3b1591e026f" id="r_a37b6d6812a060c756dbfd3b1591e026f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response.html">CashflowResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37b6d6812a060c756dbfd3b1591e026f">analyze</a> (<a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html">CashflowRequest</a> r)</td></tr>
-<tr class="memdesc:a37b6d6812a060c756dbfd3b1591e026f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the analysis and produce summary + yearly projection.  <br /></td></tr>
+<tr class="memitem:a37b6d6812a060c756dbfd3b1591e026f" id="r_a37b6d6812a060c756dbfd3b1591e026f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response.html">CashflowResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37b6d6812a060c756dbfd3b1591e026f">analyze</a> (<a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html">CashflowRequest</a> r)</td></tr>
+<tr class="memdesc:a37b6d6812a060c756dbfd3b1591e026f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the cashflow analysis and produces summary metrics plus yearly projections.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-static-methods" class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
@@ -112,16 +114,25 @@ Static Private Member Functions</h2></td></tr>
 <tr class="memitem:a09ab4b07932f184c16eec4c4972ed537" id="r_a09ab4b07932f184c16eec4c4972ed537"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09ab4b07932f184c16eec4c4972ed537">sum</a> (Double... xs)</td></tr>
 <tr class="memitem:a3b1f3cea61288632ed3a3c857621d821" id="r_a3b1f3cea61288632ed3a3c857621d821"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b1f3cea61288632ed3a3c857621d821">sumPos</a> (List&lt; Double &gt; v)</td></tr>
 <tr class="memitem:a9a642906d027887ef3afea325cf976db" id="r_a9a642906d027887ef3afea325cf976db"><td class="memItemLeft" align="right" valign="top">static Double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a642906d027887ef3afea325cf976db">irr</a> (List&lt; Double &gt; cash, double guess)</td></tr>
-<tr class="memdesc:a9a642906d027887ef3afea325cf976db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Newton–Raphson IRR (cash[0] negative; yearly periods).  <br /></td></tr>
+<tr class="memitem:a84f3052ebd7f94bc4979e228569641c7" id="r_a84f3052ebd7f94bc4979e228569641c7"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84f3052ebd7f94bc4979e228569641c7">nz</a> (Double <a class="el" href="_auth_context_8tsx.html#a55f5cd032aff14fdd4c1fe5e0fb4603a">value</a>)</td></tr>
+<tr class="memdesc:a84f3052ebd7f94bc4979e228569641c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts null Double to 0.0, otherwise returns the value.  <br /></td></tr>
+<tr class="memitem:af80ec2892d939294ac81e4abce5057a3" id="r_af80ec2892d939294ac81e4abce5057a3"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af80ec2892d939294ac81e4abce5057a3">nzInt</a> (Integer <a class="el" href="_auth_context_8tsx.html#a55f5cd032aff14fdd4c1fe5e0fb4603a">value</a>, int defaultValue)</td></tr>
+<tr class="memdesc:af80ec2892d939294ac81e4abce5057a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts null Integer to default value, otherwise returns the value.  <br /></td></tr>
+<tr class="memitem:a04cc7a65891d35f079ae34660e2fc0f0" id="r_a04cc7a65891d35f079ae34660e2fc0f0"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04cc7a65891d35f079ae34660e2fc0f0">sum</a> (Double... values)</td></tr>
+<tr class="memdesc:a04cc7a65891d35f079ae34660e2fc0f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sums all provided Double values, treating null as zero.  <br /></td></tr>
+<tr class="memitem:a3483d2d8a9433fa0b0afff460c62fa46" id="r_a3483d2d8a9433fa0b0afff460c62fa46"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3483d2d8a9433fa0b0afff460c62fa46">sumPos</a> (List&lt; Double &gt; values)</td></tr>
+<tr class="memdesc:a3483d2d8a9433fa0b0afff460c62fa46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sums only positive values from a list.  <br /></td></tr>
+<tr class="memitem:afc196de9269b1f1fa1a4dd37d846eb9d" id="r_afc196de9269b1f1fa1a4dd37d846eb9d"><td class="memItemLeft" align="right" valign="top">static Double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc196de9269b1f1fa1a4dd37d846eb9d">irr</a> (List&lt; Double &gt; cashFlows, double initialGuess)</td></tr>
+<tr class="memdesc:afc196de9269b1f1fa1a4dd37d846eb9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates Internal Rate of Return using Newton-Raphson method.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Core calculator for investment cashflow (before tax). </p>
 <p>Implements Year-1 KPIs and multi-year projection with optional interest-only period, principal pay-down, appreciation, and exit proceeds. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cashflow_service_8java_source.html#l00014">14</a> of file <a class="el" href="_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00009">9</a> of file <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a37b6d6812a060c756dbfd3b1591e026f" name="a37b6d6812a060c756dbfd3b1591e026f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37b6d6812a060c756dbfd3b1591e026f">&#9670;&#160;</a></span>analyze()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a37b6d6812a060c756dbfd3b1591e026f">&#9670;&#160;</a></span>analyze() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,16 +154,53 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Run the analysis and produce summary + yearly projection. </p>
+<p>Runs the cashflow analysis and produces summary metrics plus yearly projections. </p>
+<p>Calculates Year 1 KPIs and projects cashflows over the holding period.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>The cashflow request containing all property and financial parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response.html" title="Output DTO for investment cashflow analysis.">CashflowResponse</a> with summary metrics and yearly projections </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cashflow_service_8java_source.html#l00017">17</a> of file <a class="el" href="_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00023">23</a> of file <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
 
-<p class="reference">References <a class="el" href="_cashflow_request_8java_source.html#l00036">com.example.analysis.dto.CashflowRequest.accounting</a>, <a class="el" href="_cashflow_request_8java_source.html#l00033">com.example.analysis.dto.CashflowRequest.advertising</a>, <a class="el" href="_cashflow_request_8java_source.html#l00015">com.example.analysis.dto.CashflowRequest.annualAppreciation</a>, <a class="el" href="_cashflow_request_8java_source.html#l00054">com.example.analysis.dto.CashflowRequest.appraisals</a>, <a class="el" href="_cashflow_request_8java_source.html#l00033">com.example.analysis.dto.CashflowRequest.associationFees</a>, <a class="el" href="_cashflow_request_8java_source.html#l00036">com.example.analysis.dto.CashflowRequest.badDebts</a>, <a class="el" href="_cashflow_request_8java_source.html#l00053">com.example.analysis.dto.CashflowRequest.brokerFee</a>, <a class="el" href="_cashflow_request_8java_source.html#l00032">com.example.analysis.dto.CashflowRequest.cable</a>, <a class="el" href="_cashflow_request_8java_source.html#l00035">com.example.analysis.dto.CashflowRequest.capitalImprovements</a>, <a class="el" href="_cashflow_request_8java_source.html#l00033">com.example.analysis.dto.CashflowRequest.caretaking</a>, <a class="el" href="cashflow_api_8ts_source.html#l00065">CashflowResponse</a>, <a class="el" href="_cashflow_request_8java_source.html#l00035">com.example.analysis.dto.CashflowRequest.commonAreaMaintenance</a>, <a class="el" href="_cashflow_request_8java_source.html#l00031">com.example.analysis.dto.CashflowRequest.electricity</a>, <a class="el" href="_cashflow_request_8java_source.html#l00053">com.example.analysis.dto.CashflowRequest.environmentals</a>, <a class="el" href="_cashflow_request_8java_source.html#l00037">com.example.analysis.dto.CashflowRequest.evictions</a>, <a class="el" href="_cashflow_request_8java_source.html#l00061">com.example.analysis.dto.CashflowRequest.exitCostRate</a>, <a class="el" href="_cashflow_request_8java_source.html#l00060">com.example.analysis.dto.CashflowRequest.expenseGrowth</a>, <a class="el" href="_cashflow_request_8java_source.html#l00042">com.example.analysis.dto.CashflowRequest.firstAmortYears</a>, <a class="el" href="_cashflow_request_8java_source.html#l00043">com.example.analysis.dto.CashflowRequest.firstInterestOnlyYears</a>, <a class="el" href="_cashflow_request_8java_source.html#l00040">com.example.analysis.dto.CashflowRequest.firstPrincipal</a>, <a class="el" href="_cashflow_request_8java_source.html#l00041">com.example.analysis.dto.CashflowRequest.firstRateAnnual</a>, <a class="el" href="_cashflow_request_8java_source.html#l00013">com.example.analysis.dto.CashflowRequest.fmv</a>, <a class="el" href="_cashflow_request_8java_source.html#l00032">com.example.analysis.dto.CashflowRequest.gas</a>, <a class="el" href="_cashflow_request_8java_source.html#l00018">com.example.analysis.dto.CashflowRequest.grossRentsAnnual</a>, <a class="el" href="_cashflow_request_8java_source.html#l00058">com.example.analysis.dto.CashflowRequest.holdYears</a>, <a class="el" href="_cashflow_request_8java_source.html#l00054">com.example.analysis.dto.CashflowRequest.inspections</a>, <a class="el" href="_cashflow_request_8java_source.html#l00031">com.example.analysis.dto.CashflowRequest.insurance</a>, <a class="el" href="_cashflow_service_8java_source.html#l00195">irr()</a>, <a class="el" href="_cashflow_request_8java_source.html#l00022">com.example.analysis.dto.CashflowRequest.laundryVendingAnnual</a>, <a class="el" href="_cashflow_request_8java_source.html#l00036">com.example.analysis.dto.CashflowRequest.legal</a>, <a class="el" href="_cashflow_request_8java_source.html#l00054">com.example.analysis.dto.CashflowRequest.legalClose</a>, <a class="el" href="_cashflow_request_8java_source.html#l00053">com.example.analysis.dto.CashflowRequest.lenderFee</a>, <a class="el" href="_cashflow_request_8java_source.html#l00064">com.example.analysis.dto.CashflowRequest.managementBase</a>, <a class="el" href="_cashflow_request_8java_source.html#l00027">com.example.analysis.dto.CashflowRequest.managementRate</a>, <a class="el" href="_cashflow_request_8java_source.html#l00034">com.example.analysis.dto.CashflowRequest.misc</a>, <a class="el" href="_cashflow_request_8java_source.html#l00019">com.example.analysis.dto.CashflowRequest.numberOfUnits</a>, <a class="el" href="_cashflow_service_8java_source.html#l00189">nz()</a>, <a class="el" href="_cashflow_service_8java_source.html#l00190">nzInt()</a>, <a class="el" href="_cashflow_request_8java_source.html#l00014">com.example.analysis.dto.CashflowRequest.offerPrice</a>, <a class="el" href="_cashflow_request_8java_source.html#l00055">com.example.analysis.dto.CashflowRequest.otherClosingCosts</a>, <a class="el" href="_cashflow_request_8java_source.html#l00037">com.example.analysis.dto.CashflowRequest.otherExpenses</a>, <a class="el" href="_cashflow_request_8java_source.html#l00023">com.example.analysis.dto.CashflowRequest.otherIncomeAnnual</a>, <a class="el" href="_cashflow_request_8java_source.html#l00049">com.example.analysis.dto.CashflowRequest.otherMonthlyFinancingCosts</a>, <a class="el" href="_cashflow_request_8java_source.html#l00020">com.example.analysis.dto.CashflowRequest.parkingAnnual</a>, <a class="el" href="_cashflow_request_8java_source.html#l00034">com.example.analysis.dto.CashflowRequest.pest</a>, <a class="el" href="_cashflow_response_8java_source.html#l00008">com.example.analysis.dto.CashflowResponse.projection</a>, <a class="el" href="_cashflow_request_8java_source.html#l00031">com.example.analysis.dto.CashflowRequest.propertyTaxes</a>, <a class="el" href="_cashflow_request_8java_source.html#l00059">com.example.analysis.dto.CashflowRequest.rentGrowth</a>, <a class="el" href="_cashflow_request_8java_source.html#l00052">com.example.analysis.dto.CashflowRequest.repairs</a>, <a class="el" href="_cashflow_request_8java_source.html#l00052">com.example.analysis.dto.CashflowRequest.repairsContingency</a>, <a class="el" href="_cashflow_request_8java_source.html#l00028">com.example.analysis.dto.CashflowRequest.repairsRate</a>, <a class="el" href="_cashflow_request_8java_source.html#l00046">com.example.analysis.dto.CashflowRequest.secondAmortYears</a>, <a class="el" href="_cashflow_request_8java_source.html#l00046">com.example.analysis.dto.CashflowRequest.secondPrincipal</a>, <a class="el" href="_cashflow_request_8java_source.html#l00046">com.example.analysis.dto.CashflowRequest.secondRateAnnual</a>, <a class="el" href="_cashflow_request_8java_source.html#l00034">com.example.analysis.dto.CashflowRequest.security</a>, <a class="el" href="_cashflow_request_8java_source.html#l00021">com.example.analysis.dto.CashflowRequest.storageAnnual</a>, <a class="el" href="_cashflow_service_8java_source.html#l00191">sum()</a>, <a class="el" href="_cashflow_service_8java_source.html#l00192">sumPos()</a>, <a class="el" href="_cashflow_request_8java_source.html#l00054">com.example.analysis.dto.CashflowRequest.transferTax</a>, <a class="el" href="_cashflow_request_8java_source.html#l00034">com.example.analysis.dto.CashflowRequest.trash</a>, <a class="el" href="_cashflow_request_8java_source.html#l00026">com.example.analysis.dto.CashflowRequest.vacancyRate</a>, and <a class="el" href="_cashflow_request_8java_source.html#l00032">com.example.analysis.dto.CashflowRequest.waterSewer</a>.</p>
+<p class="reference">References <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00026">com.example.analysis.dto.CashflowRequest.accounting</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00023">com.example.analysis.dto.CashflowRequest.advertising</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00008">com.example.analysis.dto.CashflowRequest.annualAppreciation</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00040">com.example.analysis.dto.CashflowRequest.appraisals</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00023">com.example.analysis.dto.CashflowRequest.associationFees</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00026">com.example.analysis.dto.CashflowRequest.badDebts</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00039">com.example.analysis.dto.CashflowRequest.brokerFee</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00022">com.example.analysis.dto.CashflowRequest.cable</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00025">com.example.analysis.dto.CashflowRequest.capitalImprovements</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00023">com.example.analysis.dto.CashflowRequest.caretaking</a>, <a class="el" href="cashflow_api_8ts_source.html#l00065">CashflowResponse</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00025">com.example.analysis.dto.CashflowRequest.commonAreaMaintenance</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00021">com.example.analysis.dto.CashflowRequest.electricity</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00039">com.example.analysis.dto.CashflowRequest.environmentals</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00027">com.example.analysis.dto.CashflowRequest.evictions</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00046">com.example.analysis.dto.CashflowRequest.exitCostRate</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00045">com.example.analysis.dto.CashflowRequest.expenseGrowth</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00031">com.example.analysis.dto.CashflowRequest.firstAmortYears</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00032">com.example.analysis.dto.CashflowRequest.firstInterestOnlyYears</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00029">com.example.analysis.dto.CashflowRequest.firstPrincipal</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00030">com.example.analysis.dto.CashflowRequest.firstRateAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00006">com.example.analysis.dto.CashflowRequest.fmv</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00022">com.example.analysis.dto.CashflowRequest.gas</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00010">com.example.analysis.dto.CashflowRequest.grossRentsAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00043">com.example.analysis.dto.CashflowRequest.holdYears</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00040">com.example.analysis.dto.CashflowRequest.inspections</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00021">com.example.analysis.dto.CashflowRequest.insurance</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00172">irr()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00014">com.example.analysis.dto.CashflowRequest.laundryVendingAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00026">com.example.analysis.dto.CashflowRequest.legal</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00040">com.example.analysis.dto.CashflowRequest.legalClose</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00039">com.example.analysis.dto.CashflowRequest.lenderFee</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00048">com.example.analysis.dto.CashflowRequest.managementBase</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00018">com.example.analysis.dto.CashflowRequest.managementRate</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00024">com.example.analysis.dto.CashflowRequest.misc</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00011">com.example.analysis.dto.CashflowRequest.numberOfUnits</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00167">nz()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00168">nzInt()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00007">com.example.analysis.dto.CashflowRequest.offerPrice</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00041">com.example.analysis.dto.CashflowRequest.otherClosingCosts</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00027">com.example.analysis.dto.CashflowRequest.otherExpenses</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00015">com.example.analysis.dto.CashflowRequest.otherIncomeAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00036">com.example.analysis.dto.CashflowRequest.otherMonthlyFinancingCosts</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00012">com.example.analysis.dto.CashflowRequest.parkingAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00024">com.example.analysis.dto.CashflowRequest.pest</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_response_8java_source.html#l00007">com.example.analysis.dto.CashflowResponse.projection</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00021">com.example.analysis.dto.CashflowRequest.propertyTaxes</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00044">com.example.analysis.dto.CashflowRequest.rentGrowth</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00038">com.example.analysis.dto.CashflowRequest.repairs</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00038">com.example.analysis.dto.CashflowRequest.repairsContingency</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00019">com.example.analysis.dto.CashflowRequest.repairsRate</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00034">com.example.analysis.dto.CashflowRequest.secondAmortYears</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00034">com.example.analysis.dto.CashflowRequest.secondPrincipal</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00034">com.example.analysis.dto.CashflowRequest.secondRateAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00024">com.example.analysis.dto.CashflowRequest.security</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00013">com.example.analysis.dto.CashflowRequest.storageAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00169">sum()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00170">sumPos()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00040">com.example.analysis.dto.CashflowRequest.transferTax</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00024">com.example.analysis.dto.CashflowRequest.trash</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00017">com.example.analysis.dto.CashflowRequest.vacancyRate</a>, and <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00022">com.example.analysis.dto.CashflowRequest.waterSewer</a>.</p>
+
+</div>
+</div>
+<a id="a37b6d6812a060c756dbfd3b1591e026f" name="a37b6d6812a060c756dbfd3b1591e026f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37b6d6812a060c756dbfd3b1591e026f">&#9670;&#160;</a></span>analyze() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_response.html">CashflowResponse</a> com.example.analysis.service.CashflowService.analyze </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1_cashflow_request.html">CashflowRequest</a></td>          <td class="paramname"><span class="paramname"><em>r</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00011">11</a> of file <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+
+<p class="reference">References <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00026">com.example.analysis.dto.CashflowRequest.accounting</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00023">com.example.analysis.dto.CashflowRequest.advertising</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00008">com.example.analysis.dto.CashflowRequest.annualAppreciation</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00040">com.example.analysis.dto.CashflowRequest.appraisals</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00023">com.example.analysis.dto.CashflowRequest.associationFees</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00026">com.example.analysis.dto.CashflowRequest.badDebts</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00039">com.example.analysis.dto.CashflowRequest.brokerFee</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00022">com.example.analysis.dto.CashflowRequest.cable</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00025">com.example.analysis.dto.CashflowRequest.capitalImprovements</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00023">com.example.analysis.dto.CashflowRequest.caretaking</a>, <a class="el" href="cashflow_api_8ts_source.html#l00065">CashflowResponse</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00025">com.example.analysis.dto.CashflowRequest.commonAreaMaintenance</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00021">com.example.analysis.dto.CashflowRequest.electricity</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00039">com.example.analysis.dto.CashflowRequest.environmentals</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00027">com.example.analysis.dto.CashflowRequest.evictions</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00046">com.example.analysis.dto.CashflowRequest.exitCostRate</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00045">com.example.analysis.dto.CashflowRequest.expenseGrowth</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00031">com.example.analysis.dto.CashflowRequest.firstAmortYears</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00032">com.example.analysis.dto.CashflowRequest.firstInterestOnlyYears</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00029">com.example.analysis.dto.CashflowRequest.firstPrincipal</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00030">com.example.analysis.dto.CashflowRequest.firstRateAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00006">com.example.analysis.dto.CashflowRequest.fmv</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00022">com.example.analysis.dto.CashflowRequest.gas</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00010">com.example.analysis.dto.CashflowRequest.grossRentsAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00043">com.example.analysis.dto.CashflowRequest.holdYears</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00040">com.example.analysis.dto.CashflowRequest.inspections</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00021">com.example.analysis.dto.CashflowRequest.insurance</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00172">irr()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00014">com.example.analysis.dto.CashflowRequest.laundryVendingAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00026">com.example.analysis.dto.CashflowRequest.legal</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00040">com.example.analysis.dto.CashflowRequest.legalClose</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00039">com.example.analysis.dto.CashflowRequest.lenderFee</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00048">com.example.analysis.dto.CashflowRequest.managementBase</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00018">com.example.analysis.dto.CashflowRequest.managementRate</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00024">com.example.analysis.dto.CashflowRequest.misc</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00011">com.example.analysis.dto.CashflowRequest.numberOfUnits</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00167">nz()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00168">nzInt()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00007">com.example.analysis.dto.CashflowRequest.offerPrice</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00041">com.example.analysis.dto.CashflowRequest.otherClosingCosts</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00027">com.example.analysis.dto.CashflowRequest.otherExpenses</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00015">com.example.analysis.dto.CashflowRequest.otherIncomeAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00036">com.example.analysis.dto.CashflowRequest.otherMonthlyFinancingCosts</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00012">com.example.analysis.dto.CashflowRequest.parkingAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00024">com.example.analysis.dto.CashflowRequest.pest</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_response_8java_source.html#l00007">com.example.analysis.dto.CashflowResponse.projection</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00021">com.example.analysis.dto.CashflowRequest.propertyTaxes</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00044">com.example.analysis.dto.CashflowRequest.rentGrowth</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00038">com.example.analysis.dto.CashflowRequest.repairs</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00038">com.example.analysis.dto.CashflowRequest.repairsContingency</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00019">com.example.analysis.dto.CashflowRequest.repairsRate</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00034">com.example.analysis.dto.CashflowRequest.secondAmortYears</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00034">com.example.analysis.dto.CashflowRequest.secondPrincipal</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00034">com.example.analysis.dto.CashflowRequest.secondRateAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00024">com.example.analysis.dto.CashflowRequest.security</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00013">com.example.analysis.dto.CashflowRequest.storageAnnual</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00169">sum()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00170">sumPos()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00040">com.example.analysis.dto.CashflowRequest.transferTax</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00024">com.example.analysis.dto.CashflowRequest.trash</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00017">com.example.analysis.dto.CashflowRequest.vacancyRate</a>, and <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2_cashflow_request_8java_source.html#l00022">com.example.analysis.dto.CashflowRequest.waterSewer</a>.</p>
 
 </div>
 </div>
 <a id="a9a642906d027887ef3afea325cf976db" name="a9a642906d027887ef3afea325cf976db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a642906d027887ef3afea325cf976db">&#9670;&#160;</a></span>irr()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a642906d027887ef3afea325cf976db">&#9670;&#160;</a></span>irr() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,17 +226,56 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Newton–Raphson IRR (cash[0] negative; yearly periods). </p>
-<p>Returns null if not converged. </p>
+<p class="definition">Definition at line <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00172">172</a> of file <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cashflow_service_8java_source.html#l00195">195</a> of file <a class="el" href="_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00023">analyze()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cashflow_service_8java_source.html#l00017">analyze()</a>.</p>
+</div>
+</div>
+<a id="afc196de9269b1f1fa1a4dd37d846eb9d" name="afc196de9269b1f1fa1a4dd37d846eb9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc196de9269b1f1fa1a4dd37d846eb9d">&#9670;&#160;</a></span>irr() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double com.example.analysis.service.CashflowService.irr </td>
+          <td>(</td>
+          <td class="paramtype">List&lt; Double &gt;</td>          <td class="paramname"><span class="paramname"><em>cashFlows</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>initialGuess</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculates Internal Rate of Return using Newton-Raphson method. </p>
+<p>The first cash flow should be negative (initial investment).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cashFlows</td><td>List of cash flows (yearly periods) </td></tr>
+    <tr><td class="paramname">initialGuess</td><td>Initial guess for IRR (typically 0.10 for 10%) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Calculated IRR, or null if convergence fails </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00402">402</a> of file <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
 
 </div>
 </div>
 <a id="a9abd81f1f2b37a33c884e01a853554c9" name="a9abd81f1f2b37a33c884e01a853554c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9abd81f1f2b37a33c884e01a853554c9">&#9670;&#160;</a></span>nz()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9abd81f1f2b37a33c884e01a853554c9">&#9670;&#160;</a></span>nz() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,14 +297,45 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cashflow_service_8java_source.html#l00189">189</a> of file <a class="el" href="_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00167">167</a> of file <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cashflow_service_8java_source.html#l00017">analyze()</a>, and <a class="el" href="_cashflow_service_8java_source.html#l00191">sum()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00023">analyze()</a>, <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00373">sum()</a>, and <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00169">sum()</a>.</p>
+
+</div>
+</div>
+<a id="a84f3052ebd7f94bc4979e228569641c7" name="a84f3052ebd7f94bc4979e228569641c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84f3052ebd7f94bc4979e228569641c7">&#9670;&#160;</a></span>nz() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double com.example.analysis.service.CashflowService.nz </td>
+          <td>(</td>
+          <td class="paramtype">Double</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts null Double to 0.0, otherwise returns the value. </p>
+
+<p class="definition">Definition at line <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00359">359</a> of file <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+
+<p class="reference">References <a class="el" href="_auth_context_8tsx_source.html#l00104">value</a>.</p>
 
 </div>
 </div>
 <a id="afe1ec3baab8b152bd9b2a9bf107150c3" name="afe1ec3baab8b152bd9b2a9bf107150c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe1ec3baab8b152bd9b2a9bf107150c3">&#9670;&#160;</a></span>nzInt()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afe1ec3baab8b152bd9b2a9bf107150c3">&#9670;&#160;</a></span>nzInt() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -243,14 +361,80 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cashflow_service_8java_source.html#l00190">190</a> of file <a class="el" href="_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00168">168</a> of file <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cashflow_service_8java_source.html#l00017">analyze()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00023">analyze()</a>.</p>
+
+</div>
+</div>
+<a id="af80ec2892d939294ac81e4abce5057a3" name="af80ec2892d939294ac81e4abce5057a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af80ec2892d939294ac81e4abce5057a3">&#9670;&#160;</a></span>nzInt() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int com.example.analysis.service.CashflowService.nzInt </td>
+          <td>(</td>
+          <td class="paramtype">Integer</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>defaultValue</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts null Integer to default value, otherwise returns the value. </p>
+
+<p class="definition">Definition at line <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00366">366</a> of file <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+
+<p class="reference">References <a class="el" href="_auth_context_8tsx_source.html#l00104">value</a>.</p>
+
+</div>
+</div>
+<a id="a04cc7a65891d35f079ae34660e2fc0f0" name="a04cc7a65891d35f079ae34660e2fc0f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04cc7a65891d35f079ae34660e2fc0f0">&#9670;&#160;</a></span>sum() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double com.example.analysis.service.CashflowService.sum </td>
+          <td>(</td>
+          <td class="paramtype">Double...</td>          <td class="paramname"><span class="paramname"><em>values</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sums all provided Double values, treating null as zero. </p>
+
+<p class="definition">Definition at line <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00373">373</a> of file <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+
+<p class="reference">References <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00167">nz()</a>, <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00169">sum()</a>, and <a class="el" href="_auth_context_8tsx_source.html#l00104">value</a>.</p>
 
 </div>
 </div>
 <a id="a09ab4b07932f184c16eec4c4972ed537" name="a09ab4b07932f184c16eec4c4972ed537"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09ab4b07932f184c16eec4c4972ed537">&#9670;&#160;</a></span>sum()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a09ab4b07932f184c16eec4c4972ed537">&#9670;&#160;</a></span>sum() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -272,16 +456,16 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cashflow_service_8java_source.html#l00191">191</a> of file <a class="el" href="_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00169">169</a> of file <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
 
-<p class="reference">References <a class="el" href="_cashflow_service_8java_source.html#l00189">nz()</a>.</p>
+<p class="reference">References <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00167">nz()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cashflow_service_8java_source.html#l00017">analyze()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00023">analyze()</a>, <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00373">sum()</a>, and <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00384">sumPos()</a>.</p>
 
 </div>
 </div>
 <a id="a3b1f3cea61288632ed3a3c857621d821" name="a3b1f3cea61288632ed3a3c857621d821"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b1f3cea61288632ed3a3c857621d821">&#9670;&#160;</a></span>sumPos()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b1f3cea61288632ed3a3c857621d821">&#9670;&#160;</a></span>sumPos() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -303,14 +487,46 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cashflow_service_8java_source.html#l00192">192</a> of file <a class="el" href="_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00170">170</a> of file <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cashflow_service_8java_source.html#l00017">analyze()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00023">analyze()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>cashflow-calculator/<a class="el" href="_cashflow_service_8java_source.html">CashflowService.java</a></li>
+<a id="a3483d2d8a9433fa0b0afff460c62fa46" name="a3483d2d8a9433fa0b0afff460c62fa46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3483d2d8a9433fa0b0afff460c62fa46">&#9670;&#160;</a></span>sumPos() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double com.example.analysis.service.CashflowService.sumPos </td>
+          <td>(</td>
+          <td class="paramtype">List&lt; Double &gt;</td>          <td class="paramname"><span class="paramname"><em>values</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sums only positive values from a list. </p>
+
+<p class="definition">Definition at line <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html#l00384">384</a> of file <a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html">CashflowService.java</a>.</p>
+
+<p class="reference">References <a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html#l00169">sum()</a>, and <a class="el" href="_auth_context_8tsx_source.html#l00104">value</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>googlemapv2/src/main/java/com/example/analysis/service/<a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2_cashflow_service_8java_source.html">CashflowService.java</a></li>
+<li>cashflow-calculator/<a class="el" href="cashflow-calculator_2_cashflow_service_8java_source.html">CashflowService.java</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

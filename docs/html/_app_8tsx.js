@@ -2,7 +2,7 @@ var _app_8tsx =
 [
     [ "AppContent", "_app_8tsx.html#a5c4cc114cd4e848ffc57d8511f4b12df", null ],
     [ "if", "_app_8tsx.html#a83a1c98ff55752ff1296667eb313cf0c", null ],
-    [ "App", "_app_8tsx.html#ae0d191b66cbd429e8c16cc4a4b87a81c", null ],
+    [ "App", "_app_8tsx.html#a912a4174d0964c777b84f95e11e177b6", null ],
     [ "AuthPage", "_app_8tsx.html#a9dd5a062cbeb1825fee7734204ee757b", null ],
     [ "css", "_app_8tsx.html#ab4bd2f84043cc1d11669c50ded519a21", null ],
     [ "Dashboard", "_app_8tsx.html#af5f3d12c37ddac42039916d7a6e3b5c8", null ],

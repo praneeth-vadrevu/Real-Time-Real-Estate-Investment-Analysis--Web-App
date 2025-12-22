@@ -1,21 +1,18 @@
-# Cashflow Analysis Calculator
+# Calculator for Cashflow Analysis
 
-A comprehensive Java-based cashflow analysis calculator for real estate investment analysis.
+A thorough cash flow analysis calculator for real estate investment analysis that is built on Java.
 
-## Features
+## Characteristics
 
-- **Income & Expense Calculation**: Calculate total income from multiple streams (rent, parking, storage, etc.) and manage various operating expenses
-- **NOI Analysis**: Net Operating Income calculations with vacancy and management considerations
-- **Debt Service**: Support for multiple loans with optional interest-only periods
-- **Investment Metrics**: 
-  - Cap Rate (based on purchase price and FMV)
-  - DSCR (Debt Service Coverage Ratio)
-  - Cash-on-Cash Return
-  - Internal Rate of Return (IRR)
-  - Equity Multiple
-  - Various ROI metrics
-- **Multi-Year Projections**: Project cashflows over multiple years with customizable growth rates
-- **Exit Analysis**: Calculate net sale proceeds at exit
+- **Income & Expense Calculation**: Determine the overall revenue from several sources (rent, parking, storage, etc.) and oversee different operating costs
+ - **NOI Analysis**: Net Operating Income computations with management and vacancy considerations
+  - **Debt Service**: Assistance with several loans with optional interest-only terms Investment    Metrics: 
+      - Cap Rate (determined by FMV and purchase price)
+      - Debt Service Coverage Ratio, or DSCR
+      - Internal Rate of Return (IRR) and Cash-on-Cash Return
+      - The Equity Multiple
+      - Numerous ROI metrics;
+  **Multi-Year Projections**: Project cash flows over several years with adjustable growth rates; **Exit Analysis**: Determine net sale proceeds upon exit
 
 ## Files
 
@@ -38,19 +35,16 @@ javac -d . CashflowRequest.java CashflowResponse.java CashflowService.java Cashf
 java com.example.analysis.service.CashflowServiceTest
 ```
 
-## Test Results
+## Test Outcomes
 
-All 7 tests pass with 100% success rate:
+Each of the seven tests has a 100% success rate:
 
-```
-✓ Basic Income and NOI Calculation
-✓ Debt Service and DSCR Calculation
-✓ Cap Rate Calculation
-✓ Cash-on-Cash Return and ROI
-✓ Multi-Year Projection
-✓ Complete Real-World Scenario (12-unit apartment building)
-✓ Interest-Only Period
-```
+- Calculating Basic Income and NOI
+- Debt Service and DSCR;
+- Cap Rate; Cash-on-Cash Return and ROI;
+- Multi-Year Projection;
+- Full Real-World Scenario (12-unit apartment complex);
+- Interest-Only Period
 
 ## Example Usage
 
@@ -110,7 +104,4 @@ This cashflow calculator can be integrated with:
 - **Google Maps API** module for location-based analysis
 - **React frontend** for interactive user interface
 
-## License
-
-Part of the Real-Time Real Estate Investment Analysis Web App project.
 
