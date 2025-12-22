@@ -1,40 +1,73 @@
-# User Guide
+# User Guide - Real-Time Real Estate Investment Analysis
+
+> **Version:** 1.0.0  
+> **Last Updated:** December 2025  
+> **Audience:** End Users, System Administrators
+
+---
 
 ## Contents
 
-- [Introduction](#introduction)
-- [System Requirements](#system-requirements)
-- [Installation](#installation-guide)
-- [API Keys](#getting-api-keys)
-- [Running the App](#running-the-application)
-- [How to Use It](#using-the-application)
-- [Troubleshooting](#troubleshooting)
-- [FAQ](#faq)
+1. [Introduction](#1-introduction)
+2. [System Requirements](#2-system-requirements)
+3. [Installation Guide](#3-installation-guide)
+4. [API Keys Configuration](#4-api-keys-configuration)
+5. [Backend Setup and Running](#5-backend-setup-and-running)
+6. [Frontend Setup and Running](#6-frontend-setup-and-running)
+7. [Using the Application](#7-using-the-application)
+8. [Troubleshooting](#8-troubleshooting)
+9. [FAQ](#9-faq)
 
 ---
 
-## Introduction
+## 1. Introduction
 
-This guide covers setup and usage for the Real-Time Real Estate Investment Analysis app. With it you can search US properties, run cashflow numbers, compare deals, and export reports.
+### What is this application?
+
+The Real-Time Real Estate Investment Analysis application is a full-stack web application that helps real estate investors:
+
+- **Search Properties**: Find properties across the United States using Zillow data
+- **Analyze Investments**: Calculate cashflow, cap rates, IRR, and other key metrics
+- **Compare Deals**: Side-by-side comparison of multiple properties
+- **Generate Reports**: Export detailed investment analysis reports
+- **Visualize Properties**: Interactive maps with property locations
+
+### Application Architecture
+
+The application consists of two main components:
+
+- **Backend (Spring Boot)**: REST API server running on port 8080
+  - Handles property search via Zillow API
+  - Performs investment calculations
+  - Provides geocoding services
+
+- **Frontend (React)**: Web interface running on port 3000
+  - User interface for property search and analysis
+  - Interactive MapBox maps
+  - Google OAuth authentication
 
 ---
 
-## System Requirements
+## 2. System Requirements
 
-### Minimum
+### Minimum Requirements
 
-Windows 10+, macOS 10.15+, or Linux. 8 GB RAM, 2 GB disk space. Modern browser (Chrome, Firefox, Safari, Edge).
+- **Operating System**: Windows 10+, macOS 10.15+, or Linux (Ubuntu 20.04+)
+- **RAM**: 8 GB minimum
+- **Disk Space**: 2 GB free space
+- **Internet Connection**: Required for API calls
+- **Browser**: Chrome, Firefox, Safari, or Edge (latest versions)
 
-### Software You Need
+### Required Software
 
-- Node.js 18+ from [nodejs.org](https://nodejs.org/)
-- Java 17+ from [adoptium.net](https://adoptium.net/)
-- Maven 3.8+ from [maven.apache.org](https://maven.apache.org/)
-- Git from [git-scm.com](https://git-scm.com/)
+- **Node.js**: Version 18 or higher ([Download](https://nodejs.org/))
+- **Java**: JDK 17 or higher ([Download](https://adoptium.net/))
+- **Maven**: Version 3.8 or higher ([Download](https://maven.apache.org/))
+- **Git**: Version 2.30 or higher ([Download](https://git-scm.com/))
 
 ---
 
-## Installation Guide
+## 3. Installation Guide
 
 ### Step 1: Install Prerequisites
 
@@ -42,20 +75,33 @@ Windows 10+, macOS 10.15+, or Linux. 8 GB RAM, 2 GB disk space. Modern browser (
 
 1. **Install Node.js:**
    - Download from [nodejs.org](https://nodejs.org/)
-   - Run the installer and follow prompts
-   - Verify: `node --version`
+   - Run the installer and follow the prompts
+   - Verify installation:
+     ```powershell
+     node --version
+     npm --version
+     ```
 
 2. **Install Java 17:**
    - Download from [adoptium.net](https://adoptium.net/)
    - Run the installer
-   - Set JAVA_HOME environment variable
-   - Verify: `java -version`
+   - Set JAVA_HOME environment variable:
+     - Open System Properties → Environment Variables
+     - Add new variable: `JAVA_HOME` = `C:\Program Files\Eclipse Adoptium\jdk-17.x.x`
+     - Add to PATH: `%JAVA_HOME%\bin`
+   - Verify installation:
+     ```powershell
+     java -version
+     ```
 
 3. **Install Maven:**
    - Download from [maven.apache.org](https://maven.apache.org/download.cgi)
    - Extract to `C:\Program Files\Apache\maven`
-   - Add to PATH: `C:\Program Files\Apache\maven\bin`
-   - Verify: `mvn -version`
+   - Add to System PATH: `C:\Program Files\Apache\maven\bin`
+   - Verify installation:
+     ```powershell
+     mvn -version
+     ```
 
 #### macOS
 
@@ -63,9 +109,17 @@ Windows 10+, macOS 10.15+, or Linux. 8 GB RAM, 2 GB disk space. Modern browser (
 # Install Homebrew (if not installed)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Install dependencies
+# Install Node.js 18
 brew install node@18
+
+# Install Java 17
 brew install openjdk@17
+
+# Add Java to PATH
+echo 'export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+
+# Install Maven
 brew install maven
 
 # Verify installations
@@ -100,18 +154,18 @@ mvn -version
 
 ```bash
 git clone https://github.com/praneeth-vadrevu/Real-Time-Real-Estate-Investment-Analysis--Web-App.git
-cd Real-Time-Real-Estate-Original
+cd Real-Time-Real-Estate-Investment-Analysis--Web-App
 ```
 
 ### Step 3: Install Dependencies
 
-**Backend:**
+**Backend Dependencies:**
 ```bash
 cd googlemapv2
 mvn clean install
 ```
 
-**Frontend:**
+**Frontend Dependencies:**
 ```bash
 cd real-time-real-estate-analyzer/real-time-analyzer
 npm install
@@ -119,13 +173,13 @@ npm install
 
 ---
 
-## Getting API Keys
+## 4. API Keys Configuration
 
-You need a few API keys. All have free tiers.
+You need to obtain and configure the following API keys:
 
-### 1. RapidAPI Key (Zillow & Google API 31)
+### 4.1 RapidAPI Key (Zillow & Google API 31)
 
-This single key provides access to both Zillow and Google API 31 services.
+This single key provides access to both Zillow and Google API 31 services for the backend.
 
 1. Go to [RapidAPI](https://rapidapi.com/)
 2. Create a free account
@@ -133,259 +187,473 @@ This single key provides access to both Zillow and Google API 31 services.
    - [Zillow API](https://rapidapi.com/apimaker/api/zillow-com1) (Free tier available)
    - [Google API 31](https://rapidapi.com/datascraper/api/google-api31) (Free tier available)
 4. Copy your RapidAPI key from the dashboard
+5. This key will be used in the backend configuration (see Backend Setup section)
 
-### 2. Google OAuth Client ID
+### 4.2 MapBox Access Token
 
-Required for user authentication.
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing
-3. Navigate to "APIs & Services" > "Credentials"
-4. Click "Create Credentials" > "OAuth client ID"
-5. Configure consent screen if prompted
-6. Select "Web application"
-7. Add authorized JavaScript origins:
-   - `http://localhost:3000`
-8. Add authorized redirect URIs:
-   - `http://localhost:3000`
-9. Copy the Client ID
-
-### 3. Mapbox Access Token
-
-Required for interactive maps.
+Required for interactive maps in the frontend.
 
 1. Go to [Mapbox](https://account.mapbox.com/)
 2. Create a free account
-3. Navigate to "Access tokens"
+3. Navigate to "Access tokens" in your account dashboard
 4. Copy your default public token or create a new one
+5. This token will be used in the frontend `.env` file (see Frontend Setup section)
+
+### 4.3 Google OAuth Client ID
+
+Required for user authentication in the frontend.
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Navigate to "APIs & Services" > "Credentials"
+4. Click "Create Credentials" > "OAuth client ID"
+5. Configure the OAuth consent screen if prompted:
+   - Choose "External" user type
+   - Fill in required information
+   - Add scopes: `email`, `profile`
+6. Create OAuth client ID:
+   - Application type: "Web application"
+   - Name: "Real Estate Investment App"
+   - Authorized JavaScript origins:
+     - `http://localhost:3000`
+   - Authorized redirect URIs:
+     - `http://localhost:3000`
+7. Copy the Client ID
+8. This ID will be used in the frontend `.env` file (see Frontend Setup section)
 
 ---
 
-## Running the Application
+## 5. Backend Setup and Running
 
-### Method 1: Using Scripts (Recommended)
+### 5.1 Backend Configuration
 
-**Windows:**
+The backend requires a RapidAPI key to access Zillow and Google API 31 services.
+
+**Option 1: Environment Variable (Recommended)**
+
+**Windows PowerShell:**
 ```powershell
-# Start Backend
-cd googlemapv2
-.\start-backend.bat
+$env:RAPIDAPI_KEY = "your-rapidapi-key-here"
+```
 
-# In a new terminal, start Frontend
-cd real-time-real-estate-analyzer\real-time-analyzer
-npm start
+**Windows Command Prompt:**
+```cmd
+set RAPIDAPI_KEY=your-rapidapi-key-here
 ```
 
 **macOS/Linux:**
 ```bash
-# Start Backend
-cd googlemapv2
-./start-backend.sh
-
-# In a new terminal, start Frontend
-cd real-time-real-estate-analyzer/real-time-analyzer
-npm start
+export RAPIDAPI_KEY="your-rapidapi-key-here"
 ```
 
-### Method 2: Manual Start
+**Option 2: Configuration File**
 
-**Start Backend:**
+Edit `googlemapv2/src/main/resources/application.yml`:
+
+```yaml
+zillow:
+  rapidapi:
+    host: zillow-com1.p.rapidapi.com
+    key: your-rapidapi-key-here
+
+googleapi31:
+  rapidapi:
+    host: google-api31.p.rapidapi.com
+    key: your-rapidapi-key-here
+```
+
+### 5.2 Building the Backend
+
 ```bash
 cd googlemapv2
+mvn clean install
+```
 
-# Set API key (Windows PowerShell)
-$env:RAPIDAPI_KEY = "your-rapidapi-key-here"
+This will:
+- Download all dependencies
+- Compile Java source code
+- Run tests
+- Package the application as a JAR file
 
-# Or Linux/macOS
-export RAPIDAPI_KEY="your-rapidapi-key-here"
+### 5.3 Running the Backend
 
-# Run
+**Method 1: Using Maven (Development)**
+
+```bash
+cd googlemapv2
 mvn spring-boot:run
 ```
 
-**Start Frontend:**
+**Method 2: Using Scripts**
+
+**Windows:**
+```powershell
+cd googlemapv2
+.\start-backend.bat
+```
+
+**macOS/Linux:**
+```bash
+cd googlemapv2
+./start-backend.sh
+```
+
+**Method 3: Using JAR File (Production)**
+
+```bash
+cd googlemapv2
+java -jar target/googlemapv2-0.0.1-SNAPSHOT.jar
+```
+
+### 5.4 Verifying Backend is Running
+
+Once started, you should see:
+```
+Started Application in X.XXX seconds
+```
+
+The backend will be available at:
+- **API Base URL**: `http://localhost:8080`
+- **Health Check**: Open `http://localhost:8080/api/properties/search?location=Boston,MA` in your browser
+
+### 5.5 Backend API Endpoints
+
+The backend provides the following REST endpoints:
+
+**Property Search:**
+- `GET /api/properties/search?location={location}&status={status}&page={page}`
+  - Search properties by location (city, state, or ZIP code)
+  - Example: `http://localhost:8080/api/properties/search?location=Boston,MA&status=for_sale`
+
+**Property Details:**
+- `GET /api/properties/{zpid}`
+  - Get detailed property information by Zillow Property ID
+  - Example: `http://localhost:8080/api/properties/20479916`
+
+**Cashflow Analysis:**
+- `POST /api/analysis/cashflow`
+  - Calculate investment metrics (NOI, Cap Rate, IRR, etc.)
+  - Requires JSON request body with property and financial data
+
+**Geocoding (Backend only, not used by frontend):**
+- `GET /api/geo/text` - Text-based place search
+- `GET /api/geo/circle` - Radius-based location search
+
+---
+
+## 6. Frontend Setup and Running
+
+### 6.1 Frontend Configuration
+
+Create a `.env` file in the frontend directory:
+
 ```bash
 cd real-time-real-estate-analyzer/real-time-analyzer
-
-# Create .env file
-echo "REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id" > .env
-echo "REACT_APP_MAPBOX_TOKEN=your-mapbox-token" >> .env
-
-# Run
-npm start
 ```
 
-### Accessing the Application
+Create `.env` file:
 
-Once both services are running:
-
-- **Frontend:** http://localhost:3000
-- **Backend API:** http://localhost:8080
-
----
-
-## Using the Application
-
-### Landing Page & Login
-
-When you open the app you see login options. Click "Sign in with Google" for full access, or "Continue as Guest" for limited features.
-
-### Dashboard
-
-The dashboard shows your saved properties. Use the sidebar to switch strategies, the main area to view deals, and the "+" button to add new ones.
-
-### Property Search
-
-Go to "Search Properties", type a city/state/ZIP, and results show up on the map. Click any property for details, then "Save" to add it to your portfolio.
-
-### Investment Analysis
-
-Pick a property from your portfolio. The app calculates monthly cashflow, cash-on-cash, cap rate, and IRR. You can tweak the inputs (down payment, rate, etc.) and recalculate.
-
-### Property Comparison
-
-Select multiple properties and hit "Compare" to see them side by side. Export as needed.
-
-### Reports
-
-Select a property, click "Generate Report", pick PDF or HTML, and download.
-
----
-
-## Troubleshooting
-
-### Backend Problems
-
-**Problem:** `mvn: command not found`
-```bash
-# Add Maven to PATH
-# Windows: Add C:\Program Files\Apache\maven\bin to system PATH
-# macOS/Linux: Add to ~/.bashrc or ~/.zshrc
-export PATH=$PATH:/path/to/maven/bin
+**Windows PowerShell:**
+```powershell
+echo "REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id-here" > .env
+echo "REACT_APP_MAPBOX_ACCESS_TOKEN=your-mapbox-token-here" >> .env
 ```
 
-**Problem:** `Port 8080 already in use`
+**macOS/Linux:**
 ```bash
-# Windows
-netstat -ano | findstr :8080
-taskkill /PID <pid> /F
-
-# macOS/Linux
-lsof -i :8080
-kill -9 <pid>
+cat > .env << EOF
+REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id-here
+REACT_APP_MAPBOX_ACCESS_TOKEN=your-mapbox-token-here
+EOF
 ```
 
-**Problem:** `RAPIDAPI_KEY not set`
+**Important Notes:**
+- Replace `your-google-client-id-here` with your Google OAuth Client ID
+- Replace `your-mapbox-token-here` with your MapBox Access Token
+- Do NOT add quotes around the values
+- The `.env` file should be in `real-time-real-estate-analyzer/real-time-analyzer/` directory
+- Restart the development server after creating or modifying `.env`
+
+### 6.2 Building the Frontend
+
+**Development Build:**
 ```bash
-# Ensure environment variable is set before running
-# Windows PowerShell
-$env:RAPIDAPI_KEY = "your-key"
-
-# Linux/macOS
-export RAPIDAPI_KEY="your-key"
-```
-
-### Frontend Issues
-
-**Problem:** `npm: command not found`
-- Reinstall Node.js from [nodejs.org](https://nodejs.org/)
-
-**Problem:** `Module not found` errors
-```bash
-rm -rf node_modules
+cd real-time-real-estate-analyzer/real-time-analyzer
 npm install
 ```
 
-**Problem:** Map not loading
-- Verify REACT_APP_MAPBOX_TOKEN in .env file
-- Check browser console for errors
-- Ensure Mapbox token has correct permissions
+**Production Build:**
+```bash
+npm run build
+```
 
-### Authentication Issues
+This creates an optimized production build in the `build/` directory.
 
-**Problem:** Google login not working
-- Verify REACT_APP_GOOGLE_CLIENT_ID in .env
-- Check Google Cloud Console for correct redirect URIs
-- Ensure OAuth consent screen is configured
+### 6.3 Running the Frontend
+
+**Development Mode (Hot Reload):**
+```bash
+cd real-time-real-estate-analyzer/real-time-analyzer
+npm start
+```
+
+The application will:
+- Start on `http://localhost:3000`
+- Automatically open in your default browser
+- Hot reload when you make code changes
+
+**Production Mode:**
+```bash
+npm run build
+npx serve -s build
+```
+
+### 6.4 Verifying Frontend is Running
+
+Once started, you should see:
+```
+Compiled successfully!
+
+You can now view real-time-real-estate-analyzer in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.x.x:3000
+```
+
+Open `http://localhost:3000` in your browser to access the application.
 
 ---
 
-## API Endpoints
+## 7. Using the Application
 
-### Backend APIs (What's Implemented)
+### 7.1 Starting Both Services
 
-The Spring Boot backend exposes these endpoints:
+You need to run both backend and frontend simultaneously:
 
-**Zillow API Endpoints (via RapidAPI):**
-- `GET /api/properties/search` - Search properties by location
-- `GET /api/properties/{zpid}` - Get property details by ZPID
-
-**Cashflow Analysis:**
-- `POST /api/analysis/cashflow` - Calculate investment metrics (NOI, Cap Rate, IRR, etc.)
-
-**Google API 31 Endpoints (backend only, not used by frontend):**
-- `GET /api/geo/text` - Text-based place search
-- `GET /api/geo/circle` - Radius-based location search
-- `POST /api/geo/raw` - Raw query passthrough
-
-### Frontend Integration (What's Actually Connected)
-
-The React frontend currently calls these APIs:
-
-**Backend API Calls:**
-
-- `/api/properties/search` - Called in `SearchPage.tsx`, `PropertySearch.tsx` for Zillow property search
-- `/api/properties/{zpid}` - Called in `PropertyForm.tsx` for Zillow property details
-- `/api/analysis/cashflow` - Called in `cashflowApi.ts` for investment calculations
-
-**Direct External Calls (not through backend):**
-
-- Mapbox API - Called in `PropertyMap.tsx` for map display and geocoding
-- Google OAuth - Called in `AuthContext.tsx` for user login
-
-**Not Connected:** The backend implements Google API 31 geo endpoints (`/api/geo/*`) for geocoding and place search, but the frontend uses Mapbox directly instead. These endpoints remain available for future features like nearby amenities or walkability scoring.
-
-### Quick API Tests
-
-Test the active backend APIs (example values shown):
-
+**Terminal 1 - Backend:**
 ```bash
-# Test property search
-curl "http://localhost:8080/api/properties/search?location=Santa%20Monica,%20CA&status=for_sale"
-
-# Test property details (example ZPID)
-curl "http://localhost:8080/api/properties/20479916"
-
-# Test cashflow analysis (example values, not defaults)
-curl -X POST "http://localhost:8080/api/analysis/cashflow" \
-  -H "Content-Type: application/json" \
-  -d '{"offerPrice": 300000, "grossRentsAnnual": 36000, "firstPrincipal": 240000, "firstRateAnnual": 0.07}'
+cd googlemapv2
+mvn spring-boot:run
 ```
 
-Test the backend-only Google Geo APIs (not used by frontend):
-
+**Terminal 2 - Frontend:**
 ```bash
-# Text-based place search
-curl "http://localhost:8080/api/geo/text?text=coffee&city=Santa%20Monica&state=CA"
-
-# Circular range search
-curl "http://localhost:8080/api/geo/circle?lat=34.0195&lon=-118.4912&radius=5000&text=restaurant"
+cd real-time-real-estate-analyzer/real-time-analyzer
+npm start
 ```
+
+### 7.2 Application Workflow
+
+#### Step 1: Authentication
+
+1. Open `http://localhost:3000` in your browser
+2. You'll see the landing page with authentication options:
+   - **Sign in with Google**: Full access with data persistence
+   - **Browse as Guest**: Limited features, data stored locally
+
+#### Step 2: Property Search
+
+1. Click "Search Properties" in the navigation bar
+2. Enter a location (city, state, or ZIP code) in the search box
+   - Example: `Boston, MA` or `90210`
+3. Click "Search" or press Enter
+4. Results will appear in a list and on the map
+5. Click any property to view details
+6. Click "Add to My List" to save the property
+
+#### Step 3: Property Analysis
+
+1. Navigate to "My Properties" from the dashboard
+2. Click on a property card
+3. Fill in the property analysis form:
+   - **Property Information**: Address, market value, vacancy rate
+   - **Purchase Information**: Offer price, repairs, closing costs
+   - **Financing**: Loan amount, interest rate, amortization period
+   - **Income**: Annual gross rents
+   - **Operating Expenses**: Property taxes, insurance, maintenance
+4. Click "Analyze" to calculate metrics:
+   - Net Operating Income (NOI)
+   - Cap Rate
+   - Cash-on-Cash Return
+   - Debt Service Coverage Ratio (DSCR)
+   - Internal Rate of Return (IRR)
+   - Multi-year cashflow projections
+5. Review the analysis results
+6. Click "Save Property" to add to your portfolio
+
+#### Step 4: Property Comparison
+
+1. Go to "My Properties" dashboard
+2. Select multiple properties (they should already be saved)
+3. Click "Compare" button
+4. View side-by-side comparison of:
+   - Property details
+   - Financial metrics
+   - Investment returns
+5. Export comparison if needed
+
+#### Step 5: Generate Reports
+
+1. After analyzing a property, click "Generate Report"
+2. Choose report format:
+   - **HTML**: View in browser
+   - **Download**: Save as HTML file
+   - **Print**: Print-friendly format
+3. Reports include:
+   - Property information
+   - Financial analysis
+   - Year-by-year projections
+   - Key performance indicators
+
+### 7.3 Key Features
+
+**Dashboard:**
+- View all saved properties
+- Filter by investment strategy (Rental, BRRRR, Flip, Wholesale)
+- Search properties by address
+- Toggle between list, map, and combined views
+
+**Property Map:**
+- Interactive MapBox map showing property locations
+- Click markers to view property details
+- Geocoding for addresses without coordinates
+- Search and filter properties on the map
+
+**Investment Strategies:**
+- **Rental**: Long-term buy-and-hold properties
+- **BRRRR**: Buy, Rehab, Rent, Refinance, Repeat
+- **Flip**: Buy, renovate, and sell for profit
+- **Wholesale**: Assign contracts to other investors
 
 ---
 
-## FAQ
+## 8. Troubleshooting
 
-### General
+### 8.1 Backend Issues
+
+**Problem: `mvn: command not found`**
+- **Solution**: Add Maven to your system PATH
+  - Windows: Add `C:\Program Files\Apache\maven\bin` to System PATH
+  - macOS/Linux: Add Maven bin directory to `~/.bashrc` or `~/.zshrc`
+
+**Problem: `Port 8080 already in use`**
+- **Solution**: Kill the process using port 8080
+  - Windows:
+    ```powershell
+    netstat -ano | findstr :8080
+    taskkill /PID <pid> /F
+    ```
+  - macOS/Linux:
+    ```bash
+    lsof -i :8080
+    kill -9 <pid>
+    ```
+
+**Problem: `RAPIDAPI_KEY not set`**
+- **Solution**: Set the environment variable before running
+  - Windows PowerShell: `$env:RAPIDAPI_KEY = "your-key"`
+  - macOS/Linux: `export RAPIDAPI_KEY="your-key"`
+
+**Problem: API calls failing with 401/403 errors**
+- **Solution**: 
+  - Verify your RapidAPI key is correct
+  - Check that you've subscribed to both Zillow and Google API 31 on RapidAPI
+  - Ensure your API key hasn't expired
+
+**Problem: Backend starts but returns empty results**
+- **Solution**:
+  - Check backend logs for API errors
+  - Verify RapidAPI key is set correctly
+  - Test API endpoints directly using curl or Postman
+
+### 8.2 Frontend Issues
+
+**Problem: `npm: command not found`**
+- **Solution**: Reinstall Node.js from [nodejs.org](https://nodejs.org/)
+
+**Problem: `Module not found` errors**
+- **Solution**: Reinstall dependencies
+  ```bash
+  rm -rf node_modules package-lock.json
+  npm install
+  ```
+
+**Problem: Map not loading**
+- **Solution**:
+  - Verify `REACT_APP_MAPBOX_ACCESS_TOKEN` is set in `.env` file
+  - Check browser console for MapBox API errors
+  - Ensure MapBox token has correct permissions
+  - Restart the development server after updating `.env`
+
+**Problem: Google login not working**
+- **Solution**:
+  - Verify `REACT_APP_GOOGLE_CLIENT_ID` is set in `.env` file
+  - Check Google Cloud Console for correct redirect URIs
+  - Ensure OAuth consent screen is configured
+  - Restart the development server after updating `.env`
+
+**Problem: `Cannot connect to backend` errors**
+- **Solution**:
+  - Verify backend is running on `http://localhost:8080`
+  - Check browser console for CORS errors
+  - Ensure both frontend and backend are running
+  - Check firewall settings
+
+**Problem: Environment variables not loading**
+- **Solution**:
+  - Ensure `.env` file is in `real-time-real-estate-analyzer/real-time-analyzer/` directory
+  - Variable names must start with `REACT_APP_`
+  - Restart the development server after creating/modifying `.env`
+  - Do not use quotes around values in `.env`
+
+### 8.3 Application Issues
+
+**Problem: Properties not appearing on map**
+- **Solution**:
+  - Check that properties have valid addresses
+  - Verify MapBox token is configured
+  - Check browser console for geocoding errors
+  - Some properties may need manual coordinate entry
+
+**Problem: Analysis calculations seem incorrect**
+- **Solution**:
+  - Verify all required form fields are filled
+  - Check that numeric values are entered correctly
+  - Review input values for typos
+  - Ensure backend is running and responding
+
+**Problem: Reports not generating**
+- **Solution**:
+  - Verify backend is running
+  - Check browser console for API errors
+  - Ensure property analysis has been completed
+  - Try refreshing the page
+
+---
+
+## 9. FAQ
+
+### General Questions
 
 **Q: Is the application free to use?**
-A: The application itself is open source. However, the external APIs (Zillow, Google API 31, Mapbox) have free tiers with usage limits. For heavy use, paid plans may be required.
+A: The application itself is open source. However, the external APIs have free tiers with usage limits:
+- Zillow API: ~100 requests/month (free tier)
+- Google API 31: ~100 requests/month (free tier)
+- MapBox: 50,000 map loads/month (free tier)
+- For heavy use, paid plans may be required.
 
 **Q: Can I use this for commercial purposes?**
 A: Please check the API provider terms of service. Zillow API has specific restrictions on commercial use.
 
 **Q: Does the application store my data?**
-A: Currently, property data is stored locally in your browser. No data is sent to external servers beyond the API calls.
+A: Currently, property data is stored locally in your browser using localStorage. No data is sent to external servers beyond the API calls for property search and analysis.
+
+**Q: Can I run this without internet?**
+A: No, the application requires internet connectivity to:
+- Access property data from Zillow API
+- Load MapBox maps
+- Authenticate with Google OAuth
+- Perform geocoding
 
 ### Technical Questions
 
@@ -393,10 +661,21 @@ A: Currently, property data is stored locally in your browser. No data is sent t
 A: Chrome, Firefox, Safari, and Edge (latest versions). Internet Explorer is not supported.
 
 **Q: Can I run this on a server?**
-A: Yes, both frontend and backend can be deployed to cloud services. See DEVELOPER_GUIDE.md for deployment instructions.
+A: Yes, both frontend and backend can be deployed to cloud services. See the Developer Guide for deployment instructions.
 
 **Q: How accurate is the investment analysis?**
-A: The calculations are based on industry-standard formulas. However, actual results may vary based on market conditions, property-specific factors, and other variables.
+A: The calculations are based on industry-standard formulas. However, actual results may vary based on:
+- Market conditions
+- Property-specific factors
+- Local regulations
+- Other variables
+
+**Q: Why is the map not showing?**
+A: Common causes:
+- MapBox token not configured in `.env` file
+- Token has expired or been revoked
+- Browser blocking MapBox API calls
+- Network connectivity issues
 
 ### API Questions
 
@@ -405,19 +684,55 @@ A: Common causes:
 - Invalid or expired API key
 - API rate limit exceeded
 - Network connectivity issues
+- Backend server not running
 
 **Q: What's the API rate limit?**
 A: Free tier limits vary by provider:
 - Zillow API: ~100 requests/month
 - Google API 31: ~100 requests/month
-- Mapbox: 50,000 map loads/month
+- MapBox: 50,000 map loads/month
+
+**Q: Can I use my own API keys?**
+A: Yes, you can use your own API keys by:
+- Backend: Setting `RAPIDAPI_KEY` environment variable
+- Frontend: Adding keys to `.env` file
+
+**Q: Why does the frontend use MapBox instead of Google Maps?**
+A: The frontend uses MapBox for map visualization because:
+- MapBox provides better customization options
+- More generous free tier for map loads
+- Better integration with React
+- The backend still uses Google API 31 for geocoding services (not used by frontend)
+
+### Setup Questions
+
+**Q: Do I need to install both backend and frontend?**
+A: Yes, both components are required:
+- Backend provides property data and calculations
+- Frontend provides the user interface
+- They communicate via REST API
+
+**Q: Can I run only the frontend?**
+A: The frontend can start without the backend, but most features will not work:
+- Property search will fail
+- Analysis calculations will fail
+- Map may still work if MapBox is configured
+
+**Q: How do I update the application?**
+A: To update:
+1. Pull latest changes: `git pull`
+2. Backend: `cd googlemapv2 && mvn clean install`
+3. Frontend: `cd real-time-real-estate-analyzer/real-time-analyzer && npm install`
+4. Restart both services
 
 ---
 
-## Help
+## Help and Support
 
-Check the [GitHub Issues](https://github.com/praneeth-vadrevu/Real-Time-Real-Estate-Investment-Analysis--Web-App/issues) or the [Developer Guide](./DEVELOPER_GUIDE.md).
+- **GitHub Issues**: [Report Issues](https://github.com/praneeth-vadrevu/Real-Time-Real-Estate-Investment-Analysis--Web-App/issues)
+- **Developer Guide**: See `BACKEND_DEVELOPER_GUIDE.md` for technical details
+- **Backend User Guide**: See `BACKEND_USER_GUIDE.md` for backend-specific information
 
 ---
 
-*December 2025*
+*Last Updated: December 2025*
