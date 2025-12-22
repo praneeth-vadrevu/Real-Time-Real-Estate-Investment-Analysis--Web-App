@@ -3,6 +3,10 @@
 com/
 cashflow-calculator/com/
 
+# Build directories
+target/
+build/
+
 
 .idea/
 *.iml
@@ -13,4 +17,12 @@ cashflow-calculator/com/
 *.swp
 *.swo
 *~
+
+# Video files (too large for GitHub)
+*.mov
+*.mp4
+*.avi
+*.mkv
+*.wmv
+*.flv
 
