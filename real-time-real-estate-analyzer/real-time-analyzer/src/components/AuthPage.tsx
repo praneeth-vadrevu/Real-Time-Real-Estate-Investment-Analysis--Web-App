@@ -3,19 +3,33 @@ import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
 import { FiHome, FiUser, FiSettings } from 'react-icons/fi';
 
+/**
+ * Props for the AuthPage component.
+ */
 interface AuthPageProps {
   onAuthSuccess?: () => void;
 }
 
-// Get Google Client ID from environment
+// Retrieve Google OAuth Client ID from environment variables
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
+
+// Check if Google OAuth is properly configured
 const hasGoogleAuth = GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID !== "" && !GOOGLE_CLIENT_ID.includes('your-client-id');
 
+/**
+ * Authentication page component.
+ * Handles user sign-in via Google OAuth and guest mode access.
+ * Displays branding, feature highlights, and authentication options.
+ */
 export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
   const { login, browseAsGuest } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Handles guest mode access.
+   * Enables guest browsing without authentication and navigates to dashboard.
+   */
   const handleBrowseAsGuest = () => {
     browseAsGuest();
     if (onAuthSuccess) {
@@ -23,6 +37,13 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
     }
   };
 
+  /**
+   * Handles successful Google OAuth authentication.
+   * Decodes JWT token, extracts user information, and saves to context.
+   * Optionally sends user data to backend for verification.
+   * 
+   * @param credentialResponse Google OAuth credential response containing JWT token
+   */
   const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
     setIsLoading(true);
     setError(null);
@@ -32,9 +53,11 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
         throw new Error('No credential received from Google');
       }
 
-      // Decode the JWT token to get user info
+      // Decode JWT token: Extract payload (middle section between dots)
       const base64Url = credentialResponse.credential.split('.')[1];
+      // Convert base64url to standard base64
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      // Decode base64 and handle UTF-8 encoding
       const jsonPayload = decodeURIComponent(
         atob(base64)
           .split('')
@@ -44,7 +67,7 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
 
       const userInfo = JSON.parse(jsonPayload);
 
-      // Create user object
+      // Extract user information from decoded token
       const user = {
         name: userInfo.name || 'User',
         email: userInfo.email || '',
@@ -52,11 +75,11 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
         sub: userInfo.sub || '',
       };
 
-      // Save user to context and localStorage
+      // Save authenticated user to context and localStorage
       login(user);
 
-      // Optional: Send to backend for verification/storage
-      // You can add API call here to save user to your backend
+      // Attempt to send authentication data to backend for verification
+      // If backend is unavailable, continue with local authentication
       try {
         const response = await fetch('http://localhost:8080/api/auth/google', {
           method: 'POST',
@@ -76,7 +99,7 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
         console.warn('Backend not available, using local authentication only');
       }
 
-      // Redirect to home page
+      // Navigate to dashboard after successful authentication
       if (onAuthSuccess) {
         onAuthSuccess();
       }
@@ -88,10 +111,17 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
     }
   };
 
+  /**
+   * Handles Google OAuth authentication errors.
+   * Provides user-friendly error messages based on error type.
+   * 
+   * @param error Error object from Google OAuth
+   */
   const handleGoogleError = (error?: any) => {
     console.error('Google authentication error:', error);
     console.error('Full error details:', JSON.stringify(error, null, 2));
     
+    // Map specific error codes to user-friendly messages
     if (error?.error === 'popup_closed_by_user') {
       setError('Sign-in was cancelled. Please try again.');
     } else if (error?.error === 'access_denied') {

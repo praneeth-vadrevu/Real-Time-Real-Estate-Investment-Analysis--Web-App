@@ -2,12 +2,24 @@ import React from 'react';
 import { SavedProperty } from '../context/PropertiesContext';
 import './PropertyComparison.css';
 
+/**
+ * Props for the PropertyComparison component.
+ */
 interface PropertyComparisonProps {
   properties: SavedProperty[];
   onClose: () => void;
 }
 
+/**
+ * Property comparison component.
+ * Displays side-by-side comparison of multiple properties in a table format.
+ * Shows key metrics, financial data, and property details for easy comparison.
+ */
 const PropertyComparison: React.FC<PropertyComparisonProps> = ({ properties, onClose }) => {
+  /**
+   * Formats a number as US currency.
+   * Returns 'N/A' for undefined or null values.
+   */
   const formatCurrency = (value?: number): string => {
     if (value === undefined || value === null) return 'N/A';
     return new Intl.NumberFormat('en-US', {
@@ -17,11 +29,18 @@ const PropertyComparison: React.FC<PropertyComparisonProps> = ({ properties, onC
     }).format(value);
   };
 
+  /**
+   * Formats a decimal number as percentage.
+   * Returns 'N/A' for undefined or null values.
+   */
   const formatPercentage = (value?: number): string => {
     if (value === undefined || value === null) return 'N/A';
     return `${(value * 100).toFixed(2)}%`;
   };
 
+  /**
+   * Converts strategy code to display label.
+   */
   const getStrategyLabel = (strategy: string) => {
     switch (strategy) {
       case 'rental': return 'Rental';
@@ -32,6 +51,9 @@ const PropertyComparison: React.FC<PropertyComparisonProps> = ({ properties, onC
     }
   };
 
+  /**
+   * Returns color code for strategy badge display.
+   */
   const getStrategyColor = (strategy: string) => {
     switch (strategy) {
       case 'rental': return '#3b82f6';

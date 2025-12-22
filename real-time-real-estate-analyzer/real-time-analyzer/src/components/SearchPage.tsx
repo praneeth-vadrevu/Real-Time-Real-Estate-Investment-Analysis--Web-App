@@ -3,24 +3,31 @@ import PropertyMap from './PropertyMap';
 import PropertyPopup from './PropertyPopup';
 import { useProperties } from '../context/PropertiesContext';
 
+/**
+ * Props for the SearchPage component.
+ */
 interface SearchPageProps {
   searchType: 'properties' | 'lenders';
   onClose?: () => void;
   onPropertySelect?: (zpid: string, strategy?: 'rental' | 'brrrr' | 'flip' | 'wholesale', searchLocation?: string) => void;
 }
 
+/**
+ * Property search result data structure.
+ * Contains property information from backend API with field name variations.
+ */
 interface PropertyResult {
   zpid: string;
-  propertyId?: string; // Backend field name
+  propertyId?: string;
   address: string;
-  streetAddress?: string; // Backend field name
+  streetAddress?: string;
   city?: string;
   state?: string;
-  zip?: string; // Backend field name
+  zip?: string;
   zipCode?: string;
   postalCode?: string;
-  county?: string; // Backend field name
-  countyFIPS?: string; // Backend field name
+  county?: string;
+  countyFIPS?: string;
   price: number;
   bedrooms: number;
   bathrooms: number;
@@ -32,8 +39,15 @@ interface PropertyResult {
   lon?: number;
 }
 
+/**
+ * Property search page component.
+ * Provides interface to search for properties by location and displays results in list or map view.
+ * Integrates with backend API to fetch property data from Zillow.
+ */
 export default function SearchPage({ searchType, onClose, onPropertySelect }: SearchPageProps) {
   const { addProperty, properties } = useProperties();
+  
+  // Search state
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<PropertyResult[]>([]);
@@ -41,10 +55,9 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
   const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [popupProperty, setPopupProperty] = useState<PropertyResult | null>(null);
-  // Default to 'list' for properties search (only List and Map views)
   const [viewMode, setViewMode] = useState<'list' | 'map'>(searchType === 'properties' ? 'list' : 'list');
 
-  // Debug: Log when map should be rendered
+  // Log map rendering status for debugging
   useEffect(() => {
     if (searchResults.length > 0 && viewMode === 'map') {
       console.log('SearchPage: PropertyMap should be rendered:', {
@@ -56,6 +69,12 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
     }
   }, [searchResults, viewMode]);
 
+  /**
+   * Executes property search by location.
+   * Queries backend API for properties matching the search location.
+   * 
+   * @param query Optional search query string (uses state if not provided)
+   */
   const handleSearch = async (query?: string) => {
     const searchText = query || searchQuery;
     
@@ -69,17 +88,16 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
 
     try {
       if (searchType === 'properties') {
-        // Backend expects: GET /api/properties/search?location=...&status=...&page=...
         const searchTextTrimmed = searchText.trim();
         
-        // Build query parameters - backend uses 'location' parameter
+        // Build API query parameters
         const queryParams = new URLSearchParams({
           location: searchTextTrimmed,
           status: 'for_sale',
           page: '1'
         });
         
-        // Try both ports - 8080 (actual backend config) and 8081 (integration guide)
+        // Try multiple backend ports in case of configuration differences
         const ports = [8080, 8081];
         let response: Response | null = null;
         let lastError: Error | null = null;
@@ -95,20 +113,19 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
               headers: {
                 'Content-Type': 'application/json',
               },
-              signal: AbortSignal.timeout(10000), // 10 second timeout
+              signal: AbortSignal.timeout(10000),
             });
             
             console.log(`Response from port ${port}:`, response.status, response.statusText);
             
             if (response.ok) {
-              break; // Success, exit loop
+              break;
             } else {
-              // If we get a 404, the endpoint might not exist on this port
+              // Try next port if current one returns 404
               if (response.status === 404) {
                 console.log(`Port ${port} returned 404, trying next port...`);
                 continue;
               }
-              // For other errors, try to get error message
               const errorText = await response.text().catch(() => '');
               console.error(`Port ${port} error:`, response.status, errorText);
               lastError = new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
@@ -116,7 +133,6 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
           } catch (err: any) {
             console.error(`Port ${port} fetch error:`, err);
             lastError = err;
-            // Continue to next port
             continue;
           }
         }
@@ -140,11 +156,10 @@ export default function SearchPage({ searchType, onClose, onPropertySelect }: Se
           throw new Error('Invalid response format from server');
         }
         
-        // Handle different response formats
+        // Handle different API response formats (array or object with properties/results)
         let properties = Array.isArray(data) ? data : (data.properties || data.results || []);
         
-        // Map properties to ensure they have the correct structure
-        // Backend now provides: propertyId, address, streetAddress, city, state, zip, county, countyFIPS, listPrice
+        // Normalize property data structure to handle backend field name variations
         properties = properties.map((prop: any) => ({
           zpid: prop.propertyId || prop.zpid || prop.id || '',
           address: prop.address || prop.streetAddress || '',

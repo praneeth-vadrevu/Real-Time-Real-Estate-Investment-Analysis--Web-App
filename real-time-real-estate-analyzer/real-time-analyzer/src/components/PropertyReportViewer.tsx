@@ -4,15 +4,24 @@ import { PropertyData } from './PropertyForm';
 import { generatePropertyReport, downloadReport, printReport } from '../utils/reportGenerator';
 import './PropertyReportViewer.css';
 
+/**
+ * Props for the PropertyReportViewer component.
+ */
 interface PropertyReportViewerProps {
   formData: PropertyData;
   onClose: () => void;
 }
 
+/**
+ * Property investment report viewer component.
+ * Displays generated HTML reports in an iframe with download and print functionality.
+ * Handles report generation, display, and export operations.
+ */
 const PropertyReportViewer: React.FC<PropertyReportViewerProps> = ({ formData, onClose }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Generate and load report HTML when form data changes
   useEffect(() => {
     let isMounted = true;
     
@@ -20,8 +29,10 @@ const PropertyReportViewer: React.FC<PropertyReportViewerProps> = ({ formData, o
       if (iframeRef.current) {
         try {
           setIsLoading(true);
+          // Generate HTML report from property data
           const html = await generatePropertyReport(formData);
           if (isMounted && iframeRef.current) {
+            // Create blob URL for iframe source
             const blob = new Blob([html], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             iframeRef.current.src = url;
@@ -39,6 +50,7 @@ const PropertyReportViewer: React.FC<PropertyReportViewerProps> = ({ formData, o
 
     loadReport();
 
+    // Cleanup: Revoke blob URL when component unmounts
     return () => {
       isMounted = false;
       if (iframeRef.current?.src) {
@@ -47,6 +59,10 @@ const PropertyReportViewer: React.FC<PropertyReportViewerProps> = ({ formData, o
     };
   }, [formData]);
 
+  /**
+   * Handles report download.
+   * Generates HTML report and triggers browser download.
+   */
   const handleDownload = async () => {
     try {
       await downloadReport(formData);
@@ -56,6 +72,10 @@ const PropertyReportViewer: React.FC<PropertyReportViewerProps> = ({ formData, o
     }
   };
 
+  /**
+   * Handles report printing.
+   * Generates HTML report and opens print dialog.
+   */
   const handlePrint = async () => {
     try {
       await printReport(formData);

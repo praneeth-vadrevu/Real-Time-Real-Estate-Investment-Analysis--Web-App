@@ -2,7 +2,10 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-// TypeScript declaration for MapboxSearchBox (loaded from CDN)
+/**
+ * TypeScript declaration for MapboxSearchBox loaded from CDN.
+ * Extends Window interface to include MapboxSearchBox constructor.
+ */
 declare global {
   interface Window {
     MapboxSearchBox: new () => {
@@ -22,6 +25,9 @@ declare global {
   }
 }
 
+/**
+ * Property data structure for map display.
+ */
 interface Property {
   zpid: string;
   address: string;
@@ -36,6 +42,9 @@ interface Property {
   lon?: number;
 }
 
+/**
+ * Props for the PropertyMap component.
+ */
 interface PropertyMapProps {
   properties: Property[];
   selectedProperty?: string | null;
@@ -43,9 +52,15 @@ interface PropertyMapProps {
   mapHeight?: string;
 }
 
-const defaultCenter: [number, number] = [-71.0589, 42.3601]; // Boston, MA default [lng, lat]
+// Default map center coordinates (Boston, MA) and zoom level
+const defaultCenter: [number, number] = [-71.0589, 42.3601];
 const defaultZoom = 10;
 
+/**
+ * Interactive map component using MapBox GL.
+ * Displays properties as markers on a map with popups showing property details.
+ * Handles geocoding for properties without coordinates.
+ */
 const PropertyMap: React.FC<PropertyMapProps> = ({
   properties,
   selectedProperty,
@@ -58,27 +73,29 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
     hasSelectedProperty: !!selectedProperty,
   });
 
-  // Get Mapbox access token from environment variable
+  // Retrieve and clean Mapbox access token from environment variables
   const rawToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN || '';
   const mapboxToken = rawToken.replace(/^["']|["']$/g, '').trim();
 
+  // Map and UI element references
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<mapboxgl.Marker[]>([]);
   const popupRef = useRef<mapboxgl.Popup | null>(null);
   const searchBoxRef = useRef<any>(null);
 
+  // Map state
   const [activeMarker, setActiveMarker] = useState<string | null>(null);
   const [mapError, setMapError] = useState<string | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [center, setCenter] = useState<[number, number]>(defaultCenter);
   const [zoom, setZoom] = useState(defaultZoom);
 
-  // Geocoding state for properties without coordinates
+  // Geocoding state for properties missing coordinates
   const [geocodedProperties, setGeocodedProperties] = useState<Property[]>(properties);
   const [isGeocoding, setIsGeocoding] = useState(false);
 
-  // Debug: Log API key status
+  // Log Mapbox token status for debugging
   useEffect(() => {
     console.log('PropertyMap Mapbox Token Check:', {
       hasEnvVar: !!process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
@@ -91,7 +108,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
     });
   }, []);
 
-  // Update geocoded properties when properties change (if they have coordinates)
+  // Update geocoded properties when properties with coordinates are available
   useEffect(() => {
     const propsWithCoords = properties.filter(p => p.lat && p.lon);
     if (propsWithCoords.length > 0) {
@@ -99,7 +116,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
     }
   }, [properties]);
 
-  // Geocode properties using Mapbox Geocoding API
+  // Geocode properties that are missing coordinates using Mapbox Geocoding API
   useEffect(() => {
     const propertiesWithoutCoords = properties.filter(p => !p.lat || !p.lon);
     
@@ -124,7 +141,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
       return;
     }
 
-    // Geocode each property using Mapbox Geocoding API
+    // Geocode each property address to get latitude and longitude
     propertiesWithoutCoords.forEach((property, index) => {
       if (property.address) {
         setTimeout(() => {
@@ -183,7 +200,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
                 setIsGeocoding(false);
               }
             });
-        }, index * 200); // Stagger requests to avoid rate limiting
+        }, index * 200); // Stagger API requests to avoid rate limiting
       } else {
         completed++;
         if (completed === total) {
@@ -194,23 +211,25 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
     });
   }, [properties, mapboxToken]);
 
-  // Initialize map
+  // Initialize MapBox map instance
   useEffect(() => {
     if (!mapContainerRef.current || !mapboxToken) return;
 
-    // Set access token
+    // Set Mapbox access token
     mapboxgl.accessToken = mapboxToken;
 
-    // Calculate initial center from properties
+    // Calculate initial map center and zoom based on property locations
     const propsWithCoords = properties.filter(p => p.lat && p.lon);
     let initialCenter = defaultCenter;
     let initialZoom = defaultZoom;
 
     if (propsWithCoords.length > 0) {
       if (propsWithCoords.length === 1) {
+        // Single property: center on it with close zoom
         initialCenter = [propsWithCoords[0].lon!, propsWithCoords[0].lat!];
         initialZoom = 14;
       } else {
+        // Multiple properties: center on average location with wider zoom
         const lats = propsWithCoords.map(p => p.lat!);
         const lons = propsWithCoords.map(p => p.lon!);
         const avgLat = lats.reduce((sum, lat) => sum + lat, 0) / lats.length;
@@ -223,7 +242,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
     setCenter(initialCenter);
     setZoom(initialZoom);
 
-    // Create map
+    // Create new MapBox map instance
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mapbox/streets-v12',
@@ -231,16 +250,16 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
       zoom: initialZoom,
     });
 
-    // Listen for map load
+    // Handle map load completion
     mapRef.current.on('load', () => {
       console.log('Mapbox map loaded successfully');
       setIsMapLoaded(true);
       setMapError(null);
     });
 
-    // Initialize Mapbox Search Box - following the demo pattern with window.addEventListener('load')
+    // Initialize Mapbox Search Box component for address search
     const initSearchBox = () => {
-      // Wait for both the map to be loaded and the window to be loaded
+      // Wait for map to fully load before initializing search box
       if (!mapRef.current || !mapRef.current.loaded()) {
         setTimeout(initSearchBox, 100);
         return;
@@ -248,7 +267,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
 
       if (window.MapboxSearchBox && mapboxToken && mapRef.current) {
         try {
-          // Calculate proximity from properties or use default center
+          // Calculate search proximity center from property locations
           const propsWithCoords = properties.filter(p => p.lat && p.lon);
           let proximityCoords: [number, number] = defaultCenter;
           
@@ -258,7 +277,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
             proximityCoords = [avgLon, avgLat];
           }
 
-          // Calculate bounding box from properties or use a default area around the center
+          // Calculate bounding box from property locations for search area restriction
           let bbox: [[number, number], [number, number]] | undefined;
           if (propsWithCoords.length > 0) {
             const lats = propsWithCoords.map(p => p.lat!);
@@ -267,12 +286,12 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
             const maxLat = Math.max(...lats);
             const minLon = Math.min(...lons);
             const maxLon = Math.max(...lons);
-            // Add padding to bounding box
+            // Add padding around bounding box for better search area
             const latPadding = (maxLat - minLat) * 0.1 || 0.05;
             const lonPadding = (maxLon - minLon) * 0.1 || 0.05;
             bbox = [
-              [minLon - lonPadding, minLat - latPadding], // southwest corner
-              [maxLon + lonPadding, maxLat + latPadding]  // northeast corner
+              [minLon - lonPadding, minLat - latPadding],
+              [maxLon + lonPadding, maxLat + latPadding]
             ];
           } else {
             // Default bounding box around center (approximately 50km radius)
@@ -428,13 +447,13 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
         mapRef.current = null;
       }
     };
-  }, [mapboxToken]); // Only re-run if token changes
+  }, [mapboxToken]);
 
-  // Update markers when properties change
+  // Update map markers when properties or geocoding completes
   useEffect(() => {
     if (!mapRef.current || !isMapLoaded) return;
 
-    // Remove existing markers
+    // Clear existing markers from map
     markersRef.current.forEach(marker => marker.remove());
     markersRef.current = [];
 
@@ -444,11 +463,11 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
       popupRef.current = null;
     }
 
-    // Add markers for properties with coordinates
+    // Create markers for all properties that have coordinates
     const propertiesWithCoords = geocodedProperties.filter(p => p.lat && p.lon);
     
     propertiesWithCoords.forEach((property) => {
-      // Create marker element
+      // Create custom marker element with SVG icon
       const el = document.createElement('div');
       el.className = 'property-marker';
       el.style.width = '32px';
@@ -461,12 +480,12 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
         </svg>
       `;
 
-      // Create marker
+      // Create MapBox marker and add to map
       const marker = new mapboxgl.Marker(el)
         .setLngLat([property.lon!, property.lat!])
         .addTo(mapRef.current!);
 
-      // Add click handler
+      // Add click handler to marker
       el.addEventListener('click', () => {
         handleMarkerClick(property.zpid);
       });
@@ -474,25 +493,28 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
       markersRef.current.push(marker);
     });
 
-    // Fit bounds if we have multiple properties
+    // Adjust map view to show all properties
     if (propertiesWithCoords.length > 1) {
+      // Multiple properties: fit bounds to show all
       const bounds = new mapboxgl.LngLatBounds();
       propertiesWithCoords.forEach(p => {
         bounds.extend([p.lon!, p.lat!]);
       });
       mapRef.current.fitBounds(bounds, { padding: 50 });
     } else if (propertiesWithCoords.length === 1) {
+      // Single property: center on it with close zoom
       mapRef.current.setCenter([propertiesWithCoords[0].lon!, propertiesWithCoords[0].lat!]);
       mapRef.current.setZoom(14);
     }
   }, [geocodedProperties, isMapLoaded]);
 
-  // Center map on selected property when it changes
+  // Center map view on selected property when selection changes
   useEffect(() => {
     if (!mapRef.current || !isMapLoaded || !selectedProperty) return;
 
     const property = geocodedProperties.find(p => p.zpid === selectedProperty && p.lat && p.lon);
     if (property) {
+      // Animate map to selected property location
       mapRef.current.flyTo({
         center: [property.lon!, property.lat!],
         zoom: 15,
@@ -501,9 +523,9 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
     }
   }, [selectedProperty, geocodedProperties, isMapLoaded]);
 
-  // Update popup when active marker changes
-  // Only show simple popup if onPropertySelect is not provided (for Dashboard use)
-  // If onPropertySelect is provided (SearchPage), let parent handle the detailed popup
+  // Update popup display when active marker changes
+  // Simple popup shown when onPropertySelect is not provided (Dashboard use)
+  // Detailed popup handled by parent when onPropertySelect is provided (SearchPage)
   useEffect(() => {
     if (!mapRef.current || !isMapLoaded) return;
 
@@ -513,8 +535,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
       popupRef.current = null;
     }
 
-    // Only show simple popup if onPropertySelect is not provided
-    // When onPropertySelect is provided, the parent component will show detailed popup
+    // Show simple popup only if parent doesn't handle property selection
     if (activeMarker && !onPropertySelect) {
       const property = geocodedProperties.find(p => p.zpid === activeMarker && p.lat && p.lon);
       if (property) {
@@ -550,6 +571,12 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
     }
   }, [activeMarker, geocodedProperties, isMapLoaded, onPropertySelect]);
 
+  /**
+   * Formats a number as US currency.
+   * 
+   * @param price Price value to format
+   * @returns Formatted currency string
+   */
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -558,6 +585,12 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
     }).format(price);
   };
 
+  /**
+   * Handles marker click events.
+   * Sets active marker and optionally calls parent's property select handler.
+   * 
+   * @param zpid Property ID of clicked marker
+   */
   const handleMarkerClick = (zpid: string) => {
     setActiveMarker(zpid);
     if (onPropertySelect) {
@@ -565,7 +598,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({
     }
   };
 
-  // Check if access token is missing or empty
+  // Display error message if Mapbox access token is not configured
   if (!mapboxToken || mapboxToken === '' || mapboxToken === 'your-mapbox-access-token-here') {
     return (
       <div style={{

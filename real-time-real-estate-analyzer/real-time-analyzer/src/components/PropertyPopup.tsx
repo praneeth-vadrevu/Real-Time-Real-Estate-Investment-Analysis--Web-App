@@ -1,6 +1,9 @@
 import React from 'react';
 import { FiPlus, FiHome } from 'react-icons/fi';
 
+/**
+ * Property data structure for popup display.
+ */
 interface Property {
   zpid: string;
   address: string;
@@ -15,6 +18,9 @@ interface Property {
   lon?: number;
 }
 
+/**
+ * Props for the PropertyPopup component.
+ */
 interface PropertyPopupProps {
   property: Property;
   onClose: () => void;
@@ -22,7 +28,15 @@ interface PropertyPopupProps {
   isAlreadyAdded?: boolean;
 }
 
+/**
+ * Property popup component.
+ * Displays detailed property information in a modal overlay.
+ * Allows users to add properties to their saved list.
+ */
 export default function PropertyPopup({ property, onClose, onAddToList, isAlreadyAdded = false }: PropertyPopupProps) {
+  /**
+   * Formats a number as US currency.
+   */
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -31,6 +45,10 @@ export default function PropertyPopup({ property, onClose, onAddToList, isAlread
     }).format(price);
   };
 
+  /**
+   * Handles adding property to saved list.
+   * Closes popup after adding.
+   */
   const handleAddToList = () => {
     onAddToList(property);
     onClose();

@@ -5,6 +5,9 @@ import PropertySearch from './PropertySearch';
 import PropertyReportViewer from './PropertyReportViewer';
 import { mapPropertyDataToCashflowRequest, analyzeCashflow } from '../utils/cashflowApi';
 
+/**
+ * Props for the PropertyForm component.
+ */
 interface PropertyFormProps {
   strategy: 'rental' | 'brrrr' | 'flip' | 'wholesale';
   onClose: () => void;
@@ -12,60 +15,64 @@ interface PropertyFormProps {
   searchLocation?: string | null;
 }
 
+/**
+ * Property data structure for form input and analysis.
+ * Contains all property information, financial data, and investment parameters.
+ */
 export interface PropertyData {
   // Basic Information
   zpid?: string;
   
-  // 1. Property Info
+  // Property Information Section
   address: string;
   city: string;
   state: string;
   zipCode: string;
   fairMarketValue: number | '';
   vacancyRate: number | '';
-  managementRate: number | ''; // Management Rate as percentage
+  managementRate: number | '';
   advertisingCostPerVacancy: number | '';
   numberOfUnits: number | '';
   annualAppreciationRate: number | '';
   
-  // 2. Purchase Info
+  // Purchase Information Section
   offerPrice: number | '';
   repairs: number | '';
   lendersFee: number | '';
   brokerFee: number | '';
   inspectionsOrEngineerReport: number | '';
   appraisals: number | '';
-  misc: number | ''; // Site Visit, Title Ins, Corp, Assign Fee
+  misc: number | '';
   transferTax: number | '';
   legal: number | '';
-  realPurchasePrice: number | ''; // RPP (calculated)
+  realPurchasePrice: number | '';
   
-  // 3. Financing (Monthly)
+  // Financing Information Section
   firstMtgPrincipleBorrowed: number | '';
-  firstMtgInterestRate: number | ''; // Interest Rate as percentage
+  firstMtgInterestRate: number | '';
   firstMtgAmortizationPeriod: number | '';
-  firstMtgTotalPrinciple: number | ''; // Incl. CMHC Fees
+  firstMtgTotalPrinciple: number | '';
   firstMtgTotalMonthlyPayment: number | '';
-  secondMtgInterestRate: number | ''; // 2nd Mortgage Interest Rate as percentage
+  secondMtgInterestRate: number | '';
   secondMtgAmortizationPeriod: number | '';
   cashRequiredToClose: number | '';
   
-  // 4. Income (Annual)
+  // Income Information Section
   grossRents: number | '';
   
-  // 5. Operating Expenses (Annual)
+  // Operating Expenses Section
   propertyTaxes: number | '';
   insurance: number | '';
-  repairsExpensePercent: number | ''; // Repairs as percentage
+  repairsExpensePercent: number | '';
   electricity: number | '';
   waterSewer: number | '';
-  management: number | ''; // Will be calculated from managementRate
+  management: number | '';
   advertising: number | '';
   pestControl: number | '';
   security: number | '';
   evictions: number | '';
   
-  // Legacy fields (for backward compatibility with API)
+  // Additional property details for display and compatibility
   propertyType?: string;
   bedrooms?: number;
   bathrooms?: number;
@@ -85,12 +92,20 @@ export interface PropertyData {
   parkingFeatures?: string;
 }
 
+/**
+ * Property input and analysis form component.
+ * Handles property data entry, validation, cashflow analysis, and report generation.
+ * Supports multiple input methods: manual entry, Zillow import, and property search.
+ */
 export default function PropertyForm({ strategy, onClose, selectedZpid, searchLocation }: PropertyFormProps) {
   const { addProperty, properties } = useProperties();
+  
+  // Form state management
   const [inputMethod, setInputMethod] = useState<'select' | 'import' | 'manual' | 'search'>(selectedZpid ? 'manual' : 'select');
   const [isLoadingProperty, setIsLoadingProperty] = useState(false);
   const [propertyCoordinates, setPropertyCoordinates] = useState<{ lat?: number; lon?: number }>({});
-  // Track which fields were auto-filled from Zillow API
+  
+  // Track which form fields were automatically filled from Zillow API
   const [autoFilledFields, setAutoFilledFields] = useState<Set<keyof PropertyData>>(new Set());
   const [validationAttempted, setValidationAttempted] = useState(false);
   const [showReport, setShowReport] = useState(false);
@@ -145,6 +160,9 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
     evictions: 0,
   });
 
+  /**
+   * Returns display title for the current investment strategy.
+   */
   const getStrategyTitle = () => {
     switch (strategy) {
       case 'rental': return 'Rental Property';
@@ -155,6 +173,9 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
     }
   };
 
+  /**
+   * Returns description text explaining the investment strategy.
+   */
   const getStrategyDescription = () => {
     switch (strategy) {
       case 'rental': return 'Properties you plan to buy and hold for long-term cash flow, including short-term rentals.';
@@ -165,11 +186,17 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
     }
   };
 
+  /**
+   * Handles property selection from search results.
+   * Fetches property details from backend API and auto-fills form fields.
+   * 
+   * @param zpid Zillow Property ID
+   */
   const handlePropertySelect = useCallback(async (zpid: string) => {
     try {
       setIsLoadingProperty(true);
       
-      // Check if property already exists in properties list
+      // Check if property is already saved to prevent duplicates
       const existingProperty = properties.find(p => p.zpid === zpid);
       if (existingProperty) {
         alert('This property is already in your My Properties list!');
@@ -177,7 +204,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
         return;
       }
 
-      // Try both ports - 8081 (integration guide) and 8080 (actual backend config)
+      // Try multiple backend ports in case configuration differs
       const ports = [8081, 8080];
       let response: Response | null = null;
       
@@ -191,10 +218,10 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
           });
           
           if (response.ok) {
-            break; // Success, exit loop
+            break;
           }
         } catch (err: any) {
-          continue; // Try next port
+          continue;
         }
       }
       
@@ -545,9 +572,15 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
       handlePropertySelect(selectedZpid);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedZpid, handlePropertySelect]); // inputMethod intentionally excluded to avoid race conditions
+  }, [selectedZpid, handlePropertySelect]);
 
-
+  /**
+   * Handles form input field changes.
+   * Updates form data and removes field from auto-filled set if user manually edits.
+   * 
+   * @param field Field name to update
+   * @param value New field value
+   */
   const handleInputChange = (field: keyof PropertyData, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Remove from auto-filled fields if user manually edits
@@ -558,7 +591,13 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
     });
   };
 
-  // Helper to check if field needs highlighting (only after validation is attempted)
+  /**
+   * Checks if a field is missing required data.
+   * Only highlights fields after validation has been attempted.
+   * 
+   * @param field Field name to check
+   * @returns True if field is missing data, false otherwise
+   */
   const isFieldMissingData = (field: keyof PropertyData): boolean => {
     // Only highlight if validation has been attempted (analyze button clicked)
     if (!validationAttempted) return false;
@@ -581,9 +620,9 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
     // For number fields
     if (typeof value === 'number') {
       if (value === 0 && fieldsThatCanBeZero.includes(field)) {
-        return false; // 0 is valid for these fields
+        return false;
       }
-      return value === 0; // 0 is invalid for other number fields
+      return value === 0;
     }
     
     // For string fields, check if they're empty strings or whitespace
@@ -599,8 +638,12 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
     return false;
   };
   
+  /**
+   * Saves property to saved properties list.
+   * Geocodes address if coordinates are missing, then adds property to context.
+   */
   const handleSaveProperty = async () => {
-    // Check if property already exists
+    // Check if property already exists to prevent duplicates
     if (formData.zpid) {
       const existingProperty = properties.find(p => p.zpid === formData.zpid);
       if (existingProperty) {
@@ -613,7 +656,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
     let lat: number | undefined = propertyCoordinates.lat;
     let lon: number | undefined = propertyCoordinates.lon;
     
-    // Try to geocode the address if we have city, state, and zip but no coordinates yet
+    // Geocode address if coordinates are missing but address components are available
     if (formData.city && formData.state && formData.zipCode && !lat && !lon) {
       try {
         const fullAddress = `${formData.address || ''}, ${formData.city}, ${formData.state} ${formData.zipCode}`.trim();
@@ -640,7 +683,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
       }
     }
     
-    // Save property to context
+    // Save property to context with all available data
     addProperty({
       zpid: formData.zpid,
       strategy: strategy,
@@ -651,10 +694,10 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
       price: typeof formData.offerPrice === 'number' ? formData.offerPrice : undefined,
       purchasePrice: typeof formData.realPurchasePrice === 'number' ? formData.realPurchasePrice : 
                      (typeof formData.offerPrice === 'number' ? formData.offerPrice : undefined),
-      cashFlow: undefined, // Will be calculated later
-      capRate: undefined, // Will be calculated later
-      coc: undefined, // Will be calculated later
-      image: undefined, // Will be set from API if available
+      cashFlow: undefined,
+      capRate: undefined,
+      coc: undefined,
+      image: undefined,
       propertyType: formData.propertyType,
       bedrooms: formData.bedrooms,
       lat: lat,
@@ -668,6 +711,12 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
     alert(`${getStrategyTitle()} has been saved to your My Properties list!`);
   };
 
+  /**
+   * Handles form submission for cashflow analysis.
+   * Validates required fields and triggers analysis or report generation.
+   * 
+   * @param e Form submit event
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -692,7 +741,7 @@ export default function PropertyForm({ strategy, onClose, selectedZpid, searchLo
     
     if (missingFields.length > 0) {
       alert(`Please fill in the following required fields:\n${missingFields.map(f => f.toString()).join(', ')}`);
-      return; // Don't proceed if required fields are missing
+      return;
     }
     
     // Use coordinates from API import if available, otherwise geocode

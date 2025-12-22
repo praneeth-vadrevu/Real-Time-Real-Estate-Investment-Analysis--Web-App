@@ -609,4 +609,4 @@ For issues, questions, or contributions, please refer to the main project docume
 
 **Version**: 0.1.0  
 **Last Updated**: December 2025  
-**License**: MIT
+

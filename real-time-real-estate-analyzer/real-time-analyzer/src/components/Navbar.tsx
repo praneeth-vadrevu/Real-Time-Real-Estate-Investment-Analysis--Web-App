@@ -2,33 +2,50 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { FiBell, FiUser, FiHelpCircle, FiSettings } from 'react-icons/fi';
 
+/**
+ * Props for the Navbar component.
+ */
 interface NavbarProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
 
+/**
+ * Top navigation bar component.
+ * Provides main navigation links, user menu, and authentication controls.
+ * Displays different menu options based on authentication status.
+ */
 const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
   const { user, isGuest, logout } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * Navigates to authentication page and closes user menu.
+   */
   const handleSignIn = () => {
     onNavigate('auth');
     setIsUserMenuOpen(false);
   };
 
+  /**
+   * Logs out current user and navigates to authentication page.
+   */
   const handleLogout = () => {
     logout();
     setIsUserMenuOpen(false);
     onNavigate('auth');
   };
 
+  /**
+   * Returns to landing page by logging out and navigating to auth page.
+   */
   const handleBackToLanding = () => {
     logout();
     onNavigate('auth');
   };
 
-  // Close dropdown when clicking outside
+  // Close user menu dropdown when clicking outside the menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {

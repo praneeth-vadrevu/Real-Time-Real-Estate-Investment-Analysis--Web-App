@@ -1,6 +1,11 @@
 import React from 'react';
 
+/**
+ * Footer component displaying developer credits and copyright information.
+ * Appears at the bottom of all application pages.
+ */
 const Footer: React.FC = () => {
+  // List of project developers
   const developers = [
     'V S Praneeth',
     'Xiangtao Fu',

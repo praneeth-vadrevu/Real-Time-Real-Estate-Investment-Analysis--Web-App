@@ -4,19 +4,29 @@ import { useProperties } from '../context/PropertiesContext';
 import PropertyMap from './PropertyMap';
 import PropertyComparison from './PropertyComparison';
 
+/**
+ * Props for the Dashboard component.
+ */
 interface DashboardProps {
   onAddProperty?: (strategy: 'rental' | 'brrrr' | 'flip' | 'wholesale') => void;
 }
 
+/**
+ * Main dashboard component for viewing and managing saved properties.
+ * Displays properties in list, map, or combined views with filtering and search capabilities.
+ */
 const Dashboard: React.FC<DashboardProps> = ({ onAddProperty }) => {
   const { properties, toggleShortlist, deleteProperty } = useProperties();
+  
+  // Filter and view state
   const [selectedStrategy, setSelectedStrategy] = useState<'rental' | 'brrrr' | 'flip' | 'wholesale' | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'both' | 'combined'>('both');
   const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
   const [showComparison, setShowComparison] = useState(false);
 
-  // Filter properties by strategy and search query
+  // Filter properties based on selected strategy and search query
+  // Matches strategy type and searches in address, city, and state fields
   const filteredProperties = properties.filter(prop => {
     const matchesStrategy = selectedStrategy === 'all' || prop.strategy === selectedStrategy;
     const matchesSearch = searchQuery === '' || 
@@ -26,6 +36,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddProperty }) => {
     return matchesStrategy && matchesSearch;
   });
 
+  /**
+   * Formats a number as US currency.
+   * Returns 'N/A' if price is undefined or null.
+   */
   const formatPrice = (price?: number) => {
     if (!price) return 'N/A';
     return new Intl.NumberFormat('en-US', {
@@ -35,6 +49,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddProperty }) => {
     }).format(price);
   };
 
+  /**
+   * Converts strategy code to display label.
+   */
   const getStrategyLabel = (strategy: string) => {
     switch (strategy) {
       case 'rental': return 'Rental';
@@ -45,6 +62,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddProperty }) => {
     }
   };
 
+  /**
+   * Returns color code for strategy badge display.
+   */
   const getStrategyColor = (strategy: string) => {
     switch (strategy) {
       case 'rental': return '#3b82f6';
@@ -55,6 +75,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddProperty }) => {
     }
   };
 
+  /**
+   * Returns button text for adding properties based on strategy.
+   */
   const getAddPropertyText = (strategy: string) => {
     switch (strategy) {
       case 'rental': return 'Add Rental Property';
@@ -66,7 +89,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddProperty }) => {
     }
   };
 
-  // Convert SavedProperty to Property format for PropertyMap
+  /**
+   * Converts SavedProperty objects to Property format required by PropertyMap component.
+   * Maps property data structure and ensures all required fields are present.
+   */
   const mapPropertiesForMap = (props: typeof filteredProperties) => {
     return props.map(prop => ({
       zpid: prop.id,
@@ -85,6 +111,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onAddProperty }) => {
 
   const mapProperties = mapPropertiesForMap(filteredProperties);
 
+  /**
+   * Handles property deletion with confirmation prompt.
+   * 
+   * @param id Property ID to delete
+   */
   const handleDeleteProperty = (id: string) => {
     if (window.confirm('Are you sure you want to remove this property from your list?')) {
       deleteProperty(id);

@@ -2,13 +2,25 @@ import React, { useState } from 'react';
 import { FiSearch, FiChevronDown, FiDownload, FiPlus, FiChevronRight, FiCheck } from 'react-icons/fi';
 import PropertyForm from './PropertyForm';
 
+/**
+ * Props for the MainContent component.
+ */
 interface MainContentProps {
   activeSection: string;
 }
 
+/**
+ * Main content area component.
+ * Displays property list and management interface for the active investment strategy section.
+ * Shows sample property data and provides interface to add new properties.
+ */
 const MainContent: React.FC<MainContentProps> = ({ activeSection }) => {
   const [showPropertyForm, setShowPropertyForm] = useState(false);
 
+  /**
+   * Converts section identifier to strategy type.
+   * Returns the corresponding investment strategy code.
+   */
   const getStrategyType = (): 'rental' | 'brrrr' | 'flip' | 'wholesale' => {
     switch (activeSection) {
       case "rentals": return 'rental';
@@ -18,6 +30,10 @@ const MainContent: React.FC<MainContentProps> = ({ activeSection }) => {
       default: return 'rental';
     }
   };
+
+  /**
+   * Returns display title for the active section.
+   */
   const getSectionTitle = () => {
     switch (activeSection) {
       case "rentals":
@@ -33,6 +49,9 @@ const MainContent: React.FC<MainContentProps> = ({ activeSection }) => {
     }
   };
 
+  /**
+   * Returns description text explaining the investment strategy for the active section.
+   */
   const getSectionDescription = () => {
     switch (activeSection) {
       case "rentals":

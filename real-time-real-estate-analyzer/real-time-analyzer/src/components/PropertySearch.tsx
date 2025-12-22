@@ -1,23 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropertyMap from './PropertyMap';
 
+/**
+ * Props for the PropertySearch component.
+ */
 interface PropertySearchProps {
   onPropertySelect: (zpid: string) => Promise<void>;
   onCancel: () => void;
 }
 
+/**
+ * Property search result data structure.
+ * Contains property information from backend API.
+ */
 interface PropertyResult {
   zpid: string;
-  propertyId?: string; // Backend field name
+  propertyId?: string;
   address: string;
-  streetAddress?: string; // Backend field name
+  streetAddress?: string;
   city?: string;
   state?: string;
-  zip?: string; // Backend field name
+  zip?: string;
   zipCode?: string;
   postalCode?: string;
-  county?: string; // Backend field name
-  countyFIPS?: string; // Backend field name
+  county?: string;
+  countyFIPS?: string;
   price: number;
   bedrooms: number;
   bathrooms: number;
@@ -29,13 +36,22 @@ interface PropertyResult {
   lon?: number;
 }
 
+/**
+ * Search suggestion data structure.
+ * Represents autocomplete suggestions for location search.
+ */
 interface SearchSuggestion {
   type: 'address' | 'city' | 'neighborhood' | 'zipcode';
   text: string;
   subtitle?: string;
 }
 
+/**
+ * Property search component for importing properties from Zillow.
+ * Provides search interface with autocomplete suggestions and displays results in list or map view.
+ */
 export default function PropertySearch({ onPropertySelect, onCancel }: PropertySearchProps) {
+  // Search state
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<PropertyResult[]>([]);
@@ -49,14 +65,20 @@ export default function PropertySearch({ onPropertySelect, onCancel }: PropertyS
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Generate search suggestions based on input
+  /**
+   * Generates search suggestions based on user input.
+   * Provides autocomplete options for addresses, cities, neighborhoods, and ZIP codes.
+   * 
+   * @param query User input text
+   * @returns Array of search suggestions
+   */
   const generateSuggestions = (query: string): SearchSuggestion[] => {
     if (!query || query.length < 2) return [];
 
     const suggestions: SearchSuggestion[] = [];
     const lowerQuery = query.toLowerCase();
 
-    // Common cities and neighborhoods
+    // Predefined list of common cities and their neighborhoods
     const locations = [
       { city: 'Boston', state: 'MA', neighborhoods: ['Back Bay', 'Beacon Hill', 'South End', 'Jamaica Plain', 'Dorchester', 'Roxbury'] },
       { city: 'Cambridge', state: 'MA', neighborhoods: ['Harvard Square', 'Central Square', 'Kendall Square'] },

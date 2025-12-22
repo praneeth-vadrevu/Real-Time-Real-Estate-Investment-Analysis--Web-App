@@ -1,15 +1,29 @@
 import { PropertyData } from '../components/PropertyForm';
 import { CashflowResponse, mapPropertyDataToCashflowRequest, analyzeCashflow } from './cashflowApi';
 
+/**
+ * Generates HTML investment analysis report from property data.
+ * Performs cashflow analysis and formats results into a comprehensive HTML document.
+ * 
+ * @param formData Property data from the form
+ * @returns Promise resolving to HTML string
+ */
 export async function generatePropertyReport(formData: PropertyData): Promise<string> {
+  // Convert form data to API request format and perform analysis
   const request = mapPropertyDataToCashflowRequest(formData);
   const result = await analyzeCashflow(request);
+  
+  // Format report date for display
   const reportDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
+  /**
+   * Formats a number as US currency.
+   * Returns 'N/A' for undefined or null values.
+   */
   const formatCurrency = (value?: number): string => {
     if (value === undefined || value === null) return 'N/A';
     return new Intl.NumberFormat('en-US', {
@@ -19,20 +33,29 @@ export async function generatePropertyReport(formData: PropertyData): Promise<st
     }).format(value);
   };
 
+  /**
+   * Formats a decimal number as percentage string.
+   * Returns 'N/A' for undefined or null values.
+   */
   const formatPercentage = (value?: number): string => {
     if (value === undefined || value === null) return 'N/A';
     return `${(value * 100).toFixed(2)}%`;
   };
 
+  /**
+   * Formats a number with thousand separators.
+   * Returns 'N/A' for undefined or null values.
+   */
   const formatNumber = (value?: number): string => {
     if (value === undefined || value === null) return 'N/A';
     return value.toLocaleString('en-US', { maximumFractionDigits: 2 });
   };
 
+  // Extract summary metrics from analysis results
   const s = result.summary;
   const address = `${formData.address || 'N/A'}, ${formData.city || 'N/A'}, ${formData.state || 'N/A'} ${formData.zipCode || ''}`;
 
-  // Calculate requested metrics
+  // Calculate additional financial metrics for report display
   const offerPrice = request.offerPrice || 0;
   const cashRequiredToCloseAfterFinancing = offerPrice * 0.8;
   const effectiveGrossIncome = s.egiY1 || 0;
@@ -451,6 +474,12 @@ export async function generatePropertyReport(formData: PropertyData): Promise<st
   return html;
 }
 
+/**
+ * Downloads the property report as an HTML file.
+ * Creates a blob URL and triggers browser download.
+ * 
+ * @param formData Property data to generate report from
+ */
 export async function downloadReport(formData: PropertyData) {
   const html = await generatePropertyReport(formData);
   const blob = new Blob([html], { type: 'text/html' });
@@ -464,6 +493,11 @@ export async function downloadReport(formData: PropertyData) {
   URL.revokeObjectURL(url);
 }
 
+/**
+ * Opens the property report in a new window and triggers print dialog.
+ * 
+ * @param formData Property data to generate report from
+ */
 export async function printReport(formData: PropertyData) {
   const html = await generatePropertyReport(formData);
   const printWindow = window.open('', '_blank');

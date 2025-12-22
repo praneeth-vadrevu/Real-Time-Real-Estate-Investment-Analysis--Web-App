@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { FiCheck } from 'react-icons/fi';
 
+/**
+ * Props for the PurchaseCriteriaForm component.
+ */
 interface PurchaseCriteriaFormProps {
   strategy: 'rental' | 'brrrr' | 'flip' | 'wholesale';
   onClose: () => void;
   onSave: (criteria: PurchaseCriteria) => void;
 }
 
+/**
+ * Purchase criteria data structure.
+ * Defines filters and requirements for property searches and analysis.
+ */
 interface PurchaseCriteria {
   // Property Criteria
   minPrice?: number;
@@ -50,7 +57,13 @@ interface PurchaseCriteria {
   minROIThreshold?: number;
 }
 
+/**
+ * Purchase criteria form component.
+ * Allows users to define investment criteria and filters for property searches.
+ * Supports different criteria sets for each investment strategy.
+ */
 export default function PurchaseCriteriaForm({ strategy, onClose, onSave }: PurchaseCriteriaFormProps) {
+  // Initialize criteria state with default values
   const [criteria, setCriteria] = useState<PurchaseCriteria>({
     propertyTypes: [],
     states: [],
@@ -69,6 +82,9 @@ export default function PurchaseCriteriaForm({ strategy, onClose, onSave }: Purc
     showOnlyHighROI: false,
   });
 
+  /**
+   * Returns display title for the current investment strategy.
+   */
   const getStrategyTitle = () => {
     switch (strategy) {
       case 'rental': return 'Rental Property';
@@ -79,6 +95,9 @@ export default function PurchaseCriteriaForm({ strategy, onClose, onSave }: Purc
     }
   };
 
+  /**
+   * Returns description text explaining the investment strategy.
+   */
   const getStrategyDescription = () => {
     switch (strategy) {
       case 'rental': return 'Properties you plan to buy and hold for long-term cash flow, including short-term rentals.';

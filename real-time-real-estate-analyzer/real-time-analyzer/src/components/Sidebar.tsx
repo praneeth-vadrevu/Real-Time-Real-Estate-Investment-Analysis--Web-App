@@ -1,6 +1,9 @@
 import React from 'react';
 import { FiHome, FiList, FiPlus } from 'react-icons/fi';
 
+/**
+ * Props for the Sidebar component.
+ */
 interface SidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
@@ -8,12 +11,18 @@ interface SidebarProps {
   onAddProperty?: (strategy: 'rental' | 'brrrr' | 'flip' | 'wholesale') => void;
 }
 
+/**
+ * Individual item within a sidebar section.
+ */
 interface SectionItem {
   id: string;
   label: string;
   icon: React.ReactNode;
 }
 
+/**
+ * Sidebar section containing multiple items.
+ */
 interface Section {
   id: string;
   label: string;
@@ -21,7 +30,13 @@ interface Section {
   items: SectionItem[];
 }
 
+/**
+ * Left sidebar navigation component.
+ * Organizes properties and purchase criteria by investment strategy.
+ * Provides quick access to add properties and view criteria for each strategy.
+ */
 const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange, onItemClick, onAddProperty }) => {
+  // Define sidebar sections for each investment strategy
   const sections: Section[] = [
     {
       id: "rentals",
@@ -79,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange, onIte
                 className="add-button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  // Map section ID to strategy
+                  // Map section ID to corresponding strategy type
                   const strategyMap: { [key: string]: 'rental' | 'brrrr' | 'flip' | 'wholesale' } = {
                     'rentals': 'rental',
                     'brrrr': 'brrrr',
