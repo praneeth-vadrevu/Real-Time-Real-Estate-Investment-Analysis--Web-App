@@ -1,0 +1,27 @@
+var AuthContext_8tsx =
+[
+    [ "__pad0__", "AuthContext_8tsx.html#a042fcbb3115ab4b241642941c4b6158d", null ],
+    [ "__pad1__", "AuthContext_8tsx.html#a3fe8f9bad70c6ac26acde3dab4f057ed", null ],
+    [ "__pad2__", "AuthContext_8tsx.html#a92e06c270def26b5026d777ec6a76732", null ],
+    [ "__pad3__", "AuthContext_8tsx.html#a483ba76c890b0248f6de9bc2ce150567", null ],
+    [ "__pad4__", "AuthContext_8tsx.html#a96216174c4c961db309dc831464e0025", null ],
+    [ "__pad5__", "AuthContext_8tsx.html#aaebd84f467cf9ed89cad89d18c9fd378", null ],
+    [ "__pad6__", "AuthContext_8tsx.html#afc68b4dd65e92ff1f2d92137cd5472f9", null ],
+    [ "__pad7__", "AuthContext_8tsx.html#aa80fabbb96f952675cfca5f3af699395", null ],
+    [ "__pad8__", "AuthContext_8tsx.html#a60d1117f130d2535137d90737948d39c", null ],
+    [ "AuthContext", "AuthContext_8tsx.html#a27345d9fb97d91cdd1519c3a4ae7e8c9", null ],
+    [ "AuthProvider", "AuthContext_8tsx.html#a3ee36253df57b78be625cd44405e6bdb", null ],
+    [ "browseAsGuest", "AuthContext_8tsx.html#a7a24cdea8f6ba71bb277bdc86dc0a23d", null ],
+    [ "const", "AuthContext_8tsx.html#acb76161017b6bd47b88e9cc34df713f8", null ],
+    [ "isAuthenticated", "AuthContext_8tsx.html#ac977a248613bc069df1b87c04b00187c", null ],
+    [ "isGuest", "AuthContext_8tsx.html#a1415d56fe1e73905f415142277f174da", null ],
+    [ "isLoading", "AuthContext_8tsx.html#a97071b60fb868736e05dfc41ed7d082b", null ],
+    [ "login", "AuthContext_8tsx.html#aef53e23ac099a3f2503a3853cfda3837", null ],
+    [ "logout", "AuthContext_8tsx.html#ac58f9f4a8ef34442df9995488aea6573", null ],
+    [ "React", "AuthContext_8tsx.html#a8e6a862a904cf8b07c69fae7c44a1a04", null ],
+    [ "return< AuthContext.Provider value={value}>", "AuthContext_8tsx.html#a7fe3b2afc7fefdbdca5eaf69a255df07", null ],
+    [ "setUser", "AuthContext_8tsx.html#ac52545577b9a1f9ea8c52bae95b2d58b", null ],
+    [ "useAuth", "AuthContext_8tsx.html#a08276290a55215e58d2ce1803ffae8bf", null ],
+    [ "User", "AuthContext_8tsx.html#acb750528b68de289ffb8a4a831f2bb25", null ],
+    [ "value", "AuthContext_8tsx.html#a55f5cd032aff14fdd4c1fe5e0fb4603a", null ]
+];

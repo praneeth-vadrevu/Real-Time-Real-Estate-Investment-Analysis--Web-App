@@ -14,21 +14,40 @@ OUTPUT_DIRECTORY       = ./docs
 # Build Settings
 #---------------------------------------------------------------------------
 EXTRACT_ALL            = YES
-EXTRACT_PRIVATE        = YES
+EXTRACT_PRIVATE        = NO
 EXTRACT_STATIC         = YES
 EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_LOCAL_METHODS  = YES
 RECURSIVE              = YES
+HIDE_UNDOC_MEMBERS     = NO
+HIDE_UNDOC_CLASSES     = NO
+CASE_SENSE_NAMES       = YES
+SHOW_HEADERFILE        = YES
+SHOW_INCLUDE_FILES     = YES
+SORT_MEMBER_DOCS       = YES
+SORT_BRIEF_DOCS        = NO
+SORT_MEMBERS_CTORS_1ST = NO
 
 #---------------------------------------------------------------------------
 # Input Settings
 #---------------------------------------------------------------------------
 INPUT                  = ./googlemapv2/src/main/java \
                          ./cashflow-calculator \
-                         ./zillow\ api \
                          ./real-time-real-estate-analyzer/real-time-analyzer/src
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.java *.tsx *.ts *.js
-EXCLUDE_PATTERNS       = */node_modules/* */target/* */.git/* */build/* *.test.* *.spec.*
+FILE_PATTERNS          = *.java \
+                         *.tsx \
+                         *.ts \
+                         *.js
+EXCLUDE_PATTERNS       = */node_modules/* \
+                         */target/* \
+                         */.git/* \
+                         */build/* \
+                         *.test.* \
+                         *.spec.* \
+                         */__tests__/* \
+                         */test/* \
+                         */tests/*
 
 #---------------------------------------------------------------------------
 # Source Browsing
@@ -36,8 +55,9 @@ EXCLUDE_PATTERNS       = */node_modules/* */target/* */.git/* */build/* *.test.*
 SOURCE_BROWSER         = YES
 INLINE_SOURCES         = NO
 STRIP_CODE_COMMENTS    = YES
-REFERENCED_BY_RELATION = YES
-REFERENCES_RELATION    = YES
+REFERENCED_BY_RELATION = NO
+REFERENCES_RELATION    = NO
+REFERENCES_LINK_SOURCE = YES
 
 #---------------------------------------------------------------------------
 # Output Formats
@@ -51,34 +71,79 @@ GENERATE_RTF           = NO
 # HTML Output Settings
 #---------------------------------------------------------------------------
 HTML_OUTPUT            = html
-HTML_FILE_EXTENSION    = .docs
-HTML_COLORSTYLE        = AUTO_LIGHT
+HTML_FILE_EXTENSION    = .html
+HTML_COLORSTYLE_HUE    = 220
+HTML_COLORSTYLE_SAT    = 100
+HTML_COLORSTYLE_GAMMA  = 80
 HTML_TIMESTAMP         = YES
 HTML_DYNAMIC_MENUS     = YES
-HTML_DYNAMIC_SECTIONS  = YES
+HTML_DYNAMIC_SECTIONS  = NO
 GENERATE_TREEVIEW      = YES
 TREEVIEW_WIDTH         = 250
+SEARCHENGINE           = YES
+SERVER_BASED_SEARCH    = NO
+EXTERNAL_SEARCH        = NO
+
+#---------------------------------------------------------------------------
+# Preprocessor Settings
+#---------------------------------------------------------------------------
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = NO
+EXPAND_ONLY_PREDEF     = NO
+SEARCH_INCLUDES        = YES
+SKIP_FUNCTION_MACROS   = YES
 
 #---------------------------------------------------------------------------
 # Diagram Settings
 #---------------------------------------------------------------------------
 HAVE_DOT               = NO
 CLASS_DIAGRAMS         = YES
+CLASS_GRAPH            = YES
 COLLABORATION_GRAPH    = NO
-INCLUDE_GRAPH          = NO
-INCLUDED_BY_GRAPH      = NO
+GROUP_GRAPHS           = YES
+UML_LOOK               = NO
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES
 CALL_GRAPH             = NO
 CALLER_GRAPH           = NO
-
-#---------------------------------------------------------------------------
-# Preprocessing
-#---------------------------------------------------------------------------
-ENABLE_PREPROCESSING   = YES
-JAVADOC_AUTOBRIEF      = YES
-QT_AUTOBRIEF           = YES
+GRAPHICAL_HIERARCHY    = YES
+DIRECTORY_GRAPH        = YES
+DOT_IMAGE_FORMAT       = png
+DOT_GRAPH_MAX_NODES    = 50
+MAX_DOT_GRAPH_DEPTH    = 0
+GENERATE_LEGEND        = YES
+DOT_CLEANUP            = YES
 
 #---------------------------------------------------------------------------
 # Language Settings
 #---------------------------------------------------------------------------
-OUTPUT_LANGUAGE        = English
+OPTIMIZE_OUTPUT_JAVA   = YES
 EXTENSION_MAPPING      = tsx=Javascript ts=Javascript
+MARKDOWN_SUPPORT       = YES
+AUTOLINK_SUPPORT       = YES
+
+#---------------------------------------------------------------------------
+# JavaDoc Settings
+#---------------------------------------------------------------------------
+JAVADOC_AUTOBRIEF      = YES
+QT_AUTOBRIEF           = NO
+INHERIT_DOCS           = YES
+SEPARATE_MEMBER_PAGES  = NO
+TAB_SIZE               = 4
+
+#---------------------------------------------------------------------------
+# Warnings
+#---------------------------------------------------------------------------
+QUIET                  = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_IF_INCOMPLETE_DOC = YES
+WARN_NO_PARAMDOC       = NO
+WARN_AS_ERROR          = NO
+WARN_FORMAT            = "$file:$line: $text"
+
+#---------------------------------------------------------------------------
+# Configuration File Version
+#---------------------------------------------------------------------------
+DOXYFILE_ENCODING      = UTF-8

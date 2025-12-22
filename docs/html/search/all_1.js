@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['accounting_0',['accounting',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#a52802c009c8d219bd0436e96fa44e67e',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['activepage_1',['activePage',['../Navbar_8tsx.html#ad34ea080ff553ad3ba498f4cd23c089a',1,'Navbar.tsx']]],
+  ['addcorsmappings_2',['addCorsMappings',['../classcom_1_1example_1_1map_1_1config_1_1CorsConfig.html#a62497a0e27bb3f0fe2e67154bba32318',1,'com::example::map::config::CorsConfig']]],
+  ['addproperty_3',['addProperty',['../PropertiesContext_8tsx.html#a202ddeee7cc67bd0c1bd1779ac50b232',1,'PropertiesContext.tsx']]],
+  ['address_4',['address',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#a234ab5364632db383a165956a5404bc6',1,'com.example.analysis.dto.CashflowRequest.address'],['../classcom_1_1example_1_1realestate_1_1model_1_1EnrichedProperty.html#a0293e0ee7e51a93f3f47ec805d6fa8d1',1,'com.example.realestate.model.EnrichedProperty.address'],['../classcom_1_1example_1_1realestate_1_1model_1_1SearchCard.html#a1c972e943fc0fc1465ee72da44176c39',1,'com.example.realestate.model.SearchCard.address']]],
+  ['advertising_5',['advertising',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#af36660537e5843772d49b6936fe8e7a9',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['analyze_6',['analyze',['../classcom_1_1example_1_1analysis_1_1controller_1_1CashflowController.html#af41d28b8effab8a845019a8f1b56acc2',1,'com.example.analysis.controller.CashflowController.analyze()'],['../classcom_1_1example_1_1analysis_1_1service_1_1CashflowService.html#a37b6d6812a060c756dbfd3b1591e026f',1,'com.example.analysis.service.CashflowService.analyze()'],['../classcom_1_1example_1_1analysis_1_1controller_1_1CashflowController.html#af228e6f1fe8f67f796c2add98c8e4120',1,'com.example.analysis.controller.CashflowController.analyze()'],['../classcom_1_1example_1_1analysis_1_1service_1_1CashflowService.html#a37b6d6812a060c756dbfd3b1591e026f',1,'com.example.analysis.service.CashflowService.analyze()']]],
+  ['annualappreciation_7',['annualAppreciation',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#a26156358afa6f477f0216bedc08b07d0',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['annualdebtservicey1_8',['annualDebtServiceY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1Summary.html#a8baabcbbb9f3027e94ee1c6b23708196',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['annualtax_9',['annualTax',['../classcom_1_1example_1_1realestate_1_1model_1_1EnrichedProperty.html#a3de99b783a4bfaeff1db283d23d3e037',1,'com::example::realestate::model::EnrichedProperty']]],
+  ['app_10',['App',['../App_8tsx.html#a912a4174d0964c777b84f95e11e177b6',1,'App:&#160;App.tsx'],['../index_8tsx.html#ae00ecbae69e5fdd2da4bce4c56bde9b8',1,'App:&#160;index.tsx']]],
+  ['app_2etsx_11',['App.tsx',['../App_8tsx.html',1,'']]],
+  ['appcontent_12',['AppContent',['../App_8tsx.html#a5c4cc114cd4e848ffc57d8511f4b12df',1,'App.tsx']]],
+  ['application_13',['Application',['../classcom_1_1example_1_1map_1_1Application.html',1,'com::example::map']]],
+  ['application_2ejava_14',['Application.java',['../Application_8java.html',1,'']]],
+  ['appraisals_15',['appraisals',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#aacc7d55e80d690cb49045b54a6a417fa',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['appreciationroiy1_16',['appreciationROIY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1Summary.html#af5f8214e40334dafb75f428abb7f6091',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['associationfees_17',['associationFees',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#a189bdc9ff0c9a7d675f07481a7598cea',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['authcontext_18',['AuthContext',['../AuthContext_8tsx.html#a27345d9fb97d91cdd1519c3a4ae7e8c9',1,'AuthContext.tsx']]],
+  ['authcontext_2etsx_19',['AuthContext.tsx',['../AuthContext_8tsx.html',1,'']]],
+  ['authpage_20',['AuthPage',['../App_8tsx.html#a9dd5a062cbeb1825fee7734204ee757b',1,'AuthPage:&#160;App.tsx'],['../AuthPage_8tsx.html#a67490f458345e3c052e6069f6dc89e36',1,'AuthPage({ onAuthSuccess }:AuthPageProps):&#160;AuthPage.tsx']]],
+  ['authpage_2etsx_21',['AuthPage.tsx',['../AuthPage_8tsx.html',1,'']]],
+  ['authprovider_22',['AuthProvider',['../AuthContext_8tsx.html#a3ee36253df57b78be625cd44405e6bdb',1,'AuthContext.tsx']]],
+  ['avgrentperunity1_23',['avgRentPerUnitY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1Summary.html#a98f794cbebf846c1457c20d59b9ad9ed',1,'com::example::analysis::dto::CashflowResponse::Summary']]]
+];
