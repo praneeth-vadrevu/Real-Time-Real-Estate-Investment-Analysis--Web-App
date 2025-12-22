@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Real-Time Real Estate Investment Analysis: Main Page</title>
+<title>Real-Time Real Estate Investment Analysis: Real-Time Real Estate Investment Analysis - Code Documentation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -88,10 +88,571 @@ $(function(){initNavTree('index.html','',''); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">Real-Time Real Estate Investment Analysis Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">Real-Time Real Estate Investment Analysis - Code Documentation </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_MAIN__PAGE"></a></p>
+<p>Welcome to the comprehensive code documentation for the Real-Time Real Estate Investment Analysis web application. This documentation provides detailed information about the codebase, architecture, components, and APIs.</p>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
+Project Overview</h1>
+<p>The Real-Time Real Estate Investment Analysis application is a full-stack web platform designed to help real estate investors analyze investment opportunities efficiently. The application enables users to search for properties, perform detailed financial analysis, compare multiple deals, and generate comprehensive investment reports.</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
+Key Capabilities</h2>
+<ul>
+<li><b>Property Search</b>: Search and discover properties across the United States using live Zillow data</li>
+<li><b>Investment Analysis</b>: Calculate comprehensive financial metrics including cashflow, cap rates, IRR, and equity multiples</li>
+<li><b>Multi-Strategy Support</b>: Analyze properties using four different investment strategies (Rental, BRRRR, Flip, Wholesale)</li>
+<li><b>Property Comparison</b>: Side-by-side comparison of multiple properties with detailed metrics</li>
+<li><b>Interactive Maps</b>: Visualize properties on interactive MapBox maps with geocoding support</li>
+<li><b>Report Generation</b>: Generate detailed HTML investment analysis reports</li>
+<li><b>User Management</b>: Google OAuth authentication with guest mode support</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+System Architecture</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
+Application Structure</h2>
+<p>The application follows a client-server architecture with clear separation of concerns:</p>
+<div class="fragment"><div class="line">┌─────────────────────────────────────────────────────────────┐</div>
+<div class="line">│                    Frontend (React)                          │</div>
+<div class="line">│  Port: 3000                                                  │</div>
+<div class="line">│  - User Interface Components                                 │</div>
+<div class="line">│  - State Management (Context API)                           │</div>
+<div class="line">│  - MapBox Integration                                       │</div>
+<div class="line">│  - Google OAuth                                              │</div>
+<div class="line">└──────────────────────┬──────────────────────────────────────┘</div>
+<div class="line">                       │ REST API (JSON)</div>
+<div class="line">                       │</div>
+<div class="line">┌──────────────────────▼──────────────────────────────────────┐</div>
+<div class="line">│                  Backend (Spring Boot)                      │</div>
+<div class="line">│  Port: 8080                                                  │</div>
+<div class="line">│  - REST Controllers                                          │</div>
+<div class="line">│  - Business Logic Services                                   │</div>
+<div class="line">│  - Data Models and DTOs                                      │</div>
+<div class="line">└──────────────────────┬──────────────────────────────────────┘</div>
+<div class="line">                       │ HTTPS</div>
+<div class="line">                       │</div>
+<div class="line">┌──────────────────────▼──────────────────────────────────────┐</div>
+<div class="line">│              External APIs                                  │</div>
+<div class="line">│  - Zillow API (via RapidAPI)                                │</div>
+<div class="line">│  - Google API 31 (via RapidAPI)                             │</div>
+<div class="line">│  - MapBox API (direct from frontend)                        │</div>
+<div class="line">└─────────────────────────────────────────────────────────────┘</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
+Technology Stack</h2>
+<p><b>Frontend Technologies:</b></p><ul>
+<li>React 19.2.0 - UI library for building user interfaces</li>
+<li>TypeScript 4.9.5 - Type-safe JavaScript development</li>
+<li>Create React App 5.0.1 - Build tooling and development environment</li>
+<li>MapBox GL JS 3.16.0 - Interactive map visualization</li>
+<li>react-map-gl 8.1.0 - React wrapper for MapBox</li>
+<li>@react-oauth/google 0.12.2 - Google OAuth integration</li>
+<li>react-icons 5.5.0 - Icon library</li>
+</ul>
+<p><b>Backend Technologies:</b></p><ul>
+<li>Spring Boot 3.2.0 - Java application framework</li>
+<li>Java 17 - Programming language</li>
+<li>Maven 3.8+ - Build and dependency management</li>
+<li>Jackson 2.15.x - JSON processing</li>
+<li>Java HttpClient - HTTP client for API calls</li>
+</ul>
+<p><b>External Services:</b></p><ul>
+<li>Zillow API (via RapidAPI) - Property data and search</li>
+<li>Google API 31 (via RapidAPI) - Geocoding and place search</li>
+<li>MapBox API - Map display and geocoding (frontend)</li>
+<li>Google OAuth - User authentication</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
+Backend Architecture</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
+Package Structure</h2>
+<p>The backend is organized into three main packages:</p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
+1. com.example.map</h3>
+<p><b>Location</b>: <span class="tt">googlemapv2/src/main/java/com/example/map/</span></p>
+<p>Core application components and geocoding services:</p><ul>
+<li><b><a class="el" href="Application_8java.html">Application.java</a></b>: Main Spring Boot application entry point</li>
+<li><b><a class="el" href="CorsConfig_8java.html">config/CorsConfig.java</a></b>: CORS configuration for frontend access</li>
+<li><b><a class="el" href="GeoController_8java.html">geo/GeoController.java</a></b>: REST endpoints for geocoding services</li>
+<li><b><a class="el" href="GoogleApi31Service_8java.html">geo/GoogleApi31Service.java</a></b>: Service for Google API 31 integration</li>
+</ul>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
+2. com.example.realestate</h3>
+<p><b>Location</b>: <span class="tt">googlemapv2/src/main/java/com/example/realestate/</span></p>
+<p>Property search and data management:</p><ul>
+<li><b><a class="el" href="PropertyController_8java.html">controller/PropertyController.java</a></b>: REST endpoints for property search and details</li>
+<li><b><a class="el" href="EnrichedProperty_8java.html">model/EnrichedProperty.java</a></b>: Comprehensive property data model</li>
+<li><b><a class="el" href="SearchCard_8java.html">model/SearchCard.java</a></b>: Property search result model</li>
+<li><b><a class="el" href="ZillowService_8java.html">service/ZillowService.java</a></b>: Zillow API integration and data enrichment</li>
+</ul>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
+3. com.example.analysis</h3>
+<p><b>Location</b>: <span class="tt">googlemapv2/src/main/java/com/example/analysis/</span></p>
+<p>Investment analysis and financial calculations:</p><ul>
+<li><b><a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2controller_2CashflowController_8java.html">controller/CashflowController.java</a></b>: REST endpoints for cashflow analysis</li>
+<li><b><a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2CashflowRequest_8java.html">dto/CashflowRequest.java</a></b>: Input DTO for analysis requests</li>
+<li><b><a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2dto_2CashflowResponse_8java.html">dto/CashflowResponse.java</a></b>: Output DTO with analysis results</li>
+<li><b><a class="el" href="googlemapv2_2src_2main_2java_2com_2example_2analysis_2service_2CashflowService_8java.html">service/CashflowService.java</a></b>: Core financial calculation engine</li>
+</ul>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md14"></a>
+4. cashflow-calculator</h3>
+<p><b>Location</b>: <span class="tt">cashflow-calculator/</span></p>
+<p>Standalone cashflow calculator module:</p><ul>
+<li><b>CashflowService.java</b>: Financial calculation service</li>
+<li><b>CashflowController.java</b>: REST controller</li>
+<li><b>CashflowRequest.java</b>: Request DTO</li>
+<li><b>CashflowResponse.java</b>: Response DTO</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
+Backend API Endpoints</h2>
+<p><b>Property Endpoints:</b></p><ul>
+<li><span class="tt">GET /api/properties/search</span> - Search properties by location</li>
+<li><span class="tt">GET /api/properties/{zpid}</span> - Get detailed property information</li>
+</ul>
+<p><b>Analysis Endpoints:</b></p><ul>
+<li><span class="tt">POST /api/analysis/cashflow</span> - Perform cashflow analysis</li>
+</ul>
+<p><b>Geocoding Endpoints:</b></p><ul>
+<li><span class="tt">GET /api/geo/text</span> - Text-based place search</li>
+<li><span class="tt">GET /api/geo/circle</span> - Radius-based location search</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
+Key Backend Components</h2>
+<p><b>CashflowService</b>: Core financial calculation engine that performs:</p><ul>
+<li>Net Operating Income (NOI) calculations</li>
+<li>Debt service calculations with amortization</li>
+<li>Cap rate analysis (Purchase Price and Fair Market Value)</li>
+<li>Cash-on-Cash return calculations</li>
+<li>Internal Rate of Return (IRR) using Newton-Raphson method</li>
+<li>Multi-year cashflow projections</li>
+<li>Equity multiple calculations</li>
+</ul>
+<p><b>ZillowService</b>: Handles all Zillow API interactions:</p><ul>
+<li>Property search by location</li>
+<li>Property detail retrieval</li>
+<li>Data enrichment from multiple API endpoints</li>
+<li>Response parsing and normalization</li>
+</ul>
+<p><b>GoogleApi31Service</b>: Provides geocoding capabilities:</p><ul>
+<li>Address to coordinates conversion</li>
+<li>Place search functionality</li>
+<li>Location-based queries</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md18"></a>
+Frontend Architecture</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md19"></a>
+Component Structure</h2>
+<p>The frontend is organized into logical component groups:</p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md20"></a>
+Page Components</h3>
+<p><b>Location</b>: <span class="tt">real-time-real-estate-analyzer/real-time-analyzer/src/components/</span></p>
+<ul>
+<li><b><a class="el" href="AuthPage_8tsx.html">AuthPage.tsx</a></b>: Authentication page with Google OAuth and guest mode</li>
+<li><b><a class="el" href="Dashboard_8tsx.html">Dashboard.tsx</a></b>: Main property portfolio dashboard with list and map views</li>
+<li><b><a class="el" href="SearchPage_8tsx.html">SearchPage.tsx</a></b>: Property search interface with backend integration</li>
+<li><b><a class="el" href="PropertyForm_8tsx.html">PropertyForm.tsx</a></b>: Comprehensive property data input and analysis form</li>
+<li><b><a class="el" href="PropertyReportViewer_8tsx.html">PropertyReportViewer.tsx</a></b>: Investment report display and export</li>
+<li><b><a class="el" href="PropertyComparison_8tsx.html">PropertyComparison.tsx</a></b>: Side-by-side property comparison tool</li>
+</ul>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md21"></a>
+Layout Components</h3>
+<ul>
+<li><b><a class="el" href="Navbar_8tsx.html">Navbar.tsx</a></b>: Top navigation bar with user menu and navigation links</li>
+<li><b><a class="el" href="Sidebar_8tsx.html">Sidebar.tsx</a></b>: Left sidebar navigation organized by investment strategy</li>
+<li><b><a class="el" href="Footer_8tsx.html">Footer.tsx</a></b>: Application footer with developer credits</li>
+<li><b><a class="el" href="MainContent_8tsx.html">MainContent.tsx</a></b>: Main content area for property management</li>
+</ul>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md22"></a>
+Feature Components</h3>
+<ul>
+<li><b><a class="el" href="PropertyMap_8tsx.html">PropertyMap.tsx</a></b>: Interactive MapBox map with property markers</li>
+<li><b><a class="el" href="PropertySearch_8tsx.html">PropertySearch.tsx</a></b>: Property search component with autocomplete</li>
+<li><b><a class="el" href="PropertyPopup_8tsx.html">PropertyPopup.tsx</a></b>: Property detail popup modal</li>
+<li><b><a class="el" href="PurchaseCriteriaForm_8tsx.html">PurchaseCriteriaForm.tsx</a></b>: Investment criteria configuration form</li>
+</ul>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md23"></a>
+Context Providers</h3>
+<p><b>Location</b>: <span class="tt">real-time-real-estate-analyzer/real-time-analyzer/src/context/</span></p>
+<ul>
+<li><b><a class="el" href="AuthContext_8tsx.html">AuthContext.tsx</a></b>: Manages user authentication state and Google OAuth</li>
+<li><b><a class="el" href="PropertiesContext_8tsx.html">PropertiesContext.tsx</a></b>: Manages saved properties collection and CRUD operations</li>
+</ul>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md24"></a>
+Utility Functions</h3>
+<p><b>Location</b>: <span class="tt">real-time-real-estate-analyzer/real-time-analyzer/src/utils/</span></p>
+<ul>
+<li><b><a class="el" href="cashflowApi_8ts.html">cashflowApi.ts</a></b>: Backend API integration for cashflow analysis</li>
+<li><b><a class="el" href="reportGenerator_8ts.html">reportGenerator.ts</a></b>: HTML report generation and export functionality</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
+Frontend State Management</h2>
+<p>The application uses React Context API for global state:</p>
+<p><b>AuthContext</b> provides:</p><ul>
+<li>User authentication state</li>
+<li>Login/logout functionality</li>
+<li>Guest mode support</li>
+<li>Session persistence via localStorage</li>
+</ul>
+<p><b>PropertiesContext</b> provides:</p><ul>
+<li>Saved properties collection</li>
+<li>Add, update, delete operations</li>
+<li>Property shortlisting</li>
+<li>Strategy-based filtering</li>
+<li>LocalStorage persistence</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md26"></a>
+Frontend API Integration</h2>
+<p>The frontend communicates with the backend via REST API:</p>
+<p><b>Base URL</b>: <span class="tt"><a href="http://localhost:8080">http://localhost:8080</a></span></p>
+<p><b>Key API Calls:</b></p><ul>
+<li>Property search: <span class="tt">GET /api/properties/search?location={location}&amp;status={status}</span></li>
+<li>Property details: <span class="tt">GET /api/properties/{zpid}</span></li>
+<li>Cashflow analysis: <span class="tt">POST /api/analysis/cashflow</span></li>
+</ul>
+<p><b>External API Integrations:</b></p><ul>
+<li>MapBox API: Direct integration for map display and geocoding</li>
+<li>Google OAuth: Direct integration for user authentication</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md28"></a>
+Investment Strategies</h1>
+<p>The application supports four distinct investment strategies, each with specific analysis parameters:</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md29"></a>
+1. Rental Strategy</h2>
+<p>Long-term buy-and-hold properties for consistent cashflow:</p><ul>
+<li>Focus on monthly cashflow and cap rates</li>
+<li>Long-term holding period analysis</li>
+<li>Rental income optimization</li>
+<li>Property appreciation tracking</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md30"></a>
+2. BRRRR Strategy</h2>
+<p>Buy, Rehab, Rent, Refinance, Repeat method:</p><ul>
+<li>Initial purchase and rehab costs</li>
+<li>Refinancing calculations</li>
+<li>Repeat investment analysis</li>
+<li>Equity extraction metrics</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md31"></a>
+3. Flip Strategy</h2>
+<p>Buy, renovate, and sell for profit:</p><ul>
+<li>Purchase and rehab costs</li>
+<li>After Repair Value (ARV) analysis</li>
+<li>Profit margin calculations</li>
+<li>Time-to-sale considerations</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md32"></a>
+4. Wholesale Strategy</h2>
+<p>Assign contracts to other investors:</p><ul>
+<li>Assignment fee calculations</li>
+<li>Quick turnaround analysis</li>
+<li>Contract terms evaluation</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md34"></a>
+Financial Calculations</h1>
+<p>The application performs comprehensive financial analysis:</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md35"></a>
+Year 1 Metrics</h2>
+<ul>
+<li><b>Net Operating Income (NOI)</b>: Effective Gross Income minus Total Expenses</li>
+<li><b>Cap Rate</b>: NOI divided by Purchase Price or Fair Market Value</li>
+<li><b>Debt Service Coverage Ratio (DSCR)</b>: NOI divided by Annual Debt Service</li>
+<li><b>Cash-on-Cash Return</b>: Annual Cash Flow divided by Cash Required to Close</li>
+<li><b>Gross Rent Multiplier (GRM)</b>: Purchase Price divided by Annual Gross Rents</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md36"></a>
+Multi-Year Projections</h2>
+<ul>
+<li>Annual income and expense growth</li>
+<li>Loan balance tracking</li>
+<li>Property appreciation</li>
+<li>Cashflow projections</li>
+<li>Equity accumulation</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
+Exit Metrics</h2>
+<ul>
+<li><b>Internal Rate of Return (IRR)</b>: Calculated using Newton-Raphson method</li>
+<li><b>Equity Multiple</b>: Total distributions divided by initial investment</li>
+<li><b>Net Sale Proceeds</b>: Sale price minus costs and remaining loan balance</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
+Documentation Navigation</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
+Using This Documentation</h2>
+<p><b>Main Navigation Menu:</b></p><ul>
+<li><b>Main Page</b>: This overview page</li>
+<li><b>Classes</b>: Browse all documented classes and interfaces</li>
+<li><b>Files</b>: Browse all source files organized by directory</li>
+<li><b>Namespaces</b>: Java package organization (backend only)</li>
+<li><b>Search</b>: Search for specific classes, methods, or files</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
+Finding Specific Information</h2>
+<p><b>Backend Classes:</b></p><ul>
+<li>Navigate to <b>Classes</b> → Filter by namespace (e.g., <span class="tt">com.example.analysis</span>)</li>
+<li>Or use <b>Search</b> to find specific class names</li>
+</ul>
+<p><b>Frontend Components:</b></p><ul>
+<li>Navigate to <b>Files</b> → Expand <span class="tt">real-time-real-estate-analyzer/real-time-analyzer/src/components/</span></li>
+<li>Or use <b>Search</b> to find component names</li>
+</ul>
+<p><b>API Endpoints:</b></p><ul>
+<li>Check controller classes in <span class="tt">com.example.*.controller</span> packages</li>
+<li>Look for methods annotated with <span class="tt">@GetMapping</span> or <span class="tt">@PostMapping</span></li>
+</ul>
+<p><b>Financial Calculations:</b></p><ul>
+<li>Review <span class="tt">CashflowService</span> class documentation</li>
+<li>Check method documentation for calculation formulas</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
+Code Organization</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
+Backend Code Structure</h2>
+<div class="fragment"><div class="line">googlemapv2/src/main/java/com/example/</div>
+<div class="line">├── map/                    # Application core</div>
+<div class="line">│   ├── Application.java</div>
+<div class="line">│   ├── config/</div>
+<div class="line">│   │   └── CorsConfig.java</div>
+<div class="line">│   └── geo/</div>
+<div class="line">│       ├── GeoController.java</div>
+<div class="line">│       └── GoogleApi31Service.java</div>
+<div class="line">├── realestate/             # Property domain</div>
+<div class="line">│   ├── controller/</div>
+<div class="line">│   │   └── PropertyController.java</div>
+<div class="line">│   ├── model/</div>
+<div class="line">│   │   ├── EnrichedProperty.java</div>
+<div class="line">│   │   └── SearchCard.java</div>
+<div class="line">│   └── service/</div>
+<div class="line">│       └── ZillowService.java</div>
+<div class="line">└── analysis/               # Investment analysis</div>
+<div class="line">    ├── controller/</div>
+<div class="line">    │   └── CashflowController.java</div>
+<div class="line">    ├── dto/</div>
+<div class="line">    │   ├── CashflowRequest.java</div>
+<div class="line">    │   └── CashflowResponse.java</div>
+<div class="line">    └── service/</div>
+<div class="line">        └── CashflowService.java</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md45"></a>
+Frontend Code Structure</h2>
+<div class="fragment"><div class="line">real-time-real-estate-analyzer/real-time-analyzer/src/</div>
+<div class="line">├── components/             # React components</div>
+<div class="line">│   ├── AuthPage.tsx</div>
+<div class="line">│   ├── Dashboard.tsx</div>
+<div class="line">│   ├── SearchPage.tsx</div>
+<div class="line">│   ├── PropertyForm.tsx</div>
+<div class="line">│   ├── PropertyMap.tsx</div>
+<div class="line">│   ├── PropertyReportViewer.tsx</div>
+<div class="line">│   ├── PropertyComparison.tsx</div>
+<div class="line">│   ├── Navbar.tsx</div>
+<div class="line">│   ├── Sidebar.tsx</div>
+<div class="line">│   └── ...</div>
+<div class="line">├── context/                # State management</div>
+<div class="line">│   ├── AuthContext.tsx</div>
+<div class="line">│   └── PropertiesContext.tsx</div>
+<div class="line">├── utils/                  # Utility functions</div>
+<div class="line">│   ├── cashflowApi.ts</div>
+<div class="line">│   └── reportGenerator.ts</div>
+<div class="line">├── App.tsx                 # Main application</div>
+<div class="line">└── index.tsx               # Entry point</div>
+</div><!-- fragment --><hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md47"></a>
+Key Classes and Components</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md48"></a>
+Backend Key Classes</h2>
+<p><b>CashflowService</b></p><ul>
+<li>Core financial calculation engine</li>
+<li>Implements investment analysis algorithms</li>
+<li>Calculates NOI, cap rates, IRR, and multi-year projections</li>
+<li>Location: <span class="tt"><a class="el" href="classcom_1_1example_1_1analysis_1_1service_1_1CashflowService.html" title="Core calculator for investment cashflow (before tax).">com.example.analysis.service.CashflowService</a></span></li>
+</ul>
+<p><b>ZillowService</b></p><ul>
+<li>Zillow API integration service</li>
+<li>Handles property search and data enrichment</li>
+<li>Aggregates data from multiple API endpoints</li>
+<li>Location: <span class="tt"><a class="el" href="classcom_1_1example_1_1realestate_1_1service_1_1ZillowService.html">com.example.realestate.service.ZillowService</a></span></li>
+</ul>
+<p><b>PropertyController</b></p><ul>
+<li>REST API endpoints for property operations</li>
+<li>Handles search and detail retrieval requests</li>
+<li>Location: <span class="tt"><a class="el" href="classcom_1_1example_1_1realestate_1_1controller_1_1PropertyController.html">com.example.realestate.controller.PropertyController</a></span></li>
+</ul>
+<p><b>CashflowController</b></p><ul>
+<li>REST API endpoints for investment analysis</li>
+<li>Accepts analysis requests and returns calculated metrics</li>
+<li>Location: <span class="tt"><a class="el" href="classcom_1_1example_1_1analysis_1_1controller_1_1CashflowController.html" title="REST controller for cashflow analysis endpoints.">com.example.analysis.controller.CashflowController</a></span></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md49"></a>
+Frontend Key Components</h2>
+<p><b><a class="el" href="App_8tsx.html">App.tsx</a></b></p><ul>
+<li>Main application component</li>
+<li>Handles routing and page navigation</li>
+<li>Wraps application with context providers</li>
+<li>Location: <span class="tt"><a class="el" href="App_8tsx.html">src/App.tsx</a></span></li>
+</ul>
+<p><b><a class="el" href="Dashboard_8tsx.html">Dashboard.tsx</a></b></p><ul>
+<li>Main property portfolio view</li>
+<li>Displays saved properties in list and map formats</li>
+<li>Provides filtering and search capabilities</li>
+<li>Location: <span class="tt"><a class="el" href="Dashboard_8tsx.html">src/components/Dashboard.tsx</a></span></li>
+</ul>
+<p><b><a class="el" href="PropertyForm_8tsx.html">PropertyForm.tsx</a></b></p><ul>
+<li>Comprehensive property data input form</li>
+<li>Supports multiple investment strategies</li>
+<li>Triggers cashflow analysis</li>
+<li>Generates investment reports</li>
+<li>Location: <span class="tt"><a class="el" href="PropertyForm_8tsx.html">src/components/PropertyForm.tsx</a></span></li>
+</ul>
+<p><b><a class="el" href="PropertyMap_8tsx.html">PropertyMap.tsx</a></b></p><ul>
+<li>Interactive MapBox map component</li>
+<li>Displays property markers</li>
+<li>Handles geocoding for addresses</li>
+<li>Location: <span class="tt"><a class="el" href="PropertyMap_8tsx.html">src/components/PropertyMap.tsx</a></span></li>
+</ul>
+<p><b><a class="el" href="AuthContext_8tsx.html">AuthContext.tsx</a></b></p><ul>
+<li>Authentication state management</li>
+<li>Google OAuth integration</li>
+<li>Guest mode support</li>
+<li>Location: <span class="tt"><a class="el" href="AuthContext_8tsx.html">src/context/AuthContext.tsx</a></span></li>
+</ul>
+<p><b><a class="el" href="PropertiesContext_8tsx.html">PropertiesContext.tsx</a></b></p><ul>
+<li>Saved properties state management</li>
+<li>CRUD operations for properties</li>
+<li>LocalStorage persistence</li>
+<li>Location: <span class="tt"><a class="el" href="PropertiesContext_8tsx.html">src/context/PropertiesContext.tsx</a></span></li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md51"></a>
+Data Models</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md52"></a>
+Backend Data Models</h2>
+<p><b>EnrichedProperty</b></p><ul>
+<li>Comprehensive property data structure</li>
+<li>Aggregates data from multiple Zillow API endpoints</li>
+<li>Includes property details, estimates, images, and comparables</li>
+<li>Location: <span class="tt"><a class="el" href="classcom_1_1example_1_1realestate_1_1model_1_1EnrichedProperty.html">com.example.realestate.model.EnrichedProperty</a></span></li>
+</ul>
+<p><b>SearchCard</b></p><ul>
+<li>Lightweight property search result model</li>
+<li>Used for property search listings</li>
+<li>Location: <span class="tt"><a class="el" href="classcom_1_1example_1_1realestate_1_1model_1_1SearchCard.html">com.example.realestate.model.SearchCard</a></span></li>
+</ul>
+<p><b>CashflowRequest</b></p><ul>
+<li>Input DTO for cashflow analysis</li>
+<li>Contains all property and financial parameters</li>
+<li>Location: <span class="tt"><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html" title="Input DTO for investment cashflow analysis.">com.example.analysis.dto.CashflowRequest</a></span></li>
+</ul>
+<p><b>CashflowResponse</b></p><ul>
+<li>Output DTO with analysis results</li>
+<li>Includes summary metrics and yearly projections</li>
+<li>Location: <span class="tt"><a class="el" href="classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse.html">com.example.analysis.dto.CashflowResponse</a></span></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md53"></a>
+Frontend Data Models</h2>
+<p><b>PropertyData</b></p><ul>
+<li>Frontend property data structure</li>
+<li>Used in property forms and analysis</li>
+<li>Maps to backend CashflowRequest</li>
+<li>Location: <span class="tt"><a class="el" href="PropertyForm_8tsx.html">src/components/PropertyForm.tsx</a></span></li>
+</ul>
+<p><b>SavedProperty</b></p><ul>
+<li>Saved property structure in context</li>
+<li>Includes analysis results and metadata</li>
+<li>Location: <span class="tt"><a class="el" href="PropertiesContext_8tsx.html">src/context/PropertiesContext.tsx</a></span></li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md55"></a>
+API Documentation</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md56"></a>
+Backend REST API</h2>
+<p>All backend APIs are documented in the controller classes. Key endpoints include:</p>
+<p><b>Property Search API</b></p><ul>
+<li>Endpoint: <span class="tt">GET /api/properties/search</span></li>
+<li>Parameters: <span class="tt">location</span>, <span class="tt">status</span>, <span class="tt">page</span></li>
+<li>Returns: List of <span class="tt">SearchCard</span> objects</li>
+<li>Controller: <span class="tt">PropertyController.searchProperties()</span></li>
+</ul>
+<p><b>Property Details API</b></p><ul>
+<li>Endpoint: <span class="tt">GET /api/properties/{zpid}</span></li>
+<li>Parameters: <span class="tt">zpid</span> (Zillow Property ID)</li>
+<li>Returns: <span class="tt">EnrichedProperty</span> object</li>
+<li>Controller: <span class="tt">PropertyController.getPropertyDetails()</span></li>
+</ul>
+<p><b>Cashflow Analysis API</b></p><ul>
+<li>Endpoint: <span class="tt">POST /api/analysis/cashflow</span></li>
+<li>Body: <span class="tt"><a class="el" href="cashflowApi_8ts.html#a7196c2f85cd9353ce7d6183cf98a2a91">CashflowRequest</a></span> JSON object</li>
+<li>Returns: <span class="tt"><a class="el" href="cashflowApi_8ts.html#aee7d3f9f8462e9680b2ffc06efcc9186">CashflowResponse</a></span> with calculated metrics</li>
+<li>Controller: <span class="tt">CashflowController.analyze()</span></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md57"></a>
+Frontend API Integration</h2>
+<p>Frontend API calls are handled in utility functions:</p>
+<p><b><a class="el" href="cashflowApi_8ts.html">cashflowApi.ts</a></b></p><ul>
+<li><span class="tt">mapPropertyDataToCashflowRequest()</span>: Converts form data to API format</li>
+<li><span class="tt">analyzeCashflow()</span>: Sends analysis request to backend</li>
+<li>Location: <span class="tt"><a class="el" href="cashflowApi_8ts.html">src/utils/cashflowApi.ts</a></span></li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md59"></a>
+Development Workflow</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md60"></a>
+Generating Documentation</h2>
+<p>To regenerate this documentation after code changes:</p>
+<div class="fragment"><div class="line"># Navigate to project root</div>
+<div class="line">cd &quot;/Users/vsss/MSCS 3rdSem/CS 682/Real-Time-Real-Estate-Investment-Analysis--Web-App&quot;</div>
+<div class="line"> </div>
+<div class="line"># Generate documentation</div>
+<div class="line">doxygen Doxyfile</div>
+<div class="line"> </div>
+<div class="line"># View documentation</div>
+<div class="line">open docs/html/index.html</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md61"></a>
+Adding Documentation Comments</h2>
+<p><b>Java (Backend):</b> Use JavaDoc comments: </p><div class="fragment"><div class="line"></div>
+<div class="line"><span class="keyword">public</span> <a class="code hl_variable" href="cashflowApi_8ts.html#aee7d3f9f8462e9680b2ffc06efcc9186">CashflowResponse</a> analyze(<a class="code hl_variable" href="cashflowApi_8ts.html#a7196c2f85cd9353ce7d6183cf98a2a91">CashflowRequest</a> request) {</div>
+<div class="line">    <span class="comment">// Implementation</span></div>
+<div class="line">}</div>
+<div class="ttc" id="acashflowApi_8ts_html_a7196c2f85cd9353ce7d6183cf98a2a91"><div class="ttname"><a href="cashflowApi_8ts.html#a7196c2f85cd9353ce7d6183cf98a2a91">CashflowRequest</a></div><div class="ttdeci">export interface CashflowRequest</div><div class="ttdef"><b>Definition</b> <a href="cashflowApi_8ts_source.html#l00003">cashflowApi.ts:3</a></div></div>
+<div class="ttc" id="acashflowApi_8ts_html_aee7d3f9f8462e9680b2ffc06efcc9186"><div class="ttname"><a href="cashflowApi_8ts.html#aee7d3f9f8462e9680b2ffc06efcc9186">CashflowResponse</a></div><div class="ttdeci">export interface CashflowResponse</div><div class="ttdef"><b>Definition</b> <a href="cashflowApi_8ts_source.html#l00065">cashflowApi.ts:65</a></div></div>
+</div><!-- fragment --><p><b>TypeScript (Frontend):</b> Use JSDoc comments: </p><div class="fragment"><div class="line">/**</div>
+<div class="line"> * Handles property selection from search results.</div>
+<div class="line"> * Fetches property details and auto-fills form.</div>
+<div class="line"> * </div>
+<div class="line"> * @param zpid Zillow Property ID</div>
+<div class="line"> */</div>
+<div class="line">const handlePropertySelect = async (zpid: string) =&gt; {</div>
+<div class="line">    // Implementation</div>
+<div class="line">};</div>
+</div><!-- fragment --><hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md63"></a>
+Related Documentation</h1>
+<p>For additional information, refer to these documentation files:</p>
+<ul>
+<li><b>USER_GUIDE.md</b>: Complete user guide with setup and usage instructions</li>
+<li><b>BACKEND_DEVELOPER_GUIDE.md</b>: Detailed backend development guide</li>
+<li><b>FRONTEND_DEVELOPER_GUIDE.md</b>: Detailed frontend development guide</li>
+<li><b>BACKEND_USER_GUIDE.md</b>: Backend-specific user guide</li>
+<li><b>FRONTEND_USER_GUIDE.md</b>: Frontend-specific user guide</li>
+<li><b>APPLICATION_WORKFLOW.md</b>: Complete application workflow documentation</li>
+<li><b>FINANCING_FIELDS_ANALYSIS.md</b>: Analysis of financing field requirements</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md65"></a>
+Project Information</h1>
+<p><b>Project Name</b>: Real-Time Real Estate Investment Analysis <br  />
+ <b>Version</b>: 1.0.0 <br  />
+ <b>Last Updated</b>: December 2025 <br  />
+ <b>Documentation Generated</b>: Doxygen 1.15.0</p>
+<hr  />
+<p><em>This documentation is automatically generated from source code comments. For the most up-to-date information, refer to the source code files directly.</em> </p>
+</div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 </div><!-- doc-content -->

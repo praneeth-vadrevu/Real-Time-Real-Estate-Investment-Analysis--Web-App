@@ -1,14 +1,22 @@
 var searchData=
 [
-  ['if_0',['if',['../App_8tsx.html#a83a1c98ff55752ff1296667eb313cf0c',1,'if(process.env.NODE_ENV===&apos;development&apos;):&#160;App.tsx'],['../MainContent_8tsx.html#a3cf934a548315c675dafc265bbb30d5d',1,'if(showPropertyForm):&#160;MainContent.tsx'],['../PropertyForm_8tsx.html#a8d292c923343bf398f9f7507adc61b7f',1,'if(isLoadingProperty &amp;&amp;selectedZpid):&#160;PropertyForm.tsx'],['../PropertyForm_8tsx.html#a79c274188256fb1aab485e1e0f7e931b',1,'if(inputMethod===&apos;select&apos;):&#160;PropertyForm.tsx']]],
-  ['imgsrc_1',['imgSrc',['../classcom_1_1example_1_1realestate_1_1model_1_1EnrichedProperty.html#aa2ea8e4fa684b4d2018e9642416fc762',1,'com.example.realestate.model.EnrichedProperty.imgSrc'],['../classcom_1_1example_1_1realestate_1_1model_1_1SearchCard.html#a26ad4beff5ab0eda744dbfd5520c7d46',1,'com.example.realestate.model.SearchCard.imgSrc']]],
-  ['import_2',['import',['../App_8tsx.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;App.tsx'],['../AuthPage_8tsx.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;AuthPage.tsx'],['../Dashboard_8tsx.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;Dashboard.tsx'],['../MainContent_8tsx.html#a953be46b94f595d839e88a6d3d270309',1,'import:&#160;MainContent.tsx'],['../Navbar_8tsx.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;Navbar.tsx'],['../PropertyComparison_8tsx.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;PropertyComparison.tsx'],['../PropertyForm_8tsx.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;PropertyForm.tsx'],['../PropertyPopup_8tsx.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;PropertyPopup.tsx'],['../PropertyReportViewer_8tsx.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;PropertyReportViewer.tsx'],['../PurchaseCriteriaForm_8tsx.html#a953be46b94f595d839e88a6d3d270309',1,'import:&#160;PurchaseCriteriaForm.tsx'],['../SearchPage_8tsx.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;SearchPage.tsx'],['../Sidebar_8tsx.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;Sidebar.tsx'],['../reportWebVitals_8ts.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;reportWebVitals.ts'],['../cashflowApi_8ts.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;cashflowApi.ts'],['../reportGenerator_8ts.html#a59be084da8908b7d77ff34b25cd84488',1,'import:&#160;reportGenerator.ts']]],
-  ['index_2etsx_3',['index.tsx',['../index_8tsx.html',1,'']]],
-  ['inspections_4',['inspections',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#a656d5d57b9e7be4e963e2e8b27ba53cd',1,'com::example::analysis::dto::CashflowRequest']]],
-  ['insurance_5',['insurance',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#a100430764e76549eeb6cf2265b3e9855',1,'com::example::analysis::dto::CashflowRequest']]],
-  ['irr_6',['irr',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1Summary.html#af392fa78a1a39cf745804966908ee4bb',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
-  ['isauthenticated_7',['isAuthenticated',['../AuthContext_8tsx.html#ac977a248613bc069df1b87c04b00187c',1,'AuthContext.tsx']]],
-  ['isfieldmissingdata_8',['isFieldMissingData',['../PropertyForm_8tsx.html#ac2cf0c7f62b52a1e4620fd119f6ee108',1,'PropertyForm.tsx']]],
-  ['isguest_9',['isGuest',['../AuthContext_8tsx.html#a1415d56fe1e73905f415142277f174da',1,'AuthContext.tsx']]],
-  ['isloading_10',['isLoading',['../AuthContext_8tsx.html#a97071b60fb868736e05dfc41ed7d082b',1,'AuthContext.tsx']]]
+  ['egi_0',['egi',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1YearRow.html#ac9af05e75dc43a50f703bd0437dd4050',1,'com::example::analysis::dto::CashflowResponse::YearRow']]],
+  ['egiy1_1',['egiY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1Summary.html#ad0bda3660fc7c3f2320c796b7d5eec58',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['electricity_2',['electricity',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#ab3475dd4b72a88a5b12fe4b37ba84304',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['endingbalancefirst_3',['endingBalanceFirst',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1YearRow.html#af466c131f43e382e2a9ce34ed7faafbf',1,'com::example::analysis::dto::CashflowResponse::YearRow']]],
+  ['endingbalancesecond_4',['endingBalanceSecond',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1YearRow.html#a8efb32bcf389a46529cb3fb551f3a649',1,'com::example::analysis::dto::CashflowResponse::YearRow']]],
+  ['endpoints_5',['Backend API Endpoints',['../index.html#autotoc_md15',1,'']]],
+  ['enrichedproperty_6',['EnrichedProperty',['../classcom_1_1example_1_1realestate_1_1model_1_1EnrichedProperty.html',1,'com::example::realestate::model']]],
+  ['enrichedproperty_2ejava_7',['EnrichedProperty.java',['../EnrichedProperty_8java.html',1,'']]],
+  ['environmentals_8',['environmentals',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#a3b123e768c2c008668ebd3eec09d5797',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['equitymultiple_9',['equityMultiple',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1Summary.html#a556338c061d446a35d25ed63f58a4daf',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['equityroiy1_10',['equityROIY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1Summary.html#a11846ab3bb78ec843b034279e4ac159e',1,'com::example::analysis::dto::CashflowResponse::Summary']]],
+  ['estate_20investment_20analysis_20code_20documentation_11',['Real-Time Real Estate Investment Analysis - Code Documentation',['../index.html',1,'']]],
+  ['evictions_12',['evictions',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#a40d6ddc22cf89ad87cdd7d7d4dc5da01',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['example_20analysis_13',['3. com.example.analysis',['../index.html#autotoc_md13',1,'']]],
+  ['example_20map_14',['1. com.example.map',['../index.html#autotoc_md11',1,'']]],
+  ['example_20realestate_15',['2. com.example.realestate',['../index.html#autotoc_md12',1,'']]],
+  ['exit_20metrics_16',['Exit Metrics',['../index.html#autotoc_md37',1,'']]],
+  ['exitcostrate_17',['exitCostRate',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#a40634de14cb7d60fe4820728e289cf40',1,'com::example::analysis::dto::CashflowRequest']]],
+  ['expensegrowth_18',['expenseGrowth',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#af11b69b2fcc428b6fd7063acbf51a08b',1,'com::example::analysis::dto::CashflowRequest']]]
 ];

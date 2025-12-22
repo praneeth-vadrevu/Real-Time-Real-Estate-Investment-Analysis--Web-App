@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "Real-Time Real Estate Investment Analysis", "index.html", [
+    [ "Real-Time Real Estate Investment Analysis - Code Documentation", "index.html", "index" ],
     [ "Packages", "namespaces.html", [
       [ "Package List", "namespaces.html", "namespaces_dup" ]
     ] ],
@@ -54,7 +55,8 @@ var NAVTREEINDEX =
 "App_8tsx.html",
 "PropertyPopup_8tsx.html#a188634af6d23f8d9afed75b6bfb5f599",
 "classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#a234ab5364632db383a165956a5404bc6",
-"classcom_1_1example_1_1realestate_1_1model_1_1EnrichedProperty.html#a098cb064f90f84b0fa4d46f75ebb8500"
+"classcom_1_1example_1_1realestate_1_1model_1_1EnrichedProperty.html#a098cb064f90f84b0fa4d46f75ebb8500",
+"index_8tsx.html#a39ce074942a931b6249205e207cb8af2"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

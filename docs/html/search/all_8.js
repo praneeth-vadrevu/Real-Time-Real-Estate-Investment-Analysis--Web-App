@@ -1,12 +1,16 @@
 var searchData=
 [
-  ['handledeleteproperty_0',['handleDeleteProperty',['../Dashboard_8tsx.html#a9643e5206147172b1ced4969a1b827e9',1,'Dashboard.tsx']]],
-  ['handlegoogleerror_1',['handleGoogleError',['../AuthPage_8tsx.html#a9a27411b0a0bf7f911e66f213b3035c3',1,'AuthPage.tsx']]],
-  ['handleinputchange_2',['handleInputChange',['../PropertyForm_8tsx.html#ad62de17f1b068e920695c8af8d0ab56b',1,'PropertyForm.tsx']]],
-  ['handlesaveproperty_3',['handleSaveProperty',['../PropertyForm_8tsx.html#a682488736a908b0d54b3fd805a9d018a',1,'PropertyForm.tsx']]],
-  ['handlesubmit_4',['handleSubmit',['../PropertyForm_8tsx.html#a39ea56a25db188cbabb252c367c3347c',1,'PropertyForm.tsx']]],
-  ['hasgoogleauth_5',['hasGoogleAuth',['../AuthPage_8tsx.html#a5338203e09605f81141ac3f730e06257',1,'AuthPage.tsx']]],
-  ['heating_6',['heating',['../classcom_1_1example_1_1realestate_1_1model_1_1EnrichedProperty.html#ad72b95c7fd3b6238bdcca786d75938e1',1,'com::example::realestate::model::EnrichedProperty']]],
-  ['hoamonthly_7',['hoaMonthly',['../classcom_1_1example_1_1realestate_1_1model_1_1EnrichedProperty.html#a06a939edf82e0529946e80776c75bdcc',1,'com::example::realestate::model::EnrichedProperty']]],
-  ['holdyears_8',['holdYears',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowRequest.html#ad66b8996e5f01a5d6555b327e9179ba2',1,'com::example::analysis::dto::CashflowRequest']]]
+  ['dashboard_0',['Dashboard',['../App_8tsx.html#af5f3d12c37ddac42039916d7a6e3b5c8',1,'Dashboard:&#160;App.tsx'],['../Dashboard_8tsx.html#af5f3d12c37ddac42039916d7a6e3b5c8',1,'Dashboard:&#160;Dashboard.tsx']]],
+  ['dashboard_2etsx_1',['Dashboard.tsx',['../Dashboard_8tsx.html',1,'']]],
+  ['data_20models_2',['Data Models',['../index.html#autotoc_md52',1,'Backend Data Models'],['../index.html#autotoc_md51',1,'Data Models'],['../index.html#autotoc_md53',1,'Frontend Data Models']]],
+  ['daysonzillow_3',['daysOnZillow',['../classcom_1_1example_1_1realestate_1_1model_1_1EnrichedProperty.html#a749233ef89fd3f4b6dd8d7e0f2b8461a',1,'com.example.realestate.model.EnrichedProperty.daysOnZillow'],['../classcom_1_1example_1_1realestate_1_1model_1_1SearchCard.html#a44f3b3f5fd0247e3e7d978f03ac1545a',1,'com.example.realestate.model.SearchCard.daysOnZillow']]],
+  ['debtservice_4',['debtService',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1YearRow.html#a3f7d3c4e8b01b868fb6259ce01bbbb08',1,'com::example::analysis::dto::CashflowResponse::YearRow']]],
+  ['defaultzoom_5',['defaultZoom',['../PropertyMap_8tsx.html#a8ac1813eba9bccfe5ce4aaada899f4ab',1,'PropertyMap.tsx']]],
+  ['deleteproperty_6',['deleteProperty',['../Dashboard_8tsx.html#aca7717b55732a63aabf8dcf746d987fd',1,'deleteProperty:&#160;Dashboard.tsx'],['../PropertiesContext_8tsx.html#aca7717b55732a63aabf8dcf746d987fd',1,'deleteProperty:&#160;PropertiesContext.tsx']]],
+  ['development_20workflow_7',['Development Workflow',['../index.html#autotoc_md59',1,'']]],
+  ['documentation_8',['Documentation',['../index.html#autotoc_md55',1,'API Documentation'],['../index.html#autotoc_md60',1,'Generating Documentation'],['../index.html',1,'Real-Time Real Estate Investment Analysis - Code Documentation'],['../index.html#autotoc_md63',1,'Related Documentation'],['../index.html#autotoc_md40',1,'Using This Documentation']]],
+  ['documentation_20comments_9',['Adding Documentation Comments',['../index.html#autotoc_md61',1,'']]],
+  ['documentation_20navigation_10',['Documentation Navigation',['../index.html#autotoc_md39',1,'']]],
+  ['dom_11',['dom',['../setupTests_8ts.html#ace141dab1481fa1126bf476461d4ff32',1,'setupTests.ts']]],
+  ['dscry1_12',['dscrY1',['../classcom_1_1example_1_1analysis_1_1dto_1_1CashflowResponse_1_1Summary.html#aeb65da000f69d1fc3d226dd723690369',1,'com::example::analysis::dto::CashflowResponse::Summary']]]
 ];

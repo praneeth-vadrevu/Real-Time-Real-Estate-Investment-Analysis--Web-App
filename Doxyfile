@@ -33,8 +33,10 @@ SORT_MEMBERS_CTORS_1ST = NO
 #---------------------------------------------------------------------------
 INPUT                  = ./googlemapv2/src/main/java \
                          ./cashflow-calculator \
-                         ./real-time-real-estate-analyzer/real-time-analyzer/src
+                         ./real-time-real-estate-analyzer/real-time-analyzer/src \
+                         ./MAIN_PAGE.md
 INPUT_ENCODING         = UTF-8
+USE_MDFILE_AS_MAINPAGE = ./MAIN_PAGE.md
 FILE_PATTERNS          = *.java \
                          *.tsx \
                          *.ts \
