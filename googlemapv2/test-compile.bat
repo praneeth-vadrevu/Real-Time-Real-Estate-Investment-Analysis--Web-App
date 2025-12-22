@@ -8,7 +8,7 @@ REM Check Maven
 echo [1/3] Checking Maven...
 where mvn >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Maven not found. Please install Maven first.
+    echo Maven not found. Please install Maven first.
     echo Download from: https://maven.apache.org/download.cgi
     pause
     exit /b 1
@@ -20,12 +20,12 @@ echo.
 echo [2/3] Checking Java...
 where java >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Java not found. Please install JDK 17 or higher.
+    echo Java not found. Please install JDK 17 or higher.
     pause
     exit /b 1
 )
 java -version
-echo ✅ Java found
+echo  Java found
 
 REM Compile project
 echo.
@@ -36,7 +36,7 @@ call mvn clean compile
 if %ERRORLEVEL% EQU 0 (
     echo.
     echo ========================================
-    echo ✅ Compilation Successful!
+    echo  Compilation Successful!
     echo ========================================
     echo.
     echo Project is ready to run.
@@ -50,7 +50,7 @@ if %ERRORLEVEL% EQU 0 (
 ) else (
     echo.
     echo ========================================
-    echo ❌ Compilation Failed
+    echo  Compilation Failed
     echo ========================================
     echo.
     echo Please check the error messages above.
